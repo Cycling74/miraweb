@@ -1,0 +1,28 @@
+# Editor/IDE Ignores
+
+# sublime text files
+*.sublime*
+*.*~*.TMP
+
+# vim swap files
+*.sw*
+
+# emacs temp files
+*~
+\#*#
+
+# jetBrains IDE ignores
+.idea
+
+# End of Editor/IDE Ignores
+
+# Temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+npm-debug.log
+
+# Project Files
+build
+dev_build
+node_modules
