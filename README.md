@@ -18,19 +18,28 @@ Max package installed in order to have Max support the Web enabling communicatio
 
 Make sure you have Node.js and NPM installed and then in the cloned repository folder do the following to install all necessary dependencies:
 
-	npm install
+```
+$> npm install
+```
 
 If you want to build an development/debug version please run:
 
-	npm run build
+```
+$> npm run build
+```
 
 This will create a `dev_build` folder with the necessary files to run MiraWeb. Just open the index.html and you should be good to go. For convenience there is also a `watching` task available:
 
-	npm run watch
+```
+$> npm run watch
+```
+
 
 If you'd like to bundle a release build please run:
 
-	npm run build-release
+```
+$> npm run build-release
+```
 
 This will bundle the necessary files into an optimized build in the `build` folder.
 
