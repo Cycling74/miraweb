@@ -1,0 +1,52 @@
+// Tabs
+$frame-tab-height: 35px;
+$frame-tab-padding: $small-padding / 2;
+$settings-icon-size: 30px;
+
+.mw-frames {
+
+	width: 100%;
+	height: $frame-tab-height;
+	padding: $frame-tab-padding $frame-tab-padding 0 $frame-tab-padding;
+	background-color: $dark-gray;
+
+	user-select: none;
+	display: flex;
+	align-items: stretch;
+	flex-direction: row;
+	justify-content: flex-start;
+
+	.mw-frames-frame {
+		color: $white;
+		background-color: $mid-gray;
+		line-height: $frame-tab-height;
+		margin-right: $frame-tab-padding;
+		border-top-left-radius: $border-radius;
+		border-top-right-radius: $border-radius;
+		text-align: center;
+
+		flex: 1;
+
+		a {
+			display: block;
+		}
+
+		&[data-active="true"] {
+			background: $off-white;
+			color: $primary-color;
+			border-bottom-color: transparent;
+		}
+	}
+
+	.mw-frames-show-settings {
+		float: right;
+		margin-left: auto;
+		font-size: $settings-icon-size;
+		color: $white;
+		line-height: $frame-tab-height;
+
+		&:before {
+			content: "\2699";
+		}
+	}
+}

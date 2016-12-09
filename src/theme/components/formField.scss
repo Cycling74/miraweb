@@ -1,0 +1,13 @@
+.mw-form-field {
+
+  &--label {
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1rem;
+	margin-bottom: $small-padding;
+	color: $form-label-color;
+    text-transform: uppercase;
+    letter-spacing: 0.03rem;
+    font-weight: 700;
+  }
+}

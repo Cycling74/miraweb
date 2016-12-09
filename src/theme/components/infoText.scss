@@ -1,0 +1,14 @@
+.mw-info-text {
+	font-size: 0.9rem;
+	text-align: center;
+
+	&--error {
+		color: $error-color;
+	}
+	&--success {
+		color: $success-color;
+	}
+	&--warn {
+		color: $warn-color;
+	}
+}

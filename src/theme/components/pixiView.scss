@@ -1,0 +1,23 @@
+
+.mw-pixi-container {
+	position: relative;
+	background: $off-white;
+	display: flex;
+
+	flex: auto;
+
+	> canvas {
+		position:absolute;
+		left: 2px;
+		top: 100px;
+		background: darken($off-white, 2%);
+		overflow: hidden;
+
+		user-select: none;
+		transform-origin: center center;
+	}
+
+	> canvas.hidden {
+		display: none;
+	}
+}

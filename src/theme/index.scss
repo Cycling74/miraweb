@@ -1,0 +1,28 @@
+// normalize.css
+@import '../../node_modules/normalize.css/normalize.css';
+
+// add-to-homescreen
+@import '../../node_modules/add-to-homescreen/dist/style/addtohomescreen.css';
+
+// Global variables
+@import "./_globals.scss";
+
+// Basic Page Style
+@import "./page.scss";
+
+// Helper classes
+@import "./helpers.scss";
+
+// View Components
+@import "./components/about.scss";
+@import "./components/app.scss";
+@import "./components/background.scss";
+@import "./components/button.scss";
+@import "./components/connectDialog.scss";
+@import "./components/dialog.scss";
+@import "./components/formField.scss";
+@import "./components/frameTabs.scss";
+@import "./components/grid.scss";
+@import "./components/infoText.scss";
+@import "./components/pixiView.scss";
+@import "./components/settings.scss";
