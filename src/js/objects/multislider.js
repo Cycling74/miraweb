@@ -274,7 +274,7 @@ export default class Multislider extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
-		let { distance, setminmax, width, height } = params;
+		let { distance, setminmax } = params;
 		if (!Array.isArray(distance)) {
 			distance = [distance];
 		}
