@@ -8,7 +8,8 @@ If you'd just like to use MiraWeb the easiest way to do so is to download the Mi
 ## Contribute
 
 You like the MiraWeb project and would like to contribute? Perfect! Please use the GitHub issue tracker in case you experience any bugs or get in touch for your feature requests or potential features you'd like to add. Please make sure to read our Contributing Guide before submitting any changes.
-// TODO: PermaLink to guide here
+
+[Contributing Guide](CONTRIBUTING.md)
 
 ## How To Build
 
@@ -41,4 +42,4 @@ In order to avoid retyping the host and port of the Max instance to connect to y
 
 ## License
 
-TODO: Add PermaLink to LICENSE file here once we have a persistent URL on GitHub
+[MIT](LICENSE)
