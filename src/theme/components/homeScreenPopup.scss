@@ -1,0 +1,90 @@
+$homescreen-popup-triangle-size: 15px;
+
+.mw-homescreen-popup {
+
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 199;
+	overflow: hidden;
+	background-color: $dialog-wrapper-bg;
+
+	.mw-homescreen-popup-wrapper {
+
+		position: fixed;
+		font-size: 0.85rem;
+
+		.mw-homescreen-popup-content {
+			position: relative;
+			background-color: $off-white;
+			padding: $large-padding;
+
+			.mw-close {
+				position: absolute;
+				top: 0;
+				right: 0;
+			}
+
+			&:after {
+				left: 50%;
+				border: solid transparent;
+				content: " ";
+				height: 0;
+				width: 0;
+				position: absolute;
+				pointer-events: none;
+				border-width: $homescreen-popup-triangle-size;
+				margin-left: -$homescreen-popup-triangle-size;
+			}
+		}
+	}
+
+	&--ipad {
+		.mw-homescreen-popup-wrapper {
+			top: $homescreen-popup-triangle-size;
+			right: 50px;
+			width: 180px;
+
+			.mw-homescreen-popup-content {
+				&:after {
+					bottom: 100%;
+					border-bottom-color: $off-white;
+				}
+			}
+		}
+	}
+
+	&--iphone,
+	&--ipod {
+		.mw-homescreen-popup-wrapper {
+			width: 180px;
+
+			@media screen and (orientation: portrait) {
+				bottom: $homescreen-popup-triangle-size;
+				left: 50%;
+				margin-left: -90px;
+
+				.mw-homescreen-popup-content {
+					&:after {
+						top: 100%;
+						border-top-color: $off-white;
+					}
+				}
+			}
+
+			@media screen and (orientation:landscape) {
+				top: $homescreen-popup-triangle-size;
+				right: 34px;
+
+				.mw-homescreen-popup-content {
+					&:after {
+						bottom: 100%;
+						border-bottom-color: $off-white;
+					}
+				}
+			}
+		}
+	}
+}

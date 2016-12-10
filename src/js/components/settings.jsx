@@ -7,12 +7,14 @@ import FrameStore from "../stores/frame.js";
 import SettingsStore from "../stores/settings.js";
 import XebraStateStore from "../stores/xebraState.js";
 import { SETTING_SCREENS, VERSION } from "../lib/constants.js";
-import { supportsFullScreen } from "../lib/utils.js";
+
+import { showFullScreenToggle } from "../lib/utils.js";
 
 import Button from "./button.jsx";
 import Column from "./column.jsx";
 import Dialog from "./dialog.jsx";
 import FormField from "./formField.jsx";
+import FullscreenToggleButton from "./fullscreenToggleButton.jsx";
 import Grid from "./grid.jsx";
 import InfoText from "./infoText.jsx";
 
@@ -76,8 +78,8 @@ export default class Settings extends React.Component {
 		FrameActions.setGlobalViewMode(parseInt(e.target.value, 10));
 	}
 
-	_onToggleFullscreen() {
-		SettingsActions.changeSetting("fullscreen", !SettingsStore.getSettingState("fullscreen"));
+	_onToggleFullscreen(flag) {
+		SettingsActions.changeSetting("fullscreen", flag);
 	}
 
 	_onShowAboutScreen() {
@@ -160,10 +162,13 @@ export default class Settings extends React.Component {
 								</div>
 							</FormField>
 						</Column>
-						{ supportsFullScreen() ? (
+						{ showFullScreenToggle() ? (
 							<Column size={ 12 } >
 								<FormField label="Fullscreen">
-									<Button buttonStyle="secondary" onClick={ this._onToggleFullscreen.bind(this) } size="sm" >{ this.state.settings.fullscreen ? "Exit" : "Go" } Fullscreen</Button>
+									<FullscreenToggleButton
+										onToggle={ this._onToggleFullscreen.bind(this) }
+										fullscreenState={ this.state.settings.fullscreen }
+									/>
 								</FormField>
 							</Column> ) : null
 						}

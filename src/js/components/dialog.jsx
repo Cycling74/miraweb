@@ -2,6 +2,8 @@ import React from "react";
 import classnames from "classnames";
 import omit from "lodash/omit.js";
 
+import CloseButton from "./closeButton.jsx";
+
 const BASE_CLASS = "mw-dialog";
 
 export default class Dialog extends React.Component {
@@ -30,7 +32,7 @@ export default class Dialog extends React.Component {
 				<div className={ `${BASE_CLASS}-content` } onClick={ this._onPreventClose.bind(this) } >
 					<div className={ `${BASE_CLASS}-title-wrapper` } >
 						<h2 className={ `${BASE_CLASS}-title` }>{ this.props.title}</h2>
-						{ this.props.closable ? <button className={ `${BASE_CLASS}-close` } onClick={ this.props.onClose } >x</button> : null }
+						{ this.props.closable ? <CloseButton onClick={ this.props.onClose } /> : null }
 					</div>
 					{ this.props.children }
 				</div>

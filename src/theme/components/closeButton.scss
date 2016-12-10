@@ -1,0 +1,16 @@
+.mw-close {
+	appearance: none;
+	border: none;
+	background: none;
+	cursor: pointer;
+	color: $black;
+	text-shadow: 0 1px 0 $white;
+	opacity: .2;
+	font-size: 1.5rem;
+	font-weight: 700;
+
+	&:focus, &:hover, &:active {
+		opacity: .4;
+		outline: none;
+	}
+}

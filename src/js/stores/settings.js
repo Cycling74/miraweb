@@ -1,7 +1,23 @@
 import Store from "./base.js";
 import * as SettingsActions from "../actions/settings.js";
-import { toggleFullScreen } from "../lib/utils.js";
-import { SETTING_SCREENS } from "../lib/constants.js";
+
+import { supportsFullScreen, supportsiOSHomeScreenApp } from "../lib/utils.js";
+import { FULLSCREEN_STATES, SETTING_SCREENS } from "../lib/constants.js";
+
+
+function toggleFullScreen() {
+	const doc = window.document;
+	const docEl = doc.documentElement;
+
+	const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+	const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+	if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+		requestFullScreen.call(docEl);
+	} else {
+		cancelFullScreen.call(doc);
+	}
+}
 
 class SettingsStore extends Store {
 	constructor() {
@@ -10,7 +26,7 @@ class SettingsStore extends Store {
 		this._shown = false;
 
 		this._settings = {
-			fullscreen : false
+			fullscreen : FULLSCREEN_STATES.OFF
 		};
 
 		// Attach Action Listeners
@@ -60,17 +76,25 @@ class SettingsStore extends Store {
 			document.mozFullScreenElement	||
 			document.msFullscreenElement;
 
-		this._settings.fullscreen = !!fullScreenEl;
+		this._settings.fullscreen = fullScreenEl ? FULLSCREEN_STATES.ON : FULLSCREEN_STATES.OFF;
 		this.triggerEvent("change_setting");
 	}
 
 	_onChangeSetting(name, value) {
 
-		if (name === "fullscreen") {
+		if (name === "fullscreen" && value === FULLSCREEN_STATES.ON) {
+
 			// We only toggle the fullscreen here but wait for the listener to fire in order to actually change
 			// the setting when the transition happened
-			toggleFullScreen();
-			return;
+			if (supportsFullScreen()) {
+				toggleFullScreen();
+				return;
+			}
+
+			// iOS can't do fullscreen BUT Homescreen! So trigger the PopUp to be displayed
+			if (supportsiOSHomeScreenApp()) {
+				value = FULLSCREEN_STATES.POPUP;
+			}
 		}
 
 		this._settings[name] = value;

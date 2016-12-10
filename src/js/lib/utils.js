@@ -1,19 +1,11 @@
-import "add-to-homescreen";
-/* global addToHomescreen */
+import bowser from "bowser";
+import { ORIENTATION } from "./constants.js";
 
 const VENDOR_PREFIXES = [
 	"moz",
 	"webkit",
 	"ms"
 ];
-
-const homescreenAppPrompt = addToHomescreen({
-	autostart : false,
-	message : "iOS can only go fullscreen as a mobile app. To add this web app to the home screen: tap %icon and then <strong>Add to Home Screen</strong>.",
-	modal : true,
-	startDelay : 0
-});
-export { homescreenAppPrompt };
 
 export function capitalize(text) {
 	return text.charAt(0).toUpperCase() + text.slice(1);
@@ -32,10 +24,6 @@ export function toRad(degrees) {
 	return degrees * Math.PI / 180;
 }
 
-export function displaysHomescreenAppPrompt() {
-	return homescreenAppPrompt.session !== undefined;
-}
-
 export function ensureWithin(value, min, max) {
 	if (value < min) return min;
 	if (value > max) return max;
@@ -43,6 +31,8 @@ export function ensureWithin(value, min, max) {
 }
 
 export function supportsFullScreen() {
+
+	// first check for FullscreenAPI support
 	const props = toPrefixed("requestFullscreen");
 	const docEl = window.document.documentElement;
 	let supports = false;
@@ -57,16 +47,28 @@ export function supportsFullScreen() {
 	return supports;
 }
 
-export function toggleFullScreen() {
-	const doc = window.document;
-	const docEl = doc.documentElement;
+export function runningFromHomeScreen() {
+	return window.navigator.standalone;
+}
 
-	const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-	const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+export function isiOSDevice() {
+	return bowser.ios;
+}
 
-	if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-		requestFullScreen.call(docEl);
-	} else {
-		cancelFullScreen.call(doc);
+export function whichiOSDevice() {
+	if (!isiOSDevice()) return null;
+	const devices = ["ipad", "iphone", "ipod"];
+	for (let i = 0, il = devices.length; i < il; i++) {
+		if (bowser[devices[i]]) return devices[i];
 	}
+
+	return null;
+}
+
+export function supportsiOSHomeScreenApp() {
+	return isiOSDevice();
+}
+
+export function showFullScreenToggle() {
+	return !runningFromHomeScreen() && (supportsFullScreen() || supportsiOSHomeScreenApp());
 }

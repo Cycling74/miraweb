@@ -1,9 +1,6 @@
 // normalize.css
 @import '../../node_modules/normalize.css/normalize.css';
 
-// add-to-homescreen
-@import '../../node_modules/add-to-homescreen/dist/style/addtohomescreen.css';
-
 // Global variables
 @import "./_globals.scss";
 
@@ -18,10 +15,12 @@
 @import "./components/app.scss";
 @import "./components/background.scss";
 @import "./components/button.scss";
+@import "./components/closeButton.scss";
 @import "./components/connectDialog.scss";
 @import "./components/dialog.scss";
 @import "./components/formField.scss";
 @import "./components/frameTabs.scss";
+@import "./components/homeScreenPopup.scss";
 @import "./components/grid.scss";
 @import "./components/infoText.scss";
 @import "./components/pixiView.scss";

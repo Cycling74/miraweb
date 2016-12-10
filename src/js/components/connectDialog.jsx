@@ -4,22 +4,18 @@ import { CONNECTION_STATES } from "xebra.js";
 
 import * as SettingsActions from "../actions/settings.js";
 import * as XebraStateActions from "../actions/xebraState.js";
-
 import SettingsStore from "../stores/settings.js";
 import XebraStateStore from "../stores/xebraState.js";
+
+import { showFullScreenToggle } from "../lib/utils.js";
 
 import Button from "./button.jsx";
 import Column from "./column.jsx";
 import Dialog from "./dialog.jsx";
 import FormField from "./formField.jsx";
+import FullscreenToggleButton from "./fullscreenToggleButton.jsx";
 import Grid from "./grid.jsx";
 import InfoText from "./infoText.jsx";
-
-import {
-	displaysHomescreenAppPrompt,
-	homescreenAppPrompt,
-	supportsFullScreen
-} from "../lib/utils.js";
 
 const BASE_CLASS = "mw-connect-dialog";
 
@@ -29,8 +25,8 @@ export default class MiraConnectDialog extends React.Component {
 		super(props);
 
 		this.state = {
-			isFullscreen : SettingsStore.getSettingState("fullscreen"),
 			connectionState : XebraStateStore.getConnectionState(),
+			fullscreen : SettingsStore.getSettingState("fullscreen"),
 			hostname : props.hostname || "",
 			port : props.port || "",
 			attemptToConnectTo : null
@@ -38,7 +34,7 @@ export default class MiraConnectDialog extends React.Component {
 
 		this._unsubscribes = [];
 		this._unsubscribes.push(XebraStateStore.listen(this._onUpdate.bind(this)));
-		this._unsubscribes.push(SettingsStore.listen(this._onUpdate.bind(this)));
+		this._unsubscribes.push(SettingsStore.on("change_setting", this._onUpdate.bind(this)));
 	}
 
 	componentWillUnmount() {
@@ -54,7 +50,7 @@ export default class MiraConnectDialog extends React.Component {
 
 	_onUpdate() {
 		this.setState({
-			isFullscreen : SettingsStore.getSettingState("fullscreen"),
+			fullscreen : SettingsStore.getSettingState("fullscreen"),
 			connectionState : XebraStateStore.getConnectionState()
 		});
 	}
@@ -71,14 +67,6 @@ export default class MiraConnectDialog extends React.Component {
 		return;
 	}
 
-	_onToggleFullscreen() {
-		if (supportsFullScreen()) {
-			SettingsActions.changeSetting("fullscreen", !SettingsStore.getSettingState("fullscreen"));
-		} else if (displaysHomescreenAppPrompt()) {
-			homescreenAppPrompt.show(true);
-		}
-	}
-
 	_onConnect() {
 		XebraStateActions.init({
 			hostname : this.state.hostname,
@@ -87,6 +75,10 @@ export default class MiraConnectDialog extends React.Component {
 
 		this.setState({ attemptToConnectTo : `ws://${this.state.hostname}:${this.state.port}` });
 		XebraStateActions.connect();
+	}
+
+	_onToggleFullscreen(flag) {
+		SettingsActions.changeSetting("fullscreen", flag);
 	}
 
 	render() {
@@ -119,9 +111,12 @@ export default class MiraConnectDialog extends React.Component {
 						</FormField>
 					</Column>
 					{
-						( supportsFullScreen() || displaysHomescreenAppPrompt() ? <Column size={ 12 } >
+						( showFullScreenToggle() ? <Column size={ 12 } >
 							<FormField label="Fullscreen">
-								<Button buttonStyle="secondary" onClick={ this._onToggleFullscreen.bind(this) } size="sm" >{ this.state.isFullscreen ? "Exit" : "Go" } Fullscreen</Button>
+								<FullscreenToggleButton
+									onToggle={ this._onToggleFullscreen.bind(this) }
+									fullscreenState={ this.state.fullscreen }
+								/>
 							</FormField>
 						</Column> : null )
 					}
@@ -139,5 +134,4 @@ export default class MiraConnectDialog extends React.Component {
 			</Dialog>
 		);
 	}
-
 }
