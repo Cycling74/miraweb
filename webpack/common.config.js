@@ -25,7 +25,9 @@ var config = {
 			{ test : /\.jsx$/, loader : "source-map-loader" }
 		]
 	},
-	postcss : [ require("autoprefixer")({ browsers: ["> 5%"] }) ],
+	postcss : [
+		require("autoprefixer")({ browsers: ["last 5 versions"] })
+	],
 	plugins : [
 		new webpack.DefinePlugin({
 			__VERSION__ : JSON.stringify(pck.version),
