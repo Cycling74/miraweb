@@ -9,6 +9,7 @@
         "node": true
     },
 	"globals" : {
+		"__ASSETDIR__" : true,
 		"__LICENSE__" : true,
 		"__VERSION__" : true
 	},
