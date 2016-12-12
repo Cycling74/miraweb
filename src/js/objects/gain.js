@@ -1,6 +1,6 @@
 import MiraUIObject from "./base.js";
 import { POPOVER_TYPES } from "../stores/popover.js";
-import * as PIXI from "pixi.js";
+import Assets from "../lib/assets.js";
 
 const KNOBHEIGHT = 6;
 const PADDING = 2;
@@ -9,10 +9,6 @@ const ORIENTATION = Object.freeze({
 	HORIZONTAL : 1,
 	VERTICAL : 2
 });
-
-// Load Textures as data-urls by overriding the global file-loader config with the leading "!"
-const STRIPED_TEXTURE_HORIZONTAL = new PIXI.Texture.fromImage(require(`!url-loader!${__ASSETDIR__}/hatching-horizontal.svg`));
-const STRIPED_TEXTURE_VERTICAL = new PIXI.Texture.fromImage(require(`!url-loader!${__ASSETDIR__}/hatching-vertical.svg`));
 
 export default class Gain extends MiraUIObject {
 
@@ -81,7 +77,7 @@ export default class Gain extends MiraUIObject {
 			const inactiveHeight = knobCenterY - PADDING - KNOBHEIGHT / 2 - KNOBPADDING;
 			if (inactiveHeight > 0) {
 				mgraphics.rectangle(PADDING, PADDING, width - 2 * PADDING, inactiveHeight);
-				mgraphics.set_pattern(STRIPED_TEXTURE_VERTICAL, stripecolor);
+				mgraphics.set_pattern(Assets.getResourceTexture("hatching-vertical"), stripecolor);
 				mgraphics.fill();
 			}
 
@@ -89,7 +85,7 @@ export default class Gain extends MiraUIObject {
 			const activeHeight = height - knobCenterY - PADDING - KNOBHEIGHT / 2 - KNOBPADDING;
 			if (activeHeight > 0) {
 				mgraphics.rectangle(PADDING, height - PADDING, width - 2 * PADDING, -activeHeight);
-				mgraphics.set_pattern(STRIPED_TEXTURE_VERTICAL, knobcolor);
+				mgraphics.set_pattern(Assets.getResourceTexture("hatching-vertical"), knobcolor);
 				mgraphics.fill();
 			}
 
@@ -104,7 +100,7 @@ export default class Gain extends MiraUIObject {
 			const inactiveWidth = width - knobCenterX - PADDING - KNOBPADDING - KNOBHEIGHT / 2;
 			if (inactiveWidth > 0) {
 				mgraphics.rectangle(width - PADDING, PADDING, -inactiveWidth, height - 2 * PADDING);
-				mgraphics.set_pattern(STRIPED_TEXTURE_HORIZONTAL, stripecolor);
+				mgraphics.set_pattern(Assets.getResourceTexture("hatching-horizontal"), stripecolor);
 				mgraphics.fill();
 			}
 
@@ -112,7 +108,7 @@ export default class Gain extends MiraUIObject {
 			const activeWidth = knobCenterX - PADDING - KNOBPADDING - KNOBHEIGHT / 2;
 			if (activeWidth > 0) {
 				mgraphics.rectangle(PADDING, PADDING, activeWidth, height - 2 * PADDING);
-				mgraphics.set_pattern(STRIPED_TEXTURE_HORIZONTAL, knobcolor);
+				mgraphics.set_pattern(Assets.getResourceTexture("hatching-horizontal"), knobcolor);
 				mgraphics.fill();
 			}
 

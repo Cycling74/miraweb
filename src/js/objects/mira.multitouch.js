@@ -1,8 +1,10 @@
-import MiraUIObject from "./base.js";
 import * as PIXI from "pixi.js";
-import XebraStateStore from "../stores/xebraState.js";
 import lodash from "lodash";
+
+import MiraUIObject from "./base.js";
+import XebraStateStore from "../stores/xebraState.js";
 import { Animation } from "../lib/animation.js";
+import Assets from "../lib/assets.js";
 import GestureEvent from "../lib/gestureEvent.js";
 
 
@@ -15,7 +17,7 @@ class Touch {
 		this.eventId = options.eventId;
 		this.region = -1;
 
-		this.sprite = PIXI.Sprite.fromImage(require(`!url-loader!${__ASSETDIR__}/multitouch-touch.png`));
+		this.sprite = new PIXI.Sprite(Assets.getResourceTexture("multitouch-touch"));
 		this.sprite.anchor.set(0.5, 0.5);
 		this.updatePosition(options.x, options.y);
 	}
@@ -364,7 +366,7 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	animateTap(x, y) {
-		const sprite = new PIXI.Sprite.fromImage(require(`!url-loader!${__ASSETDIR__}/multitouch-tap.png`));
+		const sprite = new PIXI.Sprite(Assets.getResourceTexture("multitouch-tap"));
 		sprite.width = sprite.height = 0;
 		sprite.anchor.set(0.5, 0.5);
 		sprite.x = x;
@@ -389,7 +391,7 @@ export default class MiraMultitouch extends MiraUIObject {
 		const rect = this.getScreenRect();
 		const width = rect[2];
 		const height = rect[3];
-		const sprite = new PIXI.Sprite.fromImage(require(`!url-loader!${__ASSETDIR__}/multitouch-swipe.png`));
+		const sprite = new PIXI.Sprite(Assets.getResourceTexture("multitouch-swipe"));
 		sprite.anchor.set(0.5, 0.5);
 		sprite.width = sprite.height = 90;
 		let startPosition;
@@ -457,13 +459,13 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	animatePinch(event) {
-		const spriteImageString = require(`!url-loader!${__ASSETDIR__}/multitouch-pinch.png`);
+		const pinchTexture = Assets.getResourceTexture("multitouch-pinch");
 		if (event._ongoing === 1 && !this._pinchSprites) {
 			this._pinchSprites = [
-				new PIXI.Sprite.fromImage(spriteImageString),
-				new PIXI.Sprite.fromImage(spriteImageString),
-				new PIXI.Sprite.fromImage(spriteImageString),
-				new PIXI.Sprite.fromImage(spriteImageString)
+				new PIXI.Sprite(pinchTexture),
+				new PIXI.Sprite(pinchTexture),
+				new PIXI.Sprite(pinchTexture),
+				new PIXI.Sprite(pinchTexture)
 			];
 			this._pinchSprites.forEach((sprite, spriteIndex) => {
 				sprite.anchor.set(0.5, 0.5);
@@ -525,12 +527,11 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	animateRotate(event) {
-		const stationaryImageString = require(`!url-loader!${__ASSETDIR__}/multitouch-rotation.png`);
-		const rotatingImageString = require(`!url-loader!${__ASSETDIR__}/multitouch-rotation-2.png`);
+		const rotationTexture = Assets.getResourceTexture("multitouch-rotation");
 		if (event._ongoing === 1 && !this._rotateSprites && event._pointers.length === 2) {
 			this._rotateSprites = {
-				stationary : new PIXI.Sprite.fromImage(stationaryImageString),
-				rotating : new PIXI.Sprite.fromImage(rotatingImageString)
+				stationary : new PIXI.Sprite(rotationTexture),
+				rotating : new PIXI.Sprite(rotationTexture)
 			};
 
 			this._rotateSprites.stationary.x = this._rotateSprites.rotating.x = event._center.x;
@@ -538,9 +539,11 @@ export default class MiraMultitouch extends MiraUIObject {
 			this._rotateSprites.stationary.width = this._rotateSprites.rotating.width = 16;
 			this._rotateSprites.stationary.height = this._rotateSprites.rotating.height = 150;
 			this._rotateSprites.stationary.anchor.set(0.5, 0.5);
+			this._rotateSprites.stationary.tint = 0x000000;
+
 			this._rotateSprites.rotating.anchor.set(0.5, 0.5);
-			this._rotateSprites.rotating._tint = 0xFF0000;
-			this._rotateSprites.stationary._tint = 0x000000;
+			this._rotateSprites.rotating.tint = 0xFF0000;
+
 			this._displayNode.addDisplayChild(this._rotateSprites.stationary);
 			this._displayNode.addDisplayChild(this._rotateSprites.rotating);
 

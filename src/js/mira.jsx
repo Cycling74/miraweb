@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+// Lib
+import Assets from "./lib/assets.js";
+
 // Components
 import App from "./components/app.jsx";
 
@@ -11,12 +14,15 @@ import { getSupportedObjects }  from "./objects/factory.js";
 
 function init(options) {
 
-	XebraStateActions.setSupportedObjects(getSupportedObjects());
+	// load resources and then kick off everything
+	Assets.load(() => {
+		XebraStateActions.setSupportedObjects(getSupportedObjects());
 
-	ReactDOM.render(
-		<App {...options} />,
-		options.element
-	);
+		ReactDOM.render(
+			<App {...options} />,
+			options.element
+		);
+	});
 }
 
 export default {
