@@ -126,7 +126,7 @@ export default class Multislider extends MiraUIObject {
 				}
 
 				if (setstyle === "Bar" || (setstyle === "Thin Line" && ghostbar > 0)) {
-					if (setstyle === "Thin Line") mgraphics.set_source_rgba([colors[i % colors.length][0], colors[i % colors.length][1], colors[i % colors.length][2], ghostbar / 100]);
+					if (setstyle === "Thin Line") mgraphics.set_source_rgba([colors[i % candycane][0], colors[i % candycane][1], colors[i % candycane][2], ghostbar / 100]);
 					else mgraphics.set_source_rgba(colors[i % candycane]);
 					mgraphics.rectangle(zeroX, currY, sliderX + thickness - zeroX, sliderHeight);
 					mgraphics.fill();
@@ -228,7 +228,7 @@ export default class Multislider extends MiraUIObject {
 
 
 				if (setstyle === "Bar" || (setstyle === "Thin Line" && ghostbar > 0)) {
-					if (setstyle === "Thin Line") mgraphics.set_source_rgba([colors[i % colors.length][0], colors[i % colors.length][1], colors[i % colors.length][2], ghostbar / 100]);
+					if (setstyle === "Thin Line") mgraphics.set_source_rgba([colors[i % candycane][0], colors[i % candycane][1], colors[i % candycane][2], ghostbar / 100]);
 					else mgraphics.set_source_rgba(colors[i % candycane]);
 					mgraphics.rectangle(currX, height - sliderY, sliderWidth, sliderY + thickness - zeroY);
 					mgraphics.fill();
