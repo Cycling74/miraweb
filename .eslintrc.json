@@ -8,6 +8,10 @@
         "browser": true,
         "node": true
     },
+	"globals" : {
+		"__LICENSE__" : true,
+		"__VERSION__" : true
+	},
 	"extends": ["eslint:recommended", "plugin:react/all"],
     "ecmaFeatures": {
         "arrowFunctions": true,
