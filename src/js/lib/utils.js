@@ -1,5 +1,4 @@
 import bowser from "bowser";
-import { ORIENTATION } from "./constants.js";
 
 const VENDOR_PREFIXES = [
 	"moz",

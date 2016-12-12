@@ -81,8 +81,9 @@ class SettingsStore extends Store {
 	}
 
 	_onChangeSetting(name, value) {
+		let v = value;
 
-		if (name === "fullscreen" && value === FULLSCREEN_STATES.ON) {
+		if (name === "fullscreen" && v === FULLSCREEN_STATES.ON) {
 
 			// We only toggle the fullscreen here but wait for the listener to fire in order to actually change
 			// the setting when the transition happened
@@ -93,11 +94,11 @@ class SettingsStore extends Store {
 
 			// iOS can't do fullscreen BUT Homescreen! So trigger the PopUp to be displayed
 			if (supportsiOSHomeScreenApp()) {
-				value = FULLSCREEN_STATES.POPUP;
+				v = FULLSCREEN_STATES.POPUP;
 			}
 		}
 
-		this._settings[name] = value;
+		this._settings[name] = v;
 		this.triggerEvent("change_setting");
 	}
 
