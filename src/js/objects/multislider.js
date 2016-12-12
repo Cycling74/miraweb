@@ -72,12 +72,12 @@ export default class Multislider extends MiraUIObject {
 		if (orientation === "Horizontal") {
 			this.orientation = "horizontal";
 			// draw background
-			let sliderHeight = height / size;
+			let sliderHeight = (height - spacing*(size + 1)) / size;
 			mgraphics.set_source_rgba(bgcolor);
-			mgraphics.rectangle(0, 0, width + thickness, sliderHeight * size);
+			mgraphics.rectangle(0, 0, width + thickness, height);
 			mgraphics.fill();
 
-			let currY = 0;
+			let currY = spacing;
 
 			for (let i = 0; i < size; i++) {
 				let sliderX = (width / range) * (distance[i] - min);
@@ -96,8 +96,8 @@ export default class Multislider extends MiraUIObject {
 				mgraphics.set_source_rgba(colors[i % candycane]);
 				mgraphics.set_line_width(thickness);
 				if (setstyle === "Bar" || setstyle === "Thin Line") {
-					mgraphics.move_to(sliderX + (thickness / 2), currY + (spacing / 2));
-					mgraphics.line_to(sliderX + (thickness / 2), currY + sliderHeight - (spacing / 2));
+					mgraphics.move_to(sliderX + (thickness / 2), currY);
+					mgraphics.line_to(sliderX + (thickness / 2), currY + sliderHeight);
 					mgraphics.stroke();
 				}
 				if (signed === 1) {
@@ -164,23 +164,23 @@ export default class Multislider extends MiraUIObject {
 				}
 
 				mgraphics.set_source_rgba(transparentcolor);
-				mgraphics.rectangle(0, currY, width + thickness, sliderHeight);
+				mgraphics.rectangle(0, currY-spacing/2, width + thickness, sliderHeight + spacing);
 				mgraphics.add_attribute("slider", i);
 				mgraphics.fill();
 
-				currY += sliderHeight;
+				currY += sliderHeight + spacing;
 			}
 
 		} else if (orientation === "Vertical") {
 			this.orientation = "vertical";
 			// draw background
-			let sliderWidth = width / size;
+			let sliderWidth = (width - spacing*(size + 1)) / size;
 			mgraphics.set_source_rgba(bgcolor);
-			if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") mgraphics.rectangle(0, 0, sliderWidth * size, height);
-			else mgraphics.rectangle(0, 0, sliderWidth * size, height + thickness);
+			if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") mgraphics.rectangle(0, 0, width, height);
+			else mgraphics.rectangle(0, 0, width, height + thickness);
 			mgraphics.fill();
 
-			let currX = 0;
+			let currX = spacing;
 			for (let i = 0; i < size; i++) {
 				let sliderY = (height / range) * (distance[i] - min);
 				let zeroY = 0;
@@ -196,8 +196,8 @@ export default class Multislider extends MiraUIObject {
 				mgraphics.set_source_rgba(colors[i % candycane]);
 				mgraphics.set_line_width(thickness);
 				if (setstyle === "Bar" || setstyle === "Thin Line") {
-					mgraphics.move_to(currX + (spacing / 2), height - sliderY + (thickness / 2));
-					mgraphics.line_to(currX + sliderWidth - (spacing / 2), height - sliderY + (thickness / 2));
+					mgraphics.move_to(currX, height - sliderY + (thickness / 2));
+					mgraphics.line_to(currX + sliderWidth, height - sliderY + (thickness / 2));
 					mgraphics.stroke();
 				}
 				if (signed === 1) {
@@ -264,11 +264,11 @@ export default class Multislider extends MiraUIObject {
 
 				}
 				mgraphics.set_source_rgba(transparentcolor);
-				mgraphics.rectangle(currX, 0, sliderWidth, height + thickness);
+				mgraphics.rectangle(currX-spacing/2, 0, sliderWidth + spacing, height + thickness);
 				mgraphics.add_attribute("slider", i);
 				mgraphics.fill();
 
-				currX += sliderWidth;
+				currX += sliderWidth + spacing;
 			}
 		}
 	}
@@ -283,7 +283,7 @@ export default class Multislider extends MiraUIObject {
 		if (this.orientation === "vertical") {
 			newVal = (1.0 - event.normTargetY) * range + setminmax[0];
 		} else if (this.orientation === "horizontal") {
-			newVal = (1.0 - event.normTargetX) * range + setminmax[0];
+			newVal = (event.normTargetX) * range + setminmax[0];
 		}
 		newVal = (newVal > setminmax[1]) ? setminmax[1] : newVal;
 		newVal = (newVal < setminmax[0]) ? setminmax[0] : newVal;
