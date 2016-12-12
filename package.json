@@ -1,8 +1,8 @@
 {
-	"name": "mira-web",
+	"name": "miraweb",
 	"version": "1.0.0",
 	"description": "TODO",
-	"author": "TODO",
+	"author": "Cycling '74",
 	"contributors": [
 		"Florian Demmer <florian@cycling74.com>",
 		"Sam Tarakajian <sam@cycling74.com>",
