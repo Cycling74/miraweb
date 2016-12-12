@@ -1,6 +1,14 @@
 // load global styling
 require("../theme/index.scss");
 
+// load global assets
+require(`${__ASSETDIR__}/favicon.ico`); // overwrite naming pattern for favicon
+require(`${__ASSETDIR__}/apple-touch-icon-76.png`);
+require(`${__ASSETDIR__}/apple-touch-icon-120.png`);
+require(`${__ASSETDIR__}/apple-touch-icon-152.png`);
+require(`${__ASSETDIR__}/apple-touch-icon-167.png`);
+require(`${__ASSETDIR__}/apple-touch-icon-180.png`);
+
 import Mira from "./mira.jsx";
 
 document.addEventListener("DOMContentLoaded", function() {
