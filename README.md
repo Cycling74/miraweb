@@ -1,6 +1,8 @@
 MiraWeb
 =============
 
+![MiraWeb](src/assets/miraweb_logo_bar.png)
+
 ## Setup
 
 If you'd just like to use MiraWeb the easiest way to do so is to download the MiraWeb package from the Max Package Manager. All necessary files, objects etc. are included and you should be good to go.
