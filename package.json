@@ -20,9 +20,9 @@
 		"url": "https://github.com/Cycling74/miraweb.git"
 	},
 	"scripts": {
-		"build": "webpack --config webpack/dev.config.js",
-		"build-release": "webpack --config webpack/release.config.js",
-		"watch": "env WATCH=1 webpack --config webpack/dev.config.js",
+		"build": "rm -rf ./dev_build && webpack --config webpack/dev.config.js",
+		"build-release": "rm -rf ./build && webpack --config webpack/release.config.js",
+		"watch": "rm -rf ./dev_build && env WATCH=1 webpack --config webpack/dev.config.js",
 		"postupdate": "cd node_modules/pixi.js && npm install && npm run lib",
 		"postinstall": "cd node_modules/pixi.js && npm install && npm run lib",
 		"lint": "eslint src -c .eslintrc.json",
@@ -43,6 +43,7 @@
 		"eslint": "^3.9.1",
 		"eslint-config-recommended": "^1.5.0",
 		"eslint-plugin-react": "^6.5.0",
+		"favicons-webpack-plugin": "^0.0.7",
 		"file-loader": "^0.9.0",
 		"gridlex": "^2.2.3",
 		"gyronorm": "^2.0.4",

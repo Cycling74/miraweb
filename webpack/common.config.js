@@ -2,6 +2,7 @@ var path = require("path");
 var pck = require("../package.json");
 var webpack = require("webpack");
 var util = require("util");
+var FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
 var ASSET_DIR = path.resolve(__dirname, path.join("..", "src", "assets"));
 
@@ -35,13 +36,35 @@ var config = {
 		]
 	},
 	postcss : [
-		require("autoprefixer")({ browsers: ["last 5 versions"] })
+		require("autoprefixer")({ browsers : ["last 5 versions"] })
 	],
 	plugins : [
 		new webpack.DefinePlugin({
 			__VERSION__ : JSON.stringify(pck.version),
 			__LICENSE__ : JSON.stringify(license),
 			__ASSETDIR__ : JSON.stringify(ASSET_DIR)
+		}),
+		new FaviconsWebpackPlugin({
+			logo : path.resolve(__dirname, path.join("..", "src", "assets", "miraweb_logo.png")),
+			prefix : "./static/",
+			// emitStats : false,
+			statsFilename : "../[hash].json",
+			persistentCache : true,
+			inject : true,
+			background : "#595959",
+			title : "MiraWeb",
+			icons : {
+				android : false,
+				appleIcon : true,
+				appleStartup : false,
+				coast : false,
+				favicons : true,
+				firefox : false,
+				opengraph : false,
+				twitter : false,
+				yandex : false,
+				windows : false
+			}
 		})
 	],
 	watch : process.env.WATCH ? true : false
