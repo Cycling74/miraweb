@@ -29,7 +29,8 @@
 		"postupdate": "cd node_modules/pixi.js && npm install && npm run lib",
 		"postinstall": "cd node_modules/pixi.js && npm install && npm run lib",
 		"lint": "eslint src -c .eslintrc.json",
-		"lint-fix": "eslint src -c .eslintrc.json --fix"
+		"lint-fix": "eslint src -c .eslintrc.json --fix",
+		"test": "npm run lint"
 	},
 	"dependencies": {},
 	"devDependencies": {
