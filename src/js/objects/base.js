@@ -280,8 +280,6 @@ export default class MiraUIObject extends EventEmitter {
 
 	setParamValue(param, value) {
 		this._state.setParamValue(param, value);
-		if (["patching_rect", "presentation_rect", "ignoreclick", "hidden"].indexOf(param) === -1) this.invalidateCachedText();
-		this.needsRender = true;
 	}
 
 	showPopover(type, description) {
