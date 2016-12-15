@@ -25,7 +25,7 @@ $homescreen-popup-triangle-size: 15px;
 			.mw-close {
 				position: absolute;
 				top: 0;
-				right: 0;
+				right: $small-padding;
 			}
 
 			&:after {
