@@ -80,7 +80,7 @@ export default class Multislider extends MiraUIObject {
 			let currY = spacing;
 
 			for (let i = 0; i < size; i++) {
-				let sliderX = (width / range) * (distance[i] - min);
+				let sliderX = ((width - thickness) / range) * (distance[i] - min);
 				let zeroX = 0;
 
 				if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") {
@@ -182,7 +182,7 @@ export default class Multislider extends MiraUIObject {
 
 			let currX = spacing;
 			for (let i = 0; i < size; i++) {
-				let sliderY = (height / range) * (distance[i] - min);
+				let sliderY = ((height - thickness) / range) * (distance[i] - min);
 				let zeroY = 0;
 
 				if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") {
@@ -196,8 +196,8 @@ export default class Multislider extends MiraUIObject {
 				mgraphics.set_source_rgba(colors[i % candycane]);
 				mgraphics.set_line_width(thickness);
 				if (setstyle === "Bar" || setstyle === "Thin Line") {
-					mgraphics.move_to(currX, height - sliderY + (thickness / 2));
-					mgraphics.line_to(currX + sliderWidth, height - sliderY + (thickness / 2));
+					mgraphics.move_to(currX, height - sliderY - (thickness / 2));
+					mgraphics.line_to(currX + sliderWidth, height - sliderY - (thickness / 2));
 					mgraphics.stroke();
 				}
 				if (signed === 1) {
