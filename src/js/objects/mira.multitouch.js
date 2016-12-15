@@ -476,6 +476,8 @@ export default class MiraMultitouch extends MiraUIObject {
 				this._displayNode.addDisplayChild(sprite);
 
 			});
+			clearTimeout(this._stopPinchTimeout);
+			this._stopPinchTimeout = setTimeout(this.stopAnimatingPinch.bind(this), 100);
 		} else if (event._ongoing === 1 && this._pinchSprites) {
 			const vectorDistance = Math.sqrt(
 				Math.pow(event._pointers[0].x - event._pointers[1].x, 2)
@@ -508,7 +510,7 @@ export default class MiraMultitouch extends MiraUIObject {
 			clearTimeout(this._stopPinchTimeout);
 			this._stopPinchTimeout = setTimeout(this.stopAnimatingPinch.bind(this), 100);
 		} else if (event._ongoing === 0 && this._pinchSprites) {
-			this._pinchSprites.forEach((sprite) => {
+			this._pinchSprites.forEach((sprite, spriteIndex) => {
 				sprite.parent.removeChild(sprite);
 				sprite.destroy();
 			});
@@ -518,7 +520,7 @@ export default class MiraMultitouch extends MiraUIObject {
 
 	stopAnimatingPinch() {
 		if ((!this._state.getParamValue("pinch_enabled") || Object.keys(this._deviceTouches).length !== 2) && this._pinchSprites) {
-			this._pinchSprites.forEach((sprite) => {
+			this._pinchSprites.forEach((sprite, spriteIndex) => {
 				sprite.parent.removeChild(sprite);
 				sprite.destroy();
 			});
