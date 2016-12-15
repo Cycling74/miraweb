@@ -72,7 +72,7 @@ export default class Multislider extends MiraUIObject {
 		if (orientation === "Horizontal") {
 			this.orientation = "horizontal";
 			// draw background
-			let sliderHeight = (height - spacing*(size + 1)) / size;
+			let sliderHeight = (height - spacing * (size + 1)) / size;
 			mgraphics.set_source_rgba(bgcolor);
 			mgraphics.rectangle(0, 0, width + thickness, height);
 			mgraphics.fill();
@@ -164,7 +164,7 @@ export default class Multislider extends MiraUIObject {
 				}
 
 				mgraphics.set_source_rgba(transparentcolor);
-				mgraphics.rectangle(0, currY-spacing/2, width + thickness, sliderHeight + spacing);
+				mgraphics.rectangle(0, currY - spacing / 2, width + thickness, sliderHeight + spacing);
 				mgraphics.add_attribute("slider", i);
 				mgraphics.fill();
 
@@ -174,7 +174,7 @@ export default class Multislider extends MiraUIObject {
 		} else if (orientation === "Vertical") {
 			this.orientation = "vertical";
 			// draw background
-			let sliderWidth = (width - spacing*(size + 1)) / size;
+			let sliderWidth = (width - spacing * (size + 1)) / size;
 			mgraphics.set_source_rgba(bgcolor);
 			if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") mgraphics.rectangle(0, 0, width, height);
 			else mgraphics.rectangle(0, 0, width, height + thickness);
@@ -264,7 +264,7 @@ export default class Multislider extends MiraUIObject {
 
 				}
 				mgraphics.set_source_rgba(transparentcolor);
-				mgraphics.rectangle(currX-spacing/2, 0, sliderWidth + spacing, height + thickness);
+				mgraphics.rectangle(currX - spacing / 2, 0, sliderWidth + spacing, height + thickness);
 				mgraphics.add_attribute("slider", i);
 				mgraphics.fill();
 
