@@ -15,7 +15,6 @@
 		"Emmanuel Jourdan <ej@cycling74.com>"
 	],
 	"homepage": "http://cycling74.com",
-	"readme": "README.md",
 	"bugs": "https://github.com/Cycling74/miraweb/issues",
 	"license": "MIT",
 	"repository": {
