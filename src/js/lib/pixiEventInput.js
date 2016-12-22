@@ -13,8 +13,26 @@ const PIXI_INPUT_MAP = Object.freeze({
 	mousedown : Hammer.INPUT_START
 });
 
+const POINTER_INPUT_MAP = {
+  pointerdown: Hammer.INPUT_START,
+  pointermove: Hammer.INPUT_MOVE,
+  pointerup: Hammer.INPUT_END,
+  pointerupoutside: Hammer.INPUT_END,
+  pointercancel: Hammer.INPUT_CANCEL,
+  pointerout: Hammer.INPUT_CANCEL
+};
+
+// in IE10 the pointer types is defined as an enum
+const IE10_POINTER_TYPE_ENUM = {
+  2: Hammer.INPUT_TYPE_TOUCH,
+  3: Hammer.INPUT_TYPE_PEN,
+  4: Hammer.INPUT_TYPE_MOUSE,
+  5: Hammer.INPUT_TYPE_KINECT // see https://twitter.com/jacobrossi/status/480596438489890816
+};
+
 const MOUSE_EVENTS = ["mousemove", "mousedown", "mouseup"];
-const TOUCH_EVENTS = ["touchstart", "touchmove", "touchend", "touchcancel"];
+const TOUCH_EVENTS = ["touchstart", "touchmove", "touchend", "touchendoutside", "touchcancel"];
+const POINTER_EVENTS = ["pointerdown", "pointermove", "pointerup", "pointerupoutside", "pointercancel"];
 const PIXI_TARGET_EVENTS = [TOUCH_EVENTS.join(" "), MOUSE_EVENTS.join(" ")].join(" ");
 
 function touchSorter(ta, tb) {
@@ -31,6 +49,7 @@ export default class PixiEventInput extends Hammer.Input {
 	constructor(manager, callback) {
 		super(manager, callback);
 		this.handler = this._handler.bind(this);
+		this.store = (this.manager.session.pointerEvents = []);
 	}
 
 	get evTarget() {
@@ -38,6 +57,61 @@ export default class PixiEventInput extends Hammer.Input {
 	}
 
 	_handler(ev) {
+		if (POINTER_EVENTS.indexOf(ev.data.originalEvent.type) > -1) {
+			this._handlePointerEvent(ev);
+		}
+
+		else {
+			this._handleMouseTouchEvent(ev);
+		}
+	}
+
+	_handlePointerEvent(pixiEvent) {
+		let ev = pixiEvent.data.originalEvent;
+		let { store } = this;
+    let removePointer = false;
+
+    let eventTypeNormalized = ev.type.toLowerCase().replace('ms', '');
+    let eventType = POINTER_INPUT_MAP[eventTypeNormalized];
+    let pointerType = IE10_POINTER_TYPE_ENUM[ev.pointerType] || ev.pointerType;
+
+    let isTouch = (pointerType === Hammer.INPUT_TYPE_TOUCH);
+
+    // get index of the event in the store
+    let storeIndex = findIndex(store, ["pointerId", ev.pointerId]);
+
+    // start and mouse must be down
+    if (eventType & Hammer.INPUT_START && (ev.button === 0 || isTouch)) {
+      if (storeIndex < 0) {
+        store.push(ev);
+        storeIndex = store.length - 1;
+      }
+    } else if (eventType & (Hammer.INPUT_END | Hammer.INPUT_CANCEL)) {
+      removePointer = true;
+    }
+
+    // it not found, so the pointer hasn't been down (so it's probably a hover)
+    if (storeIndex < 0) {
+      return;
+    }
+
+    // update the event in the store
+    store[storeIndex] = ev;
+
+    this.callback(this.manager, eventType, {
+      pointers: store,
+      changedPointers: [ev],
+      pointerType,
+      srcEvent: ev
+    });
+
+    if (removePointer) {
+      // remove from the store
+      store.splice(storeIndex, 1);
+    }
+	}
+
+	_handleMouseTouchEvent(ev) {
 		const type = PIXI_INPUT_MAP[ev.type];
 		let pointerType;
 		let pointers;
@@ -66,7 +140,7 @@ export default class PixiEventInput extends Hammer.Input {
 	}
 
 	/**
-	 * @this {TouchInput}
+	 * @this {PixiEventInput}
 	 * @param {Object} ev
 	 * @param {Number} type flag
 	 * @returns {undefined|Array} [all, changed]
