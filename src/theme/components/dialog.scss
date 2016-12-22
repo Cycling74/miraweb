@@ -12,8 +12,11 @@ $dialog-wrapper-bg: rgba(0, 0, 0, 0.5);
 	background-color: $dialog-wrapper-bg;
 
 	display: flex;
+	display: -webkit-flex;
+    justify-content: center;
+	-webkit-justify-content: center;
 	align-items: center;
-	justify-content: center;
+	-webkit-align-items: center;
 
 	.mw-dialog-content {
 		width: 450px;

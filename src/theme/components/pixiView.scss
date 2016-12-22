@@ -3,8 +3,10 @@
 	position: relative;
 	background: $off-white;
 	display: flex;
+	display: -webkit-flex;
 
 	flex: auto;
+    -webkit-flex: auto;
 
 	> canvas {
 		position:absolute;
