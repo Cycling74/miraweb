@@ -13,22 +13,27 @@ const PIXI_INPUT_MAP = Object.freeze({
 	mousedown : Hammer.INPUT_START
 });
 
-const POINTER_INPUT_MAP = {
+const POINTER_INPUT_MAP = Object.freeze({
 	pointerdown : Hammer.INPUT_START,
 	pointermove : Hammer.INPUT_MOVE,
 	pointerup : Hammer.INPUT_END,
 	pointerupoutside : Hammer.INPUT_END,
 	pointercancel : Hammer.INPUT_CANCEL,
 	pointerout : Hammer.INPUT_CANCEL
-};
+});
+
+const INPUT_TYPE = Object.freeze({
+	TOUCH : "touch",
+	PEN : "pen",
+	MOUSE : "mouse"
+});
 
 // in IE10 the pointer types is defined as an enum
-const IE10_POINTER_TYPE_ENUM = {
-	2 : Hammer.INPUT_TYPE_TOUCH,
-	3 : Hammer.INPUT_TYPE_PEN,
-	4 : Hammer.INPUT_TYPE_MOUSE,
-	5 : Hammer.INPUT_TYPE_KINECT // see https://twitter.com/jacobrossi/status/480596438489890816
-};
+const IE10_POINTER_TYPE_ENUM = Object.freeze({
+	2 : INPUT_TYPE.TOUCH,
+	3 : INPUT_TYPE.PEN,
+	4 : INPUT_TYPE.MOUSE
+});
 
 const MOUSE_EVENTS = ["mousemove", "mousedown", "mouseup"];
 const TOUCH_EVENTS = ["touchstart", "touchmove", "touchend", "touchendoutside", "touchcancel"];
@@ -75,7 +80,7 @@ export default class PixiEventInput extends Hammer.Input {
 		let eventType = POINTER_INPUT_MAP[eventTypeNormalized];
 		let pointerType = IE10_POINTER_TYPE_ENUM[ev.pointerType] || ev.pointerType;
 
-		let isTouch = (pointerType === Hammer.INPUT_TYPE_TOUCH);
+		let isTouch = (pointerType === INPUT_TYPE.TOUCH);
 
 		// get index of the event in the store
 		let storeIndex = findIndex(store, ["pointerId", ev.pointerId]);
