@@ -15,8 +15,9 @@ export default class MiraUIObject extends EventEmitter {
 		const doGestures = this.constructor.GESTURES === undefined ? false : this.constructor.GESTURES;
 
 		this._displayNode = new PixiUIObject(this._state.id, this._state.getParamValue("zorder"), {
-			mask : this.constructor.MASK === undefined ? true : this.constructor.MASK,
-			gestures : doGestures
+			gestures : doGestures,
+			interactive : !stateObj.getParamValue("ignoreclick"),
+			mask : this.constructor.MASK === undefined ? true : this.constructor.MASK
 		});
 
 		// attach event listeners
@@ -60,8 +61,9 @@ export default class MiraUIObject extends EventEmitter {
 		}
 
 		// if the ignoreclick attr was set to true we make sure to reset all pointer handling state (if child objects supports it)
-		if (param.type === "ignoreclick" && this.resetPointers) {
-			this.resetPointers();
+		if (param.type === "ignoreclick") {
+			this._displayNode.setInteractive(!param.value);
+			if (this.resetPointers) this.resetPointers();
 			return;
 		}
 
