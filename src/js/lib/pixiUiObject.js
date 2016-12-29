@@ -338,6 +338,7 @@ class PixiDraw extends EventEmitter {
 
 		options = assign({
 			mask : true,
+			interactive : true,
 			gestures : false
 		}, options);
 
@@ -359,7 +360,6 @@ class PixiDraw extends EventEmitter {
 		this._currentPointers = {};
 
 		this._display = new PIXI.Container();
-		this.setInteractive(true);
 
 		// Masks, gradients and graphics that are not currently being drawn to
 		this._inactiveLayers = [];
@@ -371,8 +371,11 @@ class PixiDraw extends EventEmitter {
 			this._display.addChild(this._mask);
 		}
 
+		// Enable/Disable Interactivity
+		this.setInteractive(options.interactive);
+
 		// Add a gesture recognizer to this object
-		if (options.gestures) {
+		if (options.interactive && options.gestures) {
 			this._gestures = true;
 			this._gestureRecognizer = new GestureRecognition();
 			this._gestureRecognizer.on("gesture_event", this._onGestureEvent.bind(this));
@@ -487,7 +490,17 @@ class PixiDraw extends EventEmitter {
 	// ///////////////////
 
 	setInteractive(val) {
+
 		this._display.interactive = val;
+		this._interactive = val;
+
+		if (val) {
+			this._display.calculateBounds();
+			const bounds = this._display.getLocalBounds();
+			this._setHitArea([0, 0, bounds.width, bounds.height]);
+		} else {
+			this._setHitArea([0, 0, 0, 0]);
+		}
 	}
 
 	newPointerEventFromNativeEvent(e, type, includeDeltas) {
@@ -699,13 +712,13 @@ class PixiDraw extends EventEmitter {
 		return this._display;
 	}
 
-	setHitArea(rect) {
+	_setHitArea(rect) {
 		this._display.hitArea = new PIXI.Rectangle(rect[0], rect[1], rect[2], rect[3]);
 	}
 
 	setRect(rect) {
 
-		this.setHitArea([0, 0, rect[2], rect[3]]);
+		this._setHitArea(this._interactive ? [0, 0, rect[2], rect[3]] : [0, 0, 0, 0]);
 
 		if (this._mask) {
 			this._mask.clear();
@@ -726,6 +739,7 @@ class PixiDraw extends EventEmitter {
 		// a lower resolution than we need for pixel crispness
 		// this._display.width = rect[2];
 		// this._display.height = rect[3];
+
 	}
 
 	setZIndex(zIndex) {
