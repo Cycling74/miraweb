@@ -43,13 +43,6 @@ export default class Slider extends MiraUIObject {
 		mgraphics.rectangle(0, 0, width, height);
 		mgraphics.fill();
 
-		if ((distance + min) === min && knobshape !== "Indicator") {
-			knobcolor[3] = 0.5;
-
-		} else {
-			knobcolor[3] = 1;
-		}
-
 		if ((orientation === "Automatic" && (width < height)) || orientation === "Vertical") {
 			this._orientation = "vertical";
 
