@@ -1,7 +1,9 @@
 import React from "react";
 
 import * as PIXI from "pixi.js";
+import tinycolor from "tinycolor2";
 
+import { BG_DARKEN_AMT } from "../lib/constants.js";
 import * as FocusActions from "../actions/focus.js";
 import { setScale, setDOMRect } from "../actions/activeFrame.js";
 
@@ -39,6 +41,7 @@ export default class PixiView extends React.Component {
 		this._stage.addChild(this._popoverStage);
 
 		this._unsubscribes = [];
+		this._unsubscribes.push(ActiveFrameStore.on("tint", this._tint.bind(this)));
 		this._unsubscribes.push(ActiveFrameStore.on("resize", this._onResize.bind(this)));
 		this._unsubscribes.push(ActiveFrameStore.on("viewmode_change", this._onResize.bind(this)));
 		this._unsubscribes.push(ActiveFrameStore.on("set", this._onSetActiveFrame.bind(this)));
@@ -55,7 +58,6 @@ export default class PixiView extends React.Component {
 	componentDidMount() {
 		this._onClear();
 		this._renderer = new PIXI.autoDetectRenderer(400, 300, {
-			transparent : true,
 			view : this._canvas,
 			antialias : true,
 			resolution : ActiveFrameStore.getResolution(),
@@ -106,12 +108,15 @@ export default class PixiView extends React.Component {
 		this.setState({
 			hidden : FrameStore.getFrameCount() === 0
 		});
+
+		this._tint();
 	}
 
 	_onSetActiveFrame() {
 		this.setState({
 			hidden : false
 		});
+		this._tint();
 		this._onResize();
 	}
 
@@ -164,11 +169,28 @@ export default class PixiView extends React.Component {
 		this._requestAnimationFrame();
 	}
 
+	_tint() {
+		const bgColor = ActiveFrameStore.getBackgroundColor();
+		let formattedColor = tinycolor.fromRatio({
+			r : bgColor[0],
+			g : bgColor[1],
+			b : bgColor[2]
+		});
+
+		// set PIXI background
+		this._renderer.backgroundColor = "0x" + formattedColor.toHex();
+
+		// we also set an actual DOM background color
+		this.setState({
+			bgColor : formattedColor.darken(BG_DARKEN_AMT).toHexString()
+		});
+	}
+
 	render() {
 
 		return (
 			<div className={ `${BASE_CLASS}-container`} ref={ (ref) => this._container = ref } >
-				<Background />
+				<Background bgColor={ this.state.bgColor || null } />
 				<canvas
 					className={ this.state.hidden ? "hidden" : "" }
 					ref={ (ref) => this._canvas = ref }

@@ -2,6 +2,7 @@ import * as ActiveFrameActions from "../actions/activeFrame.js";
 import * as UIObjectActions from "../actions/uiObject.js";
 import Store from "./base.js";
 import { VIEW_MODES } from "xebra.js";
+import { DEFAULT_BG } from "../lib/constants.js";
 
 class ActiveFrameStore extends Store {
 
@@ -27,6 +28,8 @@ class ActiveFrameStore extends Store {
 			(this._frame.viewMode === VIEW_MODES.PRESENTATION && param.type === "presentation_rect")
 		) {
 			this.triggerEvent("resize");
+		} else if (param.type === "color") {
+			this.triggerEvent("tint", this.getBackgroundColor());
 		}
 	}
 
@@ -88,6 +91,15 @@ class ActiveFrameStore extends Store {
 		point.x = ( x - rect.left );
 		point.y = ( y - rect.top );
 		return point;
+	}
+
+	getBackgroundColor() {
+
+		if (this._frame) {
+			const bgColor = this._frame.getParamValue("color");
+			if (bgColor) return bgColor;
+		}
+		return DEFAULT_BG;
 	}
 
 	getFrame() {
