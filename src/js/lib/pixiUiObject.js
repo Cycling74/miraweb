@@ -348,7 +348,6 @@ class PixiDraw extends EventEmitter {
 		};
 
 		this._alpha = 0;
-		this._zIndex = zindex || 0;
 		this._lineWidth = 0;
 		this._lineCap = 0;
 		this._fontName = "Arial";
@@ -360,6 +359,7 @@ class PixiDraw extends EventEmitter {
 		this._currentPointers = {};
 
 		this._display = new PIXI.Container();
+		this.setZIndex(zindex);
 
 		// Masks, gradients and graphics that are not currently being drawn to
 		this._inactiveLayers = [];
@@ -742,11 +742,9 @@ class PixiDraw extends EventEmitter {
 
 	}
 
-	setZIndex(zIndex) {
-		this._zindex = zIndex - 1;
-		if (this._zindex > 0 && this._zindex < this._display.parent.children.length) {
-			this._display.parent.setChildIndex(this._display, this._zindex);
-		}
+	setZIndex(zIndex = 1) {
+		this._zIndex = zIndex;
+		this._display.zIndex = this._zIndex;
 	}
 
 	show() {

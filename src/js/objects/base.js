@@ -57,6 +57,7 @@ export default class MiraUIObject extends EventEmitter {
 
 		if (param.type === "zorder") {
 			this._displayNode.setZIndex(param.value);
+			this.emit("zindex_changed");
 			return;
 		}
 
