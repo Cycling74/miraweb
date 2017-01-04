@@ -154,7 +154,28 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	_configureGestureRecognizersForType(stateObj, paramType) {
+		if (!this._displayNode.gesturesEnabled) return;
 
+		if (paramType === "pinch_enabled") {
+			this._displayNode.setGestureOptions("pinch", {
+				enable : stateObj.getParamValue("pinch_enabled")
+			});
+		} else if (paramType === "rotate_enabled") {
+			this._displayNode.setGestureOptions("rotate", {
+				enable : stateObj.getParamValue("rotate_enabled")
+			});
+		} else if (["swipe_enabled", "swipe_touch_count"].indexOf(paramType) > -1) {
+			this._displayNode.setGestureOptions("swipe", {
+				enable : stateObj.getParamValue("swipe_enabled"),
+				pointers : stateObj.getParamValue("swipe_touch_count")
+			});
+		} else if (["tap_enabled", "tap_tap_count", "tap_touch_count"].indexOf(paramType) > -1) {
+			this._displayNode.setGestureOptions("tap", {
+				enable : stateObj.getParamValue("tap_enabled"),
+				pointers : stateObj.getParamValue("tap_touch_count"),
+				taps : stateObj.getParamValue("tap_tap_count")
+			});
+		}
 	}
 
 	_onMultitouchParamChange(stateObj, param) {
@@ -164,29 +185,9 @@ export default class MiraMultitouch extends MiraUIObject {
 			for (let i = 0, il = touchIds.length; i < il; i++) {
 				this._deviceTouches[touchIds[i]][visibilityFct]();
 			}
-		} else if (this._displayNode && this._displayNode.gesturesEnabled) {
-			const paramType = param.type;
-			if (paramType === "pinch_enabled") {
-				this._displayNode.setGestureOptions("pinch", {
-					enable : stateObj.getParamValue("pinch_enabled")
-				});
-			} else if (paramType === "rotate_enabled") {
-				this._displayNode.setGestureOptions("rotate", {
-					enable : stateObj.getParamValue("rotate_enabled")
-				});
-			} else if (["swipe_enabled", "swipe_touch_count"].indexOf(paramType) > -1) {
-				this._displayNode.setGestureOptions("swipe", {
-					enable : stateObj.getParamValue("swipe_enabled"),
-					pointers : stateObj.getParamValue("swipe_touch_count")
-				});
-			} else if (["tap_enabled", "tap_tap_count", "tap_touch_count"].indexOf(paramType) > -1) {
-				this._displayNode.setGestureOptions("tap", {
-					enable : stateObj.getParamValue("tap_enabled"),
-					pointers : stateObj.getParamValue("tap_touch_count"),
-					taps : stateObj.getParamValue("tap_tap_count")
-				});
-			}
 		}
+
+		this._configureGestureRecognizersForType(stateObj, param.type);
 	}
 
 	/**
