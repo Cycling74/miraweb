@@ -58,6 +58,9 @@ export default class MiraMultitouch extends MiraUIObject {
 		this._deviceTouches = {};
 		this._touchSequence = 0;
 
+		this._rotateSprites = null;
+		this._pinchSprites = null;
+
 		this._usedDeviceTouchIds = {};
 		for (let i = 1; i <= this.constructor.MAX_NUM_TOUCHES; i++) {
 			this._usedDeviceTouchIds[i] = false;
@@ -186,6 +189,19 @@ export default class MiraMultitouch extends MiraUIObject {
 			for (let i = 0, il = touchIds.length; i < il; i++) {
 				this._deviceTouches[touchIds[i]][visibilityFct]();
 			}
+		} else if (param.type === "remote_gestures") {
+			// toggle visibilityState for the current active gestures
+			const visibilityState = !!param.value;
+			["_pinchSprites", "_rotateSprites"].forEach((spriteKey) => {
+				const spriteColl = this[spriteKey];
+				if (spriteColl) {
+					const keys = Object.keys(spriteColl);
+					for (let i = 0, il = keys.length; i < il; i++) {
+						spriteColl[i].visible = visibilityState;
+					}
+				}
+			});
+			this.needsRender = true;
 		}
 
 		this._configureGestureRecognizersForType(stateObj, param.type);
@@ -376,6 +392,8 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	animateTap(x, y) {
+		if (!this._state.getParamValue("remote_gestures")) return;
+
 		const sprite = new PIXI.Sprite(Assets.getResourceTexture("multitouch-tap"));
 		sprite.width = sprite.height = 0;
 		sprite.anchor.set(0.5, 0.5);
@@ -398,6 +416,8 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	animateSwipe(direction) {
+		if (!this._state.getParamValue("remote_gestures")) return;
+
 		const rect = this.getScreenRect();
 		const width = rect[2];
 		const height = rect[3];
@@ -478,6 +498,7 @@ export default class MiraMultitouch extends MiraUIObject {
 				new PIXI.Sprite(pinchTexture)
 			];
 			this._pinchSprites.forEach((sprite, spriteIndex) => {
+				sprite.visible = !!this._state.getParamValue("remote_gestures");
 				sprite.anchor.set(0.5, 0.5);
 				sprite.width = 50;
 				sprite.height = 30;
@@ -524,7 +545,7 @@ export default class MiraMultitouch extends MiraUIObject {
 				sprite.parent.removeChild(sprite);
 				sprite.destroy();
 			});
-			this._pinchSprites = undefined;
+			this._pinchSprites = null;
 		}
 	}
 
@@ -534,7 +555,7 @@ export default class MiraMultitouch extends MiraUIObject {
 				sprite.parent.removeChild(sprite);
 				sprite.destroy();
 			});
-			this._pinchSprites = undefined;
+			this._pinchSprites = null;
 		}
 	}
 
@@ -576,8 +597,8 @@ export default class MiraMultitouch extends MiraUIObject {
 			this._rotateSprites.rotating.visible = false;
 			this._rotateSprites.stationary.visible = false;
 		} else if (event._ongoing === 1 && this._rotateSprites && event._pointers.length === 2) {
-			this._rotateSprites.rotating.visible = true;
-			this._rotateSprites.stationary.visible = true;
+			this._rotateSprites.rotating.visible = !!this._state.getParamValue("remote_gestures");
+			this._rotateSprites.stationary.visible = !!this._state.getParamValue("remote_gestures");
 			const rotation = Math.atan2(
 				event._pointers[this._pointerIndex].y - event._pointers[(this._pointerIndex + 1) % 2].y,
 				event._pointers[this._pointerIndex].x - event._pointers[(this._pointerIndex + 1) % 2].x
@@ -595,7 +616,7 @@ export default class MiraMultitouch extends MiraUIObject {
 			this._rotateSprites.rotating.destroy();
 			this._rotateSprites.stationary.parent.removeChild(this._rotateSprites.stationary);
 			this._rotateSprites.stationary.destroy();
-			this._rotateSprites = undefined;
+			this._rotateSprites = null;
 		}
 	}
 
@@ -605,7 +626,7 @@ export default class MiraMultitouch extends MiraUIObject {
 			this._rotateSprites.rotating.destroy();
 			this._rotateSprites.stationary.parent.removeChild(this._rotateSprites.stationary);
 			this._rotateSprites.stationary.destroy();
-			this._rotateSprites = undefined;
+			this._rotateSprites = null;
 		}
 	}
 }
