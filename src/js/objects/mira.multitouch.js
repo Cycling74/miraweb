@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
-import lodash from "lodash";
+import uniqBy from "lodash/uniqBy";
+import values from "lodash/values";
 
 import MiraUIObject from "./base.js";
 import XebraStateStore from "../stores/xebraState.js";
@@ -215,7 +216,7 @@ export default class MiraMultitouch extends MiraUIObject {
 		mgraphics.fill();
 
 		// draw overlay square for each touch in its region
-		lodash.forEach(lodash.uniqBy(lodash.values(this._deviceTouches), "region"), function(touch) {
+		uniqBy(values(this._deviceTouches), "region").forEach((touch) => {
 			const hsegmentWidth = width / hsegments;
 			const vsegmentHeight = height / vsegments;
 
