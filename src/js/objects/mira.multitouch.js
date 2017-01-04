@@ -30,7 +30,7 @@ class Touch {
 	}
 
 	destroy() {
-		this.sprite.parent.removeChild(this.sprite);
+		if (this.sprite.parent) this.sprite.parent.removeChild(this.sprite);
 		this.sprite.destroy();
 	}
 
@@ -47,8 +47,8 @@ export default class MiraMultitouch extends MiraUIObject {
 	constructor(stateObj) {
 		super(stateObj);
 
-		this._gestureChangeCb = this._configureGestureRecognizersForParam.bind(this);
-		this._state.on("param_changed", this._gestureChangeCb);
+		this._multiTouchParamCb = this._onMultitouchParamChange.bind(this);
+		this._state.on("param_changed", this._multiTouchParamCb);
 
 		["pinch_enabled", "rotate_enabled", "swipe_enabled", "tap_enabled"].forEach((paramType) => {
 			this._configureGestureRecognizersForType(stateObj, paramType);
@@ -95,6 +95,7 @@ export default class MiraMultitouch extends MiraUIObject {
 		});
 
 		this._displayNode.addDisplayChild(touch.sprite);
+		if (!this._state.getParamValue("remote_circles")) touch.hide();
 
 		this._deviceTouches[event.id] = touch;
 		this._inTouch = true;
@@ -153,32 +154,39 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	_configureGestureRecognizersForType(stateObj, paramType) {
-		if (!this._displayNode.gesturesEnabled) return;
 
-		if (["pinch_enabled"].indexOf(paramType) > -1) {
-			this._displayNode.setGestureOptions("pinch", {
-				enable : stateObj.getParamValue("pinch_enabled")
-			});
-		} else if (["rotate_enabled"].indexOf(paramType) > -1) {
-			this._displayNode.setGestureOptions("rotate", {
-				enable : stateObj.getParamValue("rotate_enabled")
-			});
-		} else if (["swipe_enabled", "swipe_touch_count"].indexOf(paramType) > -1) {
-			this._displayNode.setGestureOptions("swipe", {
-				enable : stateObj.getParamValue("swipe_enabled"),
-				pointers : stateObj.getParamValue("swipe_touch_count")
-			});
-		} else if (["tap_enabled", "tap_tap_count", "tap_touch_count"].indexOf(paramType) > -1) {
-			this._displayNode.setGestureOptions("tap", {
-				enable : stateObj.getParamValue("tap_enabled"),
-				pointers : stateObj.getParamValue("tap_touch_count"),
-				taps : stateObj.getParamValue("tap_tap_count")
-			});
-		}
 	}
 
-	_configureGestureRecognizersForParam(stateObj, param) {
-		this._configureGestureRecognizersForType(stateObj, param.type);
+	_onMultitouchParamChange(stateObj, param) {
+		if (param.type === "remote_circles") {
+			const touchIds = Object.keys(this._deviceTouches);
+			const visibilityFct = !!param.value ? "show" : "hide";
+			for (let i = 0, il = touchIds.length; i < il; i++) {
+				this._deviceTouches[touchIds[i]][visibilityFct]();
+			}
+		} else if (this._displayNode && this._displayNode.gesturesEnabled) {
+			const paramType = param.type;
+			if (paramType === "pinch_enabled") {
+				this._displayNode.setGestureOptions("pinch", {
+					enable : stateObj.getParamValue("pinch_enabled")
+				});
+			} else if (paramType === "rotate_enabled") {
+				this._displayNode.setGestureOptions("rotate", {
+					enable : stateObj.getParamValue("rotate_enabled")
+				});
+			} else if (["swipe_enabled", "swipe_touch_count"].indexOf(paramType) > -1) {
+				this._displayNode.setGestureOptions("swipe", {
+					enable : stateObj.getParamValue("swipe_enabled"),
+					pointers : stateObj.getParamValue("swipe_touch_count")
+				});
+			} else if (["tap_enabled", "tap_tap_count", "tap_touch_count"].indexOf(paramType) > -1) {
+				this._displayNode.setGestureOptions("tap", {
+					enable : stateObj.getParamValue("tap_enabled"),
+					pointers : stateObj.getParamValue("tap_touch_count"),
+					taps : stateObj.getParamValue("tap_tap_count")
+				});
+			}
+		}
 	}
 
 	/**
@@ -186,8 +194,8 @@ export default class MiraMultitouch extends MiraUIObject {
 	 * @override
 	 */
 	destroy() {
-		this._state.removeListener("param_changed", this._gestureChangeCb);
-		super.destroy(arguments);
+		this._state.removeListener("param_changed", this._multiTouchParamCb);
+		super.destroy();
 	}
 
 	paint(mgraphics, params) {
