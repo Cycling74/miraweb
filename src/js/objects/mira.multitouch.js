@@ -158,7 +158,7 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	_configureGestureRecognizersForType(stateObj, paramType) {
-		if (!this._displayNode.gesturesEnabled) return;
+		if (!this._displayNode || !this._displayNode.gesturesEnabled) return;
 
 		if (paramType === "pinch_enabled") {
 			this._displayNode.setGestureOptions("pinch", {
