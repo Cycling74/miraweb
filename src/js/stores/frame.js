@@ -35,6 +35,7 @@ class FrameStore extends Store {
 	_onChangeFrame(frame, param) {
 		if (param.type === "taborder") this.triggerEvent("frame_resort");
 		if (param.type === "tabname") this.triggerEvent("frame_rename");
+		if (param.type === "color") this.triggerEvent("frame_tint");
 	}
 
 	_onRemoveFrame(frame) {
