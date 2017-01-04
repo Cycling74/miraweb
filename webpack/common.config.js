@@ -36,7 +36,7 @@ var config = {
 		]
 	},
 	postcss : [
-		require("autoprefixer")({ browsers : ["last 5 versions"] })
+		require("autoprefixer")({ browsers : ["last 5 versions", "Safari >= 8", "iOS >= 8"] })
 	],
 	plugins : [
 		new webpack.DefinePlugin({
