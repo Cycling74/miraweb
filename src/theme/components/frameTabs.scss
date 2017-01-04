@@ -12,13 +12,9 @@ $settings-icon-size: 30px;
 
 	user-select: none;
 	display: flex;
-	display: -webkit-flex;
 	align-items: stretch;
-	-webkit-align-items: stretch;
 	flex-direction: row;
-    -webkit-flex-direction: row;
 	justify-content: flex-start;
-	-webkit-justify-content: flex-start;
 
 	.mw-frames-frame {
 		color: $white;
@@ -30,7 +26,6 @@ $settings-icon-size: 30px;
 		text-align: center;
 
 		flex: 1;
-        -webkit-flex: 1;
 
 		a {
 			display: block;
