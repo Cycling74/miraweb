@@ -986,19 +986,19 @@ class PixiDraw extends EventEmitter {
 	// Max uses the fontface attribute for both fontWeight and fontStyle, so we must parse the attribute's value
 	set_font_weight(val) {
 		console.log(val);
-		if (val == "regular") {
+		if (val === "regular") {
 			this._fontWeight = 'normal';
 			this._fontStyle = 'normal';
 		}
-		if (val == "bold") {
+		if (val === "bold") {
 			this._fontWeight = 'bold';
 			this._fontStyle = 'normal';
 		}
-		if (val == "italic") {
+		if (val ==="italic") {
 			this._fontWeight = 'normal';
 			this._fontStyle = 'italic';
 		}
-		if (val == "bold italic") {
+		if (val === "bold italic") {
 			this._fontWeight = 'bold';
 			this._fontStyle = 'italic';
 		}
