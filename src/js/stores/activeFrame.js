@@ -1,8 +1,8 @@
 import * as ActiveFrameActions from "../actions/activeFrame.js";
 import * as UIObjectActions from "../actions/uiObject.js";
 import Store from "./base.js";
+import PatcherStore from "./patcher.js";
 import { VIEW_MODES } from "xebra.js";
-import { DEFAULT_BG } from "../lib/constants.js";
 
 class ActiveFrameStore extends Store {
 
@@ -94,12 +94,7 @@ class ActiveFrameStore extends Store {
 	}
 
 	getBackgroundColor() {
-
-		if (this._frame) {
-			const bgColor = this._frame.getParamValue("color");
-			if (bgColor) return bgColor;
-		}
-		return DEFAULT_BG;
+		return PatcherStore.getBackgroundColorForFrame(this._frame);
 	}
 
 	getFrame() {

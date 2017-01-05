@@ -1,5 +1,6 @@
 import * as ActiveFrameActions from "../actions/activeFrame.js";
 import * as FrameActions from "../actions/frame.js";
+import * as PatcherActions from "../actions/patcher.js";
 import * as SettingsActions from "../actions/settings.js";
 import * as XebraStateActions from "../actions/xebraState.js";
 import Store from "./base.js";
@@ -38,10 +39,16 @@ class XebraStateStore extends Store {
 		this._state.on("frame_added", FrameActions.addFrame);
 		this._state.on("frame_changed", FrameActions.changeFrame);
 		this._state.on("frame_removed", FrameActions.removeFrame);
+
+		this._state.on("patcher_added", PatcherActions.addPatcher);
+		this._state.on("patcher_changed", PatcherActions.changePatcher);
+		this._state.on("patcher_removed", PatcherActions.removePatcher);
+
 		this._state.on("loaded", this._onStateLoaded.bind(this));
 		this._state.on("reset", () => {
 			ActiveFrameActions.unset();
 			FrameActions.reset();
+			PatcherActions.reset();
 			this.triggerEvent("reset");
 		});
 
@@ -122,6 +129,11 @@ class XebraStateStore extends Store {
 
 	getName() {
 		return this._state ? this._state.name : "";
+	}
+
+	getPatcher(id) {
+		if (!this._state) return null;
+		return this._state.getPatcherById(id);
 	}
 
 	getXebraVersion() {

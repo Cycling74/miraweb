@@ -9,6 +9,7 @@ import { setScale, setDOMRect } from "../actions/activeFrame.js";
 
 import ActiveFrameStore from "../stores/activeFrame.js";
 import FrameStore from "../stores/frame.js";
+import PatcherStore from "../stores/patcher.js";
 import PopoverStore from "../stores/popover.js";
 import UIObjectStore from "../stores/uiObject.js";
 
@@ -47,6 +48,8 @@ export default class PixiView extends React.Component {
 		this._unsubscribes.push(ActiveFrameStore.on("set", this._onSetActiveFrame.bind(this)));
 
 		this._unsubscribes.push(FrameStore.on("frame_removed", this._onFrameRemoved.bind(this)));
+
+		this._unsubscribes.push(PatcherStore.on("patcher_tint", this._onPatcherTint.bind(this)));
 
 		this._unsubscribes.push(PopoverStore.on("showPopover", this._onShowPopover.bind(this)));
 		this._unsubscribes.push(PopoverStore.on("hidePopover", this._onHidePopover.bind(this)));
@@ -102,6 +105,10 @@ export default class PixiView extends React.Component {
 	_onClear() {
 		// this._popoverStage.removeChildren();
 		this._objectStage.removeChildren();
+	}
+
+	_onPatcherTint(patcher) {
+		if (ActiveFrameStore.hasActiveFrame() && ActiveFrameStore.getFrame().patcherId === patcher.id) this._tint();
 	}
 
 	_onFrameRemoved() {
