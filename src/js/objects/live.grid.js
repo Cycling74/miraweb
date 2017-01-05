@@ -14,6 +14,7 @@ export default class LiveGrid extends MiraUIObject {
 			bgstepcolor,
 			bgstepcolor2,
 			bordercolor,
+			hbgcolor,
 			columns,
 			direction,
 			direction_height,
@@ -24,6 +25,7 @@ export default class LiveGrid extends MiraUIObject {
 			rows,
 			spacing,
 			stepcolor,
+			currentstep,
 			distance
 		} = params;
 		let { rounded } = params;
@@ -131,6 +133,10 @@ export default class LiveGrid extends MiraUIObject {
 				mgraphics.add_attribute("cell_type", "direction");
 			}
 		}
+		// Draw current step indicator
+		mgraphics.set_source_rgba(hbgcolor);
+		mgraphics.rectangle(buttonWidth * (currentstep - 1), 0, buttonWidth, buttonHeight * rows);
+		mgraphics.fill();
 	}
 
 	pointerDown(event, params) {
