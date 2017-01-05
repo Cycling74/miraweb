@@ -18,4 +18,4 @@ export const SETTING_SCREENS = Object.freeze({
 });
 
 export const BG_DARKEN_AMT = 2;
-export const DEFAULT_BG = [0.964, 0.964, 0.964, 0.964, 1];
+export const DEFAULT_BG = [0.964, 0.964, 0.964, 1];
