@@ -1082,6 +1082,11 @@ class PixiDraw extends EventEmitter {
 			text.anchor.x = 0.5;
 			text.x = text.x + width / 2;
 		}
+		if (this._fontJustification === "right" && textWidth < width) {
+			text.anchor.x = 1;
+			text.x = text.x + width;
+		}
+
 		this._graphics.addChild(text);
 		return text;
 	}
@@ -1128,6 +1133,14 @@ class PixiDraw extends EventEmitter {
 				newString.push(str[i]);
 				text.text = newString.join("");
 			}
+		}
+		if (this._fontJustification === "center" && textWidth < width) {
+			text.anchor.x = 0.5;
+			text.x = text.x + width / 2;
+		}
+		if (this._fontJustification === "right" && textWidth < width) {
+			text.anchor.x = 1;
+			text.x = text.x + width;
 		}
 		this._graphics.addChild(text);
 		return text;
