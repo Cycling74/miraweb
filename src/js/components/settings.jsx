@@ -16,6 +16,8 @@ import FormField from "./formField.jsx";
 import FullscreenToggleButton from "./fullscreenToggleButton.jsx";
 import Grid from "./grid.jsx";
 import InfoText from "./infoText.jsx";
+import Input from "./input.jsx";
+import Select from "./select.jsx";
 
 const BASE_CLASS = "mw-settings";
 
@@ -141,7 +143,7 @@ export default class Settings extends React.Component {
 					<Grid>
 						<Column size={ 12 } >
 							<FormField htmlFor="max_server" label="Max Server" >
-								<input readOnly value={ this.state.connectionInfo } />
+								<Input readOnly value={ this.state.connectionInfo } />
 								{ connectionHint ? <InfoText>{ connectionHint }</InfoText> : null }
 								{ this.state.connectionStatus === CONNECTION_STATES.CONNECTED ? (
 										<Button buttonStyle="error" onClick={ this._onDisconnect.bind(this) } size="sm" >Disconnect</Button>
@@ -152,7 +154,7 @@ export default class Settings extends React.Component {
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="name" label="Client ID" >
-								<input value={ this.state.clientNameEdits || this.state.clientName }
+								<Input value={ this.state.clientNameEdits || this.state.clientName }
 									onChange={ this._onClientNameChange.bind(this) }
 									onBlur={ this._onClientNameChangeSubmit.bind(this) }
 								/>
@@ -160,21 +162,21 @@ export default class Settings extends React.Component {
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="version" label="App Version" >
-								<input readOnly value={ VERSION } />
+								<Input readOnly value={ VERSION } />
 							</FormField>
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="protocol_version" label="Xebra Protocol Version" >
-								<input readOnly value={ XEBRA_VERSION } />
+								<Input readOnly value={ XEBRA_VERSION } />
 							</FormField>
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="view_mode" label="View Mode" >
-								<select value={ this.state.settings.viewMode } onChange={ this._onChangeViewMode.bind(this) } >
+								<Select value={ this.state.settings.viewMode } onChange={ this._onChangeViewMode.bind(this) } >
 									<option value={ VIEW_MODES.LINKED }>Linked</option>
 									<option value={ VIEW_MODES.PATCHING }>Patching</option>
 									<option value={ VIEW_MODES.PRESENTATION }>Presentation</option>
-								</select>
+								</Select>
 								<div className="text-center" >
 									<small className="text-center" >{ viewModeHint }</small>
 								</div>
@@ -182,11 +184,11 @@ export default class Settings extends React.Component {
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="tab_color_mode" label="Tab Background" >
-								<select value={ this.state.settings.tabColorMode } onChange={ this._onChangeTabColorMode.bind(this) } >
+								<Select value={ this.state.settings.tabColorMode } onChange={ this._onChangeTabColorMode.bind(this) } >
 									<option value={ TAB_COLOR_MODES.DARKEN }>Darker than frame</option>
 									<option value={ TAB_COLOR_MODES.LIGHTEN }>Brighter than frame</option>
 									<option value={ TAB_COLOR_MODES.COLOR }>Fixed Color</option>
-								</select>
+								</Select>
 								<div className="text-center" >
 									<small className="text-center" >{ tabColorHint }</small>
 								</div>

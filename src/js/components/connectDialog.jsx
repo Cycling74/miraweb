@@ -16,6 +16,7 @@ import FormField from "./formField.jsx";
 import FullscreenToggleButton from "./fullscreenToggleButton.jsx";
 import Grid from "./grid.jsx";
 import InfoText from "./infoText.jsx";
+import Input from "./input.jsx";
 
 const BASE_CLASS = "mw-connect-dialog";
 
@@ -90,7 +91,7 @@ export default class MiraConnectDialog extends React.Component {
 					</Column>
 					<Column size={ 12 } >
 						<FormField htmlFor="hostname" label="Hostname" >
-							<input
+							<Input
 								name="hostname"
 								onChange={ this._onChangeValue.bind(this) }
 								placeholder="Hostname"
@@ -101,7 +102,7 @@ export default class MiraConnectDialog extends React.Component {
 					</Column>
 					<Column size={ 12 } >
 						<FormField htmlFor="port" label="Port" >
-							<input
+							<Input
 								name="port"
 								onChange={ this._onChangeValue.bind(this) }
 								placeholder="Port"
