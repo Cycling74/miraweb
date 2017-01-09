@@ -58,11 +58,12 @@
 		"pixi.js": "https://github.com/starakaj/pixi.js/archive/dev.tar.gz",
 		"postcss-loader": "^1.1.0",
 		"react": "^15.3.2",
+		"react-color" : "^2.11.1",
 		"react-dom": "^15.3.2",
 		"sass-loader": "4.0.2",
 		"source-map-loader": "0.1.5",
 		"style-loader": "^0.13.1",
-        "tinycolor2": "1.4.1",
+		"tinycolor2": "1.4.1",
 		"url-loader": "^0.5.7",
 		"webpack": "1.13.2",
 		"xebra.js": "^1.0.0"

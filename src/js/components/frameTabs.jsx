@@ -2,12 +2,13 @@ import React from "react";
 import classnames from "classnames";
 import map from "lodash/map.js";
 
-import { BG_DARKEN_AMT } from "../lib/constants.js";
+import { TAB_COLOR_CHANGE_AMT, TAB_COLOR_MODES } from "../lib/constants.js";
 import * as ActiveFrameActions from "../actions/activeFrame.js";
 import * as SettingsActions from "../actions/settings.js";
 import ActiveFrameStore from "../stores/activeFrame.js";
 import FrameStore from "../stores/frame.js";
 import PatcherStore from "../stores/patcher.js";
+import SettingsStore from "../stores/settings.js";
 import tinycolor from "tinycolor2";
 
 const BASE_CLASS = "mw-frames";
@@ -61,6 +62,7 @@ export default class FrameTabs extends React.Component {
 		this._unsubscribes.push(FrameStore.listen(this._onUpdate.bind(this)));
 		this._unsubscribes.push(FrameStore.on("frame_tint", this._onUpdate.bind(this)));
 		this._unsubscribes.push(PatcherStore.on("patcher_tint", this._onUpdate.bind(this)));
+		this._unsubscribes.push(SettingsStore.on("change_setting", this._onChangeSettingsState.bind(this)));
 	}
 
 	componentWillUnmount() {
@@ -73,8 +75,14 @@ export default class FrameTabs extends React.Component {
 		const activeFrame = ActiveFrameStore.getFrame();
 		return {
 			activeFrameId : activeFrame ? activeFrame.id : null,
-			frames : FrameStore.getFrames()
+			frames : FrameStore.getFrames(),
+			tabColor : SettingsStore.getSettingState("tabColor"),
+			tabColorMode : SettingsStore.getSettingState("tabColorMode")
 		};
+	}
+
+	_onChangeSettingsState(setting, value) {
+		if (setting === "tabColorMode" || setting === "tabColor") this._onUpdate();
 	}
 
 	_onUpdate() {
@@ -94,11 +102,33 @@ export default class FrameTabs extends React.Component {
 	_renderTabs() {
 		return map(this.state.frames, (frame, index) => {
 			let bgColor = PatcherStore.getBackgroundColorForFrame(frame);
-			bgColor = tinycolor.fromRatio({
-				r : bgColor[0],
-				g : bgColor[1],
-				b : bgColor[2]
-			}).darken(BG_DARKEN_AMT);
+
+			switch (this.state.tabColorMode) {
+				case TAB_COLOR_MODES.COLOR:
+					bgColor = tinycolor.fromRatio({
+						r : this.state.tabColor[0],
+						g : this.state.tabColor[1],
+						b : this.state.tabColor[2]
+					});
+					break;
+				case TAB_COLOR_MODES.DARKEN:
+					bgColor = tinycolor.fromRatio({
+						r : bgColor[0],
+						g : bgColor[1],
+						b : bgColor[2]
+					});
+					bgColor = bgColor.darken(TAB_COLOR_CHANGE_AMT);
+					break;
+				case TAB_COLOR_MODES.LIGHTEN:
+				default:
+					bgColor = tinycolor.fromRatio({
+						r : bgColor[0],
+						g : bgColor[1],
+						b : bgColor[2]
+					});
+					bgColor = bgColor.lighten(TAB_COLOR_CHANGE_AMT);
+					break;
+			}
 			return (
 				<FrameTab
 					active={ this.state.activeFrameId === frame.id }

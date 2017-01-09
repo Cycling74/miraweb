@@ -4,11 +4,12 @@ import * as SettingsActions from "../actions/settings.js";
 import * as XebraStateActions from "../actions/xebraState.js";
 import SettingsStore from "../stores/settings.js";
 import XebraStateStore from "../stores/xebraState.js";
-import { SETTING_SCREENS, VERSION } from "../lib/constants.js";
+import { TAB_COLOR_MODES, SETTING_SCREENS, VERSION } from "../lib/constants.js";
 
 import { showFullScreenToggle } from "../lib/utils.js";
 
 import Button from "./button.jsx";
+import ColorChanger from "./colorChanger.jsx";
 import Column from "./column.jsx";
 import Dialog from "./dialog.jsx";
 import FormField from "./formField.jsx";
@@ -74,6 +75,14 @@ export default class Settings extends React.Component {
 		SettingsActions.changeSetting("viewMode", parseInt(e.target.value, 10));
 	}
 
+	_onChangeTabColor(color) {
+		SettingsActions.changeSetting("tabColor", color);
+	}
+
+	_onChangeTabColorMode(e) {
+		SettingsActions.changeSetting("tabColorMode", parseInt(e.target.value, 10));
+	}
+
 	_onToggleFullscreen(flag) {
 		SettingsActions.changeSetting("fullscreen", flag);
 	}
@@ -94,6 +103,19 @@ export default class Settings extends React.Component {
 				break;
 			case VIEW_MODES.PATCHING:
 				viewModeHint = "Patching: Mirrors Max's patching view";
+				break;
+		}
+
+		let tabColorHint;
+		switch (this.state.settings.tabColorMode) {
+			case TAB_COLOR_MODES.DARKEN:
+				tabColorHint = "Darken: Set the tab background relative to the frame background, just slightly darker.";
+				break;
+			case TAB_COLOR_MODES.LIGHTEN:
+				tabColorHint = "Lighten: Set the tab background relative to the frame background, just slightly brighter.";
+				break;
+			case TAB_COLOR_MODES.COLOR:
+				tabColorHint = "Fixed Color: Sets the tab background to a defined color. Change below.";
 				break;
 		}
 
@@ -156,6 +178,35 @@ export default class Settings extends React.Component {
 								<div className="text-center" >
 									<small className="text-center" >{ viewModeHint }</small>
 								</div>
+							</FormField>
+						</Column>
+						<Column size={ 12 } >
+							<FormField htmlFor="tab_color_mode" label="Tab Background" >
+								<select value={ this.state.settings.tabColorMode } onChange={ this._onChangeTabColorMode.bind(this) } >
+									<option value={ TAB_COLOR_MODES.DARKEN }>Darker than frame</option>
+									<option value={ TAB_COLOR_MODES.LIGHTEN }>Brighter than frame</option>
+									<option value={ TAB_COLOR_MODES.COLOR }>Fixed Color</option>
+								</select>
+								<div className="text-center" >
+									<small className="text-center" >{ tabColorHint }</small>
+								</div>
+								{ this.state.settings.tabColorMode !== TAB_COLOR_MODES.COLOR ? null : (
+										<div className="mw-tab-color-settings">
+											<Grid vertAlign="middle">
+												<Column size={ 4 } className="mw-tab-color-settings-label">
+													Tab Color:
+												</Column>
+												<Column size={ 8 } className="mw-tab-color-settings-color">
+													<ColorChanger
+														color={ this.state.settings.tabColor }
+														onChangeColor={ this._onChangeTabColor.bind(this) }
+														vertPlacement="above"
+													/>
+												</Column>
+											</Grid>
+										</div>
+									)
+								}
 							</FormField>
 						</Column>
 						{ showFullScreenToggle() ? (

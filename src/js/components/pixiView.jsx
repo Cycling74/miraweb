@@ -3,7 +3,7 @@ import React from "react";
 import * as PIXI from "pixi.js";
 import tinycolor from "tinycolor2";
 
-import { BG_DARKEN_AMT } from "../lib/constants.js";
+import { TAB_COLOR_CHANGE_AMT, TAB_COLOR_MODES } from "../lib/constants.js";
 import * as FocusActions from "../actions/focus.js";
 import { setScale, setDOMRect } from "../actions/activeFrame.js";
 
@@ -12,6 +12,7 @@ import FrameStore from "../stores/frame.js";
 import PatcherStore from "../stores/patcher.js";
 import PopoverStore from "../stores/popover.js";
 import UIObjectStore from "../stores/uiObject.js";
+import SettingsStore from "../stores/settings.js";
 
 import AnimationController from "../lib/animation.js";
 
@@ -56,6 +57,8 @@ export default class PixiView extends React.Component {
 
 		this._unsubscribes.push(UIObjectStore.on("clear", this._onClear.bind(this)));
 		this._unsubscribes.push(UIObjectStore.on("object_added", this._onAddObject.bind(this)));
+
+		this._unsubscribes.push(SettingsStore.on("change_setting", this._onSettingsChange.bind(this)));
 	}
 
 	componentDidMount() {
@@ -127,6 +130,10 @@ export default class PixiView extends React.Component {
 		this._onResize();
 	}
 
+	_onSettingsChange(setting, value) {
+		if (setting === "tabColorMode" || setting === "tabColor") this._tint();
+	}
+
 	_onRemoveObject(node) {
 		this._objectStage.removeChild(node);
 	}
@@ -187,10 +194,29 @@ export default class PixiView extends React.Component {
 		// set PIXI background
 		this._renderer.backgroundColor = "0x" + formattedColor.toHex();
 
+		// set tab bg according to current setting
+		const tabColorMode = SettingsStore.getSettingState("tabColorMode");
+		let tabBgColor;
+		switch (tabColorMode) {
+			case TAB_COLOR_MODES.COLOR:
+				tabBgColor = SettingsStore.getSettingState("tabColor");
+				tabBgColor = tinycolor.fromRatio({
+					r : tabBgColor[0],
+					g : tabBgColor[1],
+					b : tabBgColor[2]
+				});
+				break;
+			case TAB_COLOR_MODES.DARKEN:
+				tabBgColor = formattedColor.darken(TAB_COLOR_CHANGE_AMT);
+				break;
+			case TAB_COLOR_MODES.LIGHTEN:
+			default:
+				tabBgColor = formattedColor.lighten(TAB_COLOR_CHANGE_AMT);
+				break;
+		}
+
 		// we also set an actual DOM background color
-		this.setState({
-			bgColor : formattedColor.darken(BG_DARKEN_AMT).toHexString()
-		});
+		this.setState({ bgColor : tabBgColor.toHexString() });
 	}
 
 	render() {
