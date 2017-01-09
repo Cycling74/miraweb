@@ -1,9 +1,7 @@
 import React from "react";
 import { CONNECTION_STATES, VIEW_MODES, VERSION as XEBRA_VERSION } from "xebra.js";
-import * as FrameActions from "../actions/frame.js";
 import * as SettingsActions from "../actions/settings.js";
 import * as XebraStateActions from "../actions/xebraState.js";
-import FrameStore from "../stores/frame.js";
 import SettingsStore from "../stores/settings.js";
 import XebraStateStore from "../stores/xebraState.js";
 import { SETTING_SCREENS, VERSION } from "../lib/constants.js";
@@ -28,7 +26,6 @@ export default class Settings extends React.Component {
 		this.state = this._buildState();
 		this._unsubscribes = [];
 		this._unsubscribes.push(SettingsStore.listen(this._onUpdate.bind(this)));
-		this._unsubscribes.push(FrameStore.listen(this._onUpdate.bind(this)));
 		this._unsubscribes.push(XebraStateStore.listen(this._onUpdate.bind(this)));
 	}
 
@@ -47,8 +44,7 @@ export default class Settings extends React.Component {
 			selectedTab : SettingsStore.getSelectedTab(),
 			settings : SettingsStore.getSettings(),
 			show : SettingsStore.areShown() && SettingsStore.getShownScreen() === SETTING_SCREENS.CONFIG,
-			tab : SettingsStore.getSelectedTab(),
-			viewMode : FrameStore.getGlobalViewMode()
+			tab : SettingsStore.getSelectedTab()
 		};
 	}
 
@@ -75,7 +71,7 @@ export default class Settings extends React.Component {
 	}
 
 	_onChangeViewMode(e) {
-		FrameActions.setGlobalViewMode(parseInt(e.target.value, 10));
+		SettingsActions.changeSetting("viewMode", parseInt(e.target.value, 10));
 	}
 
 	_onToggleFullscreen(flag) {
@@ -89,7 +85,7 @@ export default class Settings extends React.Component {
 	render() {
 
 		let viewModeHint;
-		switch (this.state.viewMode) {
+		switch (this.state.settings.viewMode) {
 			case VIEW_MODES.LINKED:
 				viewModeHint = "Linked: Mirrors Max's current view";
 				break;
@@ -152,7 +148,7 @@ export default class Settings extends React.Component {
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="view_mode" label="View Mode" >
-								<select value={ this.state.viewMode } onChange={ this._onChangeViewMode.bind(this) } >
+								<select value={ this.state.settings.viewMode } onChange={ this._onChangeViewMode.bind(this) } >
 									<option value={ VIEW_MODES.LINKED }>Linked</option>
 									<option value={ VIEW_MODES.PATCHING }>Patching</option>
 									<option value={ VIEW_MODES.PRESENTATION }>Presentation</option>
