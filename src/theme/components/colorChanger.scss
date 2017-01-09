@@ -1,0 +1,64 @@
+$color-popover-z: 102;
+$color-indicator-height: 18px;
+$color-indicator-width: 4 * $color-indicator-height;
+
+.mw-color-changer {
+
+	text-align: center;
+	display: inline-block;
+	position: relative;
+	width: $color-indicator-width;
+
+	&--above {
+		.mw-color-changer-popover {
+			bottom: 100%;
+		}
+	}
+
+	&--leftalign {
+		.mw-color-changer-popover {
+			left: 0;
+		}
+	}
+
+	&--rightalign {
+		.mw-color-changer-popover {
+			right: 0;
+		}
+	}
+
+	&--center {
+		.mw-color-changer-popover {
+			// react-color Chrome picker uses a fixed width of 225px
+			left: -0.6 * (225 - $color-indicator-width);
+		}
+	}
+
+	&--below {
+		.mw-color-changer-popover {
+			top: 100%;
+		}
+	}
+
+	.mw-color-changer-indicator {
+		background: $white;
+		height: $color-indicator-height;
+		border-radius:  $color-indicator-height;
+		border: 2px solid $off-white;
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);
+		cursor: pointer;
+	}
+
+	.mw-color-changer-popover {
+		position: absolute;
+		z-index: $color-popover-z;
+
+		.mw-color-changer-popover-cover {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+	}
+}
