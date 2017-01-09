@@ -48,11 +48,15 @@ export default class ColorChanger extends React.Component {
 		this.props.onChangeColor(ratioColor);
 	}
 
+	_preventScroll(e) {
+		e.preventDefault();
+	}
+
 	_renderPicker() {
 		if (!this.state.show) return null;
 
 		return (
-			<div className={ `${BASE_CLASS}-popover` } >
+			<div className={ `${BASE_CLASS}-popover` } onTouchMove={ this._preventScroll.bind(this) } >
 				<div className={ `${BASE_CLASS}-popover-cover` } onClick={ this._onClose.bind(this) } />
 				<ChromePicker
 					color={ this.state.color.toRgb() }
