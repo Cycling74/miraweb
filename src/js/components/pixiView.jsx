@@ -1,15 +1,19 @@
 import React from "react";
 
 import * as PIXI from "pixi.js";
+import tinycolor from "tinycolor2";
 import debounce from "lodash/debounce.js";
 
+import { TAB_COLOR_CHANGE_AMT, TAB_COLOR_MODES } from "../lib/constants.js";
 import * as FocusActions from "../actions/focus.js";
 import { setScale, setDOMRect } from "../actions/activeFrame.js";
 
 import ActiveFrameStore from "../stores/activeFrame.js";
 import FrameStore from "../stores/frame.js";
+import PatcherStore from "../stores/patcher.js";
 import PopoverStore from "../stores/popover.js";
 import UIObjectStore from "../stores/uiObject.js";
+import SettingsStore from "../stores/settings.js";
 
 import AnimationController from "../lib/animation.js";
 
@@ -45,11 +49,14 @@ export default class PixiView extends React.Component {
 		this._stage.addChild(this._popoverStage);
 
 		this._unsubscribes = [];
+		this._unsubscribes.push(ActiveFrameStore.on("tint", this._tint.bind(this)));
 		this._unsubscribes.push(ActiveFrameStore.on("resize", this._onResize.bind(this)));
 		this._unsubscribes.push(ActiveFrameStore.on("viewmode_change", this._onResize.bind(this)));
 		this._unsubscribes.push(ActiveFrameStore.on("set", this._onSetActiveFrame.bind(this)));
 
 		this._unsubscribes.push(FrameStore.on("frame_removed", this._onFrameRemoved.bind(this)));
+
+		this._unsubscribes.push(PatcherStore.on("patcher_tint", this._onPatcherTint.bind(this)));
 
 		this._unsubscribes.push(PopoverStore.on("showPopover", this._onShowPopover.bind(this)));
 		this._unsubscribes.push(PopoverStore.on("hidePopover", this._onHidePopover.bind(this)));
@@ -57,6 +64,7 @@ export default class PixiView extends React.Component {
 		this._unsubscribes.push(UIObjectStore.on("clear", this._onClear.bind(this)));
 		this._unsubscribes.push(UIObjectStore.on("object_added", this._onAddObject.bind(this)));
 
+		this._unsubscribes.push(SettingsStore.on("change_setting", this._onSettingsChange.bind(this)));
 		this._sortObjectsByZIndex = debounce(this._sortObjectsByZIndex, 150, {
 			leading : false,
 			trailing : true
@@ -66,7 +74,6 @@ export default class PixiView extends React.Component {
 	componentDidMount() {
 		this._onClear();
 		this._renderer = new PIXI.autoDetectRenderer(400, 300, {
-			transparent : true,
 			view : this._canvas,
 			antialias : true,
 			resolution : ActiveFrameStore.getResolution(),
@@ -113,17 +120,28 @@ export default class PixiView extends React.Component {
 		this._objectStage.removeChildren();
 	}
 
+	_onPatcherTint(patcher) {
+		if (ActiveFrameStore.hasActiveFrame() && ActiveFrameStore.getFrame().patcherId === patcher.id) this._tint();
+	}
+
 	_onFrameRemoved() {
 		this.setState({
 			hidden : FrameStore.getFrameCount() === 0
 		});
+
+		this._tint();
 	}
 
 	_onSetActiveFrame() {
 		this.setState({
 			hidden : false
 		});
+		this._tint();
 		this._onResize();
+	}
+
+	_onSettingsChange(setting, value) {
+		if (setting === "tabColorMode" || setting === "tabColor") this._tint();
 	}
 
 	_onRemoveObject(node) {
@@ -175,11 +193,47 @@ export default class PixiView extends React.Component {
 		this._requestAnimationFrame();
 	}
 
+	_tint() {
+		const bgColor = ActiveFrameStore.getBackgroundColor();
+		let formattedColor = tinycolor.fromRatio({
+			r : bgColor[0],
+			g : bgColor[1],
+			b : bgColor[2]
+		});
+
+		// set PIXI background
+		this._renderer.backgroundColor = "0x" + formattedColor.toHex();
+
+		// set tab bg according to current setting
+		const tabColorMode = SettingsStore.getSettingState("tabColorMode");
+		let tabBgColor;
+		switch (tabColorMode) {
+			case TAB_COLOR_MODES.COLOR:
+				tabBgColor = SettingsStore.getSettingState("tabColor");
+				tabBgColor = tinycolor.fromRatio({
+					r : tabBgColor[0],
+					g : tabBgColor[1],
+					b : tabBgColor[2]
+				});
+				break;
+			case TAB_COLOR_MODES.DARKEN:
+				tabBgColor = formattedColor.darken(TAB_COLOR_CHANGE_AMT);
+				break;
+			case TAB_COLOR_MODES.LIGHTEN:
+			default:
+				tabBgColor = formattedColor.lighten(TAB_COLOR_CHANGE_AMT);
+				break;
+		}
+
+		// we also set an actual DOM background color
+		this.setState({ bgColor : tabBgColor.toHexString() });
+	}
+
 	render() {
 
 		return (
 			<div className={ `${BASE_CLASS}-container`} ref={ (ref) => this._container = ref } >
-				<Background />
+				<Background bgColor={ this.state.bgColor || null } />
 				<canvas
 					className={ this.state.hidden ? "hidden" : "" }
 					ref={ (ref) => this._canvas = ref }

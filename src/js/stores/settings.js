@@ -1,9 +1,14 @@
+import assign from "lodash/assign.js";
 import Store from "./base.js";
 import * as SettingsActions from "../actions/settings.js";
 
 import { supportsFullScreen, supportsiOSHomeScreenApp } from "../lib/utils.js";
-import { FULLSCREEN_STATES, SETTING_SCREENS } from "../lib/constants.js";
+import { DEFAULT_BG, FULLSCREEN_STATES, SETTING_SCREENS, TAB_COLOR_MODES } from "../lib/constants.js";
+import { VIEW_MODES } from "xebra.js";
 
+import * as Storage from "../lib/storage.js";
+
+const SETTINGS_STORAGE_KEY = "__mw_settings__";
 
 function toggleFullScreen() {
 	const doc = window.document;
@@ -25,9 +30,14 @@ class SettingsStore extends Store {
 		this._currentTab = "general";
 		this._shown = false;
 
-		this._settings = {
-			fullscreen : FULLSCREEN_STATES.OFF
-		};
+		let storedSettings = Storage.read(SETTINGS_STORAGE_KEY);
+		if (storedSettings instanceof Error || !storedSettings ) storedSettings = {};
+		this._settings = assign({
+			fullscreen : FULLSCREEN_STATES.OFF,
+			tabColorMode : TAB_COLOR_MODES.DARKEN,
+			tabColor : DEFAULT_BG,
+			viewMode : VIEW_MODES.LINKED
+		}, storedSettings);
 
 		// Attach Action Listeners
 		this.listenTo(SettingsActions.switchTab, this._onSwitchTab.bind(this));
@@ -77,7 +87,7 @@ class SettingsStore extends Store {
 			document.msFullscreenElement;
 
 		this._settings.fullscreen = fullScreenEl ? FULLSCREEN_STATES.ON : FULLSCREEN_STATES.OFF;
-		this.triggerEvent("change_setting");
+		this.triggerEvent("change_setting", "fullscreen", this._settings.fullscreen);
 	}
 
 	_onChangeSetting(name, value) {
@@ -99,7 +109,18 @@ class SettingsStore extends Store {
 		}
 
 		this._settings[name] = v;
-		this.triggerEvent("change_setting");
+
+		if (name !== "fullscreen") {
+			const keys = Object.keys(this._settings);
+			const toStore = {};
+			for (let i = 0, il = keys.length; i < il; i++) {
+				const key = keys[i];
+				if (key !== "fullscreen") toStore[key] = this._settings[key];
+			}
+			Storage.write(SETTINGS_STORAGE_KEY, toStore);
+		}
+
+		this.triggerEvent("change_setting", name, v);
 	}
 
 	areShown() {

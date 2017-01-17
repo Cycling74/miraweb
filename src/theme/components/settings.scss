@@ -11,4 +11,18 @@
 		color: $font-color;
 		cursor: pointer;
 	}
+
+	.mw-tab-color-settings {
+		border: 1px solid $input-border-color;
+		background-color: $input-color;
+		padding: $global-padding;
+		margin: $small-padding 0;
+		border-radius: $border-radius;
+
+		// no inner padding for grid columns here to match input sizing
+		.mw-tab-color-settings-label,
+		.mw-tab-color-settings-color {
+			padding-bottom: 0;
+		}
+	}
 }

@@ -53,12 +53,15 @@ export default class Background extends React.Component {
 	}
 
 	render() {
-		var classes = classNames( `${BASE_CLASS}-container`, {
+		const classes = classNames( `${BASE_CLASS}-container`, {
 			[`${BASE_CLASS}--hidden`]: !this.state.show
 		} );
 
+        const style = {};
+        if (this.props.bgColor) style.backgroundColor = this.props.bgColor;
+
 		return (
-			<div className={ classes }>
+			<div className={ classes } style={ style }>
 				<div className={ BASE_CLASS }>
 					<h2 className={ `${BASE_CLASS}-status` }>{ this.state.message }</h2>
 				</div>

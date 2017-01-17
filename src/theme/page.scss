@@ -23,32 +23,6 @@ body {
 	box-sizing: border-box;
 }
 
-input,
-input[type="text"],
-select,
-textarea {
-	border: 1px solid $input-border-color;
-	background-color: $input-color;
-	padding: $global-padding;
-	margin-bottom: $small-padding;
-	width: 100%;
-}
-
-select {
-	height: 48px;
-	text-indent: $global-padding;
-}
-
-input[type="text"],
-select,
-textarea {
-
-	&:focus {
-		outline: none;
-		border-color: $primary-color;
-	}
-}
-
 input[type="checkbox"],
 input[type="radio"] {
 	width: auto;
