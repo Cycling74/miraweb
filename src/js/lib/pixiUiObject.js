@@ -348,11 +348,11 @@ class PixiDraw extends EventEmitter {
 		};
 
 		this._alpha = 0;
-		this._zIndex = zindex || 0;
 		this._lineWidth = 0;
 		this._lineCap = 0;
 		this._fontName = "Arial";
-		this._fontWeight = "";
+		this._fontWeight = "normal";
+		this._fontStyle = "normal";
 		this._fontSize = "12";
 		this._fontJustification = "left";
 
@@ -360,6 +360,7 @@ class PixiDraw extends EventEmitter {
 		this._currentPointers = {};
 
 		this._display = new PIXI.Container();
+		this.setZIndex(zindex);
 
 		// Masks, gradients and graphics that are not currently being drawn to
 		this._inactiveLayers = [];
@@ -742,11 +743,9 @@ class PixiDraw extends EventEmitter {
 
 	}
 
-	setZIndex(zIndex) {
-		this._zindex = zIndex - 1;
-		if (this._zindex > 0 && this._zindex < this._display.parent.children.length) {
-			this._display.parent.setChildIndex(this._display, this._zindex);
-		}
+	setZIndex(zIndex = 1) {
+		this._zIndex = zIndex;
+		this._display.zIndex = this._zIndex;
 	}
 
 	show() {
@@ -982,8 +981,24 @@ class PixiDraw extends EventEmitter {
 		this._fontName = val;
 	}
 
+	// Max uses the fontface attribute for both fontWeight and fontStyle, so we must parse the attribute's value
 	set_font_weight(val) {
-		this._fontWeight = (val === "regular") ? "" : val;
+		if (val === "regular") {
+			this._fontWeight = 'normal';
+			this._fontStyle = 'normal';
+		}
+		if (val === "bold") {
+			this._fontWeight = 'bold';
+			this._fontStyle = 'normal';
+		}
+		if (val ==="italic") {
+			this._fontWeight = 'normal';
+			this._fontStyle = 'italic';
+		}
+		if (val === "bold italic") {
+			this._fontWeight = 'bold';
+			this._fontStyle = 'italic';
+		}
 	}
 
 	set_font_size(val) {
@@ -1001,6 +1016,7 @@ class PixiDraw extends EventEmitter {
 	textDimensions(txt) {
 		const text = new PIXI.Text(txt, {
 			fontWeight : this._fontWeight,
+			fontStyle : this._fontStyle,
 			fontSize : this._fontSize + "px",
 			fontFamily : this._fontName,
 			fill : "black",
@@ -1009,7 +1025,7 @@ class PixiDraw extends EventEmitter {
 			padding : 1
 		});
 		const fontSize = Math.floor(this._fontSize / ActiveFrameStore.getScale());
-		text.context.font = `${this._fontWeight} ${fontSize}px ${this._fontName}`;
+		text.context.font = `${this._fontWeight} ${this._fontStyle} ${fontSize}px ${this._fontName}`;
 		return text.context.measureText(txt);
 	}
 
@@ -1032,6 +1048,7 @@ class PixiDraw extends EventEmitter {
 		const textColor = (this._color.type === COLOR_TYPES.COLOR) ? "#" + this._color.color.substr(2) : "black";
 		const text = new PIXI.Text(val, {
 			fontWeight : this._fontWeight,
+			fontStyle : this._fontStyle,
 			fontSize : this._fontSize + "px",
 			fontFamily : this._fontName,
 			fill : textColor,
@@ -1063,6 +1080,11 @@ class PixiDraw extends EventEmitter {
 			text.anchor.x = 0.5;
 			text.x = text.x + width / 2;
 		}
+		if (this._fontJustification === "right" && textWidth < width) {
+			text.anchor.x = 1;
+			text.x = text.x + width;
+		}
+
 		this._graphics.addChild(text);
 		return text;
 	}
@@ -1085,6 +1107,7 @@ class PixiDraw extends EventEmitter {
 			fontFamily : this._fontName,
 			fontSize : this._fontSize,
 			fontWeight : this._fontWeight,
+			fontStyle : this._fontStyle,
 			fill : textColor,
 			align : this._fontJustification,
 			wordWrap : true,
@@ -1108,6 +1131,14 @@ class PixiDraw extends EventEmitter {
 				newString.push(str[i]);
 				text.text = newString.join("");
 			}
+		}
+		if (this._fontJustification === "center" && textWidth < width) {
+			text.anchor.x = 0.5;
+			text.x = text.x + width / 2;
+		}
+		if (this._fontJustification === "right" && textWidth < width) {
+			text.anchor.x = 1;
+			text.x = text.x + width;
 		}
 		this._graphics.addChild(text);
 		return text;

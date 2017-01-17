@@ -2,6 +2,7 @@ import React from "react";
 
 import * as PIXI from "pixi.js";
 import tinycolor from "tinycolor2";
+import debounce from "lodash/debounce.js";
 
 import { TAB_COLOR_CHANGE_AMT, TAB_COLOR_MODES } from "../lib/constants.js";
 import * as FocusActions from "../actions/focus.js";
@@ -18,6 +19,11 @@ import AnimationController from "../lib/animation.js";
 
 import Background from "./background.jsx";
 
+function sortByZ(a, b) {
+	if (a.zIndex < b.zIndex) return -1;
+	if (a.zIndex > b.zIndex) return 1;
+	return 0;
+}
 const BASE_CLASS = "mw-pixi";
 
 export default class PixiView extends React.Component {
@@ -59,6 +65,10 @@ export default class PixiView extends React.Component {
 		this._unsubscribes.push(UIObjectStore.on("object_added", this._onAddObject.bind(this)));
 
 		this._unsubscribes.push(SettingsStore.on("change_setting", this._onSettingsChange.bind(this)));
+		this._sortObjectsByZIndex = debounce(this._sortObjectsByZIndex, 150, {
+			leading : false,
+			trailing : true
+		}).bind(this);
 	}
 
 	componentDidMount() {
@@ -90,13 +100,13 @@ export default class PixiView extends React.Component {
 	}
 
 	_onAddObject(uiObject) {
+		this._objectStage.addChild(uiObject.displayElement);
+		this._sortObjectsByZIndex();
+		uiObject.on("zindex_changed", this._sortObjectsByZIndex);
+	}
 
-		const pixiZ = uiObject.zIndex - 1;
-		if (pixiZ >= 0 && pixiZ < this._objectStage.children.length) {
-			this._objectStage.addChildAt(uiObject.displayElement, pixiZ);
-		} else {
-			this._objectStage.addChild(uiObject.displayElement);
-		}
+	_sortObjectsByZIndex() {
+		this._objectStage.children.sort(sortByZ);
 	}
 
 	_onBackgroundClick(e) {

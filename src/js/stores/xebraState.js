@@ -52,7 +52,7 @@ class XebraStateStore extends Store {
 			this.triggerEvent("reset");
 		});
 
-		this._state.on("connection_change", this._onConnectionStateChange.bind(this));
+		this._state.on("connection_changed", this._onConnectionStateChange.bind(this));
 		this._state.on("motion_enabled", this._onMotionEnabled.bind(this));
 		this._state.on("motion_disabled", this._onMotionDisabled.bind(this));
 	}
