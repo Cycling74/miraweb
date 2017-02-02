@@ -393,8 +393,7 @@ class PixiDraw extends EventEmitter {
 		this._dataShapes = {};
 
 		// enable pointer events
-		this._display.on("mousedown", this._onPointerDownEvent.bind(this));
-		this._display.on("touchstart", this._onPointerDownEvent.bind(this));
+		this._display.on("pointerdown", this._onPointerDownEvent.bind(this));
 
 		this._unsubscribes = [];
 		this._unsubscribes.push(ActiveFrameStore.on("update_scale", this._updateResolution.bind(this)));
@@ -548,16 +547,10 @@ class PixiDraw extends EventEmitter {
 		this._releasePointer(pointerId);
 
 		if (!this._hasLockedPointers()) {
-			if (/^touch/.test(e.type)) {
-				this._display.removeAllListeners("touchmove");
-				this._display.removeAllListeners("touchend");
-				this._display.removeAllListeners("touchcancel");
-				this._display.removeAllListeners("touchendoutside");
-			} else {
-				this._display.removeAllListeners("mousemove");
-				this._display.removeAllListeners("mouseup");
-				this._display.removeAllListeners("mouseupoutside");
-			}
+			this._display.removeAllListeners("pointermove");
+			this._display.removeAllListeners("pointerup");
+			this._display.removeAllListeners("pointercancel");
+			this._display.removeAllListeners("pointerupoutside");
 		}
 
 		this.emit("pointer_event", pointerEvent);
@@ -581,16 +574,10 @@ class PixiDraw extends EventEmitter {
 
 		// register follow up events
 		if (!this._hasLockedPointers()) {
-			if (e.type === "mousedown") {
-				this._display.on("mousemove", this._onPointerMoveEvent.bind(this));
-				this._display.on("mouseup", this._onPointerEndEvent.bind(this));
-				this._display.on("mouseupoutside", this._onPointerEndEvent.bind(this));
-			} else if (e.type === "touchstart") {
-				this._display.on("touchmove", this._onPointerMoveEvent.bind(this));
-				this._display.on("touchend", this._onPointerEndEvent.bind(this));
-				this._display.on("touchcancel", this._onPointerEndEvent.bind(this));
-				this._display.on("touchendoutside", this._onPointerEndEvent.bind(this));
-			}
+			this._display.on("pointermove", this._onPointerMoveEvent.bind(this));
+			this._display.on("pointercancel", this._onPointerEndEvent.bind(this));
+			this._display.on("pointerup", this._onPointerEndEvent.bind(this));
+			this._display.on("pointerupoutside", this._onPointerEndEvent.bind(this));
 		}
 
 		const pointerId = getPointerId(e);
