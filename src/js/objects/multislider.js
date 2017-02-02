@@ -35,7 +35,6 @@ export default class Multislider extends MiraUIObject {
 			size,
 			setminmax,
 			orientation,
-			thickness,
 			bgcolor,
 			slidercolor,
 			candicane2,
@@ -50,11 +49,16 @@ export default class Multislider extends MiraUIObject {
 			signed,
 			spacing
 		} = params;
-		let { distance } = params;
+		let { distance, thickness } = params;
 
 		if (!Array.isArray(distance)) {
 			distance = [distance];
 		}
+
+		if (setstyle === "Bar") {
+			thickness = 2;
+		}
+
 		let colors = [slidercolor, candicane2, candicane3, candicane4, candicane5, candicane6, candicane7, candicane8];
 		colors = colors.concat(CANDICANE_9_23);
 		let min = setminmax[0];
@@ -74,13 +78,15 @@ export default class Multislider extends MiraUIObject {
 			// draw background
 			let sliderHeight = (height - spacing * (size + 1)) / size;
 			mgraphics.set_source_rgba(bgcolor);
-			mgraphics.rectangle(0, 0, width + thickness, height);
+			mgraphics.rectangle(0, 0, width, height);
 			mgraphics.fill();
 
 			let currY = spacing;
 
 			for (let i = 0; i < size; i++) {
-				let sliderX = ((width - thickness) / range) * (distance[i] - min);
+				let sliderX = ((width) / range) * (distance[i] - min);
+				sliderX += (thickness * 0.3);
+				sliderX = Math.min(Math.max(sliderX, thickness), width) - thickness/2;
 				let zeroX = 0;
 
 				if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") {
@@ -96,8 +102,8 @@ export default class Multislider extends MiraUIObject {
 				mgraphics.set_source_rgba(colors[i % candycane]);
 				mgraphics.set_line_width(thickness);
 				if (setstyle === "Bar" || setstyle === "Thin Line") {
-					mgraphics.move_to(sliderX + (thickness / 2), currY);
-					mgraphics.line_to(sliderX + (thickness / 2), currY + sliderHeight);
+					mgraphics.move_to(sliderX, currY);
+					mgraphics.line_to(sliderX, currY + sliderHeight);
 					mgraphics.stroke();
 				}
 				if (signed === 1) {
@@ -128,7 +134,7 @@ export default class Multislider extends MiraUIObject {
 				if (setstyle === "Bar" || (setstyle === "Thin Line" && ghostbar > 0)) {
 					if (setstyle === "Thin Line") mgraphics.set_source_rgba([colors[i % candycane][0], colors[i % candycane][1], colors[i % candycane][2], ghostbar / 100]);
 					else mgraphics.set_source_rgba(colors[i % candycane]);
-					mgraphics.rectangle(zeroX, currY, sliderX + thickness - zeroX, sliderHeight);
+					mgraphics.rectangle(zeroX, currY, sliderX - zeroX, sliderHeight);
 					mgraphics.fill();
 				}
 				else if (setstyle === "Point Scroll" || setstyle === "Reverse Point Scroll") {
@@ -177,12 +183,14 @@ export default class Multislider extends MiraUIObject {
 			let sliderWidth = (width - spacing * (size + 1)) / size;
 			mgraphics.set_source_rgba(bgcolor);
 			if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") mgraphics.rectangle(0, 0, width, height);
-			else mgraphics.rectangle(0, 0, width, height + thickness);
+			else mgraphics.rectangle(0, 0, width, height);
 			mgraphics.fill();
 
 			let currX = spacing;
 			for (let i = 0; i < size; i++) {
-				let sliderY = ((height - thickness) / range) * (distance[i] - min);
+				let sliderY = ((height) / range) * (distance[i] - min);
+				sliderY += (thickness * 0.3);
+				sliderY = Math.min(Math.max(sliderY, thickness), height) - thickness/2;
 				let zeroY = 0;
 
 				if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") {
@@ -196,8 +204,8 @@ export default class Multislider extends MiraUIObject {
 				mgraphics.set_source_rgba(colors[i % candycane]);
 				mgraphics.set_line_width(thickness);
 				if (setstyle === "Bar" || setstyle === "Thin Line") {
-					mgraphics.move_to(currX, height - sliderY - (thickness / 2));
-					mgraphics.line_to(currX + sliderWidth, height - sliderY - (thickness / 2));
+					mgraphics.move_to(currX, height - sliderY);
+					mgraphics.line_to(currX + sliderWidth, height - sliderY);
 					mgraphics.stroke();
 				}
 				if (signed === 1) {
@@ -230,7 +238,7 @@ export default class Multislider extends MiraUIObject {
 				if (setstyle === "Bar" || (setstyle === "Thin Line" && ghostbar > 0)) {
 					if (setstyle === "Thin Line") mgraphics.set_source_rgba([colors[i % candycane][0], colors[i % candycane][1], colors[i % candycane][2], ghostbar / 100]);
 					else mgraphics.set_source_rgba(colors[i % candycane]);
-					mgraphics.rectangle(currX, height - sliderY, sliderWidth, sliderY + thickness - zeroY);
+					mgraphics.rectangle(currX, height - sliderY, sliderWidth, sliderY - zeroY);
 					mgraphics.fill();
 				}
 				else if (setstyle === "Point Scroll" || setstyle === "Reverse Point Scroll") {
