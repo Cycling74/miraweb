@@ -17,6 +17,7 @@ import FullscreenToggleButton from "./fullscreenToggleButton.jsx";
 import Grid from "./grid.jsx";
 import InfoText from "./infoText.jsx";
 import Input from "./input.jsx";
+import Spinner from "./spinner.jsx";
 
 const BASE_CLASS = "mw-connect-dialog";
 
@@ -69,6 +70,7 @@ export default class MiraConnectDialog extends React.Component {
 	}
 
 	_onConnect() {
+		if (this.state.connectionState === CONNECTION_STATES.CONNECTING) return;
 		XebraStateActions.init({
 			hostname : this.state.hostname,
 			port : this.state.port
@@ -122,7 +124,12 @@ export default class MiraConnectDialog extends React.Component {
 						</Column> : null )
 					}
 					<Column size={ 12 } className="text-right">
-						<Button onClick={ this._onConnect.bind(this) } disabled={ this.state.connectionState === CONNECTION_STATES.CONNECTING } >Connect</Button>
+						<Button
+							onClick={ this._onConnect.bind(this) }
+						>
+							{ this.state.connectionState === CONNECTION_STATES.CONNECTING ? <Spinner /> : "Connect" }
+							{/* Connect */}
+						</Button>
 					</Column>
 					<Column size={ 12 } >
 						{ this.state.connectionState === CONNECTION_STATES.CONNECTION_FAIL && this.state.attemptToConnectTo ? (
