@@ -1,0 +1,38 @@
+
+// Using SpinKit Spinners here
+// See: https://github.com/tobiasahlin/SpinKit
+//
+
+ $animationDuration: 1.4s;
+ $delayRange: 0.32s;
+
+.mw-spinner {
+
+	height: 1rem;
+	width: 2rem;
+
+	text-align: center;
+	position: relative;
+	margin: 0 auto;
+
+	.sk-child {
+		width: 25%;
+		height: 50%;
+		background-color: #fff;
+
+		border-radius: 100%;
+		display: inline-block;
+		animation: sk-three-bounce $animationDuration ease-in-out 0s infinite both;
+ }
+
+	.sk-bounce1 { animation-delay: -$delayRange; }
+	.sk-bounce2 { animation-delay: -$delayRange / 2; }
+}
+
+@keyframes sk-three-bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  } 40% {
+    transform: scale(1.0);
+  }
+}
