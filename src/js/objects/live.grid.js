@@ -5,6 +5,7 @@ export default class LiveGrid extends MiraUIObject {
 		super(stateObj);
 		this._typeForTouch = {};
 		this._lastPositionForTouch = {};
+		this._currentDragValue = 0;
 	}
 
 	paint(mgraphics, params) {
@@ -140,31 +141,100 @@ export default class LiveGrid extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
+		const { distance, rows, mode } = params;
 		const { cell_type, col, row } = event.attributes;
+		const inactiveConstraintsCells = distance[3];
+		const activeStepCells = distance[4];
+		const inactiveValues = distance.slice(5, 5 + inactiveConstraintsCells);
+		const stepValues = distance.slice(5 + inactiveConstraintsCells, 5 + inactiveConstraintsCells + activeStepCells);
+		const directionValues = distance.slice(5 + inactiveConstraintsCells + activeStepCells);
+		
+		// const cellValue = (col * 1000) + (rows - row - 1);
+		const cellValue = (col * 1000) + row;
+
 		this._typeForTouch[ event.id ] = cell_type;
+
 		if (cell_type === "cell") {
-			this.setParamValue("touchy", [ "touched", `${event.id}`, col, row ]);
+			if (mode === "Step constraint") {
+				if (inactiveValues.find(value => value === cellValue) !== undefined) {
+					// cell just touched is on so will be turning cells off
+					this._currentDragValue = 1;
+				} else {
+					this._currentDragValue = 0;
+				}
+				let inactiveValuesInColumn = inactiveValues.filter((value) => {
+					if (Math.floor(value / 1000) === col) {
+						return true;
+					}
+					return false;
+				});
+				inactiveValuesInColumn = inactiveValuesInColumn.map((value) => {
+					return value % 1000;
+				});
+
+				// now we have the positions of all cells in the column that are inactive
+				const constraint = new Array(rows + 1).fill(1);
+				constraint[0] = col + 1;
+				inactiveValuesInColumn.forEach((value) => {
+					constraint[value + 1] = 0;
+				});
+				constraint[row + 1] = this._currentDragValue;
+				console.log(constraint);
+				this.setParamValue("constraint", constraint);
+
+			} else {
+				this.setParamValue("setcell", [col + 1, row + 1, 1]);
+			}
+			// this.setParamValue("touchy", [ "touched", `${event.id}`, col, row ]);
 			this._lastPositionForTouch[ event.id ] = { col, row };
 		} else if (cell_type === "direction") {
-			this.setParamValue("touchy", [ "touched_direction", `${event.id}`, col, 0 ]);
+			const newDirections = directionValues.map((value, index) => {
+				if (index === col) {
+					// CAT - okay, so. To set a direction value, you have to set it to one less
+					// that the value that it returns. e.g.
+					// set -1 => returns 0
+					// set 0 => returns 1
+					// set 1 => returns 2
+					// thus, the reason for this very strange line of code. 
+					return ((value + 1) % 3) - 1;
+				}
+				return value;
+			});
+			this.setParamValue("directions", newDirections);
+			// this.setParamValue("touchy", [ "touched_direction", `${event.id}`, col, 0 ]);
 		}
 	}
 
 	pointerMove(event, params) {
 		const touchType = this._typeForTouch[ event.id ];
 		const lastPosition = this._lastPositionForTouch[ event.id ];
+		const { rows } = params;
 		const { cell_type, col, row } = event.attributes;
 
 		if (touchType === "cell" && cell_type === "cell") {
 			if (lastPosition.col !== col || lastPosition.row !== row) {
-				this.setParamValue("touchy", [ "moved", `${event.id}`, col, row ]);
+				this.setParamValue("setcell", [Math.round(col + 1), Math.round(row + 1), 1]);
+				const steps = Math.abs(lastPosition.col - col);
+				const stepInc = lastPosition.col > col ? -1 : 1;
+				const valInc = (row - lastPosition.row) / steps;
+				if (steps > 1) {
+					for (let i = i; i < steps; i++) {
+						const newCol = lastPosition.col + stepInc * i;
+						const newRow = lastPosition.row + valInc * i;
+						this.setParamValue("setcell", [Math.round(newCol + 1), Math.round(newRow + 1), 1]);
+
+					}
+				}
+
 				this._lastPositionForTouch[ event.id ] = { col, row };
+
+				// this.setParamValue("touchy", [ "moved", `${event.id}`, col, row ]);
 			}
 		}
 	}
 
 	pointerUp(event, params) {
-		this.setParamValue("touchy", [ "removed_finger", `${event.id}`, 0, 0 ]);
+		// this.setParamValue("touchy", [ "removed_finger", `${event.id}`, 0, 0 ]);
 		delete this._typeForTouch[ event.id ];
 	}
 }
