@@ -38,7 +38,7 @@ const IE10_POINTER_TYPE_ENUM = Object.freeze({
 const MOUSE_EVENTS = ["mousemove", "mousedown", "mouseup"];
 const TOUCH_EVENTS = ["touchstart", "touchmove", "touchend", "touchendoutside", "touchcancel"];
 const POINTER_EVENTS = ["pointerdown", "pointermove", "pointerup", "pointerupoutside", "pointercancel"];
-const PIXI_TARGET_EVENTS = [TOUCH_EVENTS.join(" "), MOUSE_EVENTS.join(" ")].join(" ");
+const PIXI_TARGET_EVENTS = POINTER_EVENTS.join(" ");
 
 function touchSorter(ta, tb) {
 	return ta.identifier - tb.identifier;
@@ -117,16 +117,16 @@ export default class PixiEventInput extends Hammer.Input {
 	}
 
 	_handleMouseTouchEvent(ev) {
-		const type = PIXI_INPUT_MAP[ev.type];
+		const type = PIXI_INPUT_MAP[ev.data.originalEvent.type];
 		let pointerType;
 		let pointers;
 		let changedPointers;
 
-		if (MOUSE_EVENTS.indexOf(ev.type) > -1) {
+		if (MOUSE_EVENTS.indexOf(ev.data.originalEvent.type) > -1) {
 			pointerType = "mouse";
 			pointers = [ev.data.originalEvent];
 			changedPointers = [ev.data.originalEvent];
-		} else {
+		} else if (TOUCH_EVENTS.indexOf(ev.data.originalEvent.type) > -1) {
 			pointerType = "touch";
 			const touches = this.getTouches(ev, type);
 			if (!touches) {
@@ -134,6 +134,9 @@ export default class PixiEventInput extends Hammer.Input {
 			}
 			pointers = touches[0];
 			changedPointers = touches[1];
+		} else {
+			console.log("Gesture manager cannot handle input event of type " + ev.data.originalEvent.type);
+			return;
 		}
 
 		this.callback(this.manager, type, {
