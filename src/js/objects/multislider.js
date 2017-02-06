@@ -22,7 +22,32 @@ export default class Multislider extends MiraUIObject {
 
 	constructor(stateObj) {
 		super(stateObj);
+
 		this._values = [];
+		this._lastPointerSlider = {};
+
+		this._onAdjustPointerCachingToParamChange = this._onAdjustPointerCachingToParamChange.bind(this);
+		this._state.on("param_changed", this._onAdjustPointerCachingToParamChange);
+	}
+
+	/**
+	 * Override destroy function to detach _onAdjustPointerCachingToParamChange properly
+	 * @override
+	 */
+	destroy() {
+		this._state.removeListener("param_changed", this._onAdjustPointerCachingToParamChange);
+		super.destroy();
+	}
+
+	_onAdjustPointerCachingToParamChange(state, param) {
+		if (
+			Object.keys(this._lastPointerSlider).length &&
+			param.type === "presentation_rect" ||
+			param.type === "patching_rect" ||
+			param.type === "size"
+		) {
+			this.resetPointers();
+		}
 	}
 
 	paint(mgraphics, params) {
@@ -281,26 +306,98 @@ export default class Multislider extends MiraUIObject {
 		}
 	}
 
-	pointerDown(event, params) {
-		let { distance, setminmax } = params;
-		if (!Array.isArray(distance)) {
-			distance = [distance];
+	_getSliderIndex(event, size) {
+		let index;
+		if (this.orientation === "vertical") {
+			index = ~~(event.normTargetX * size);
+		} else {
+			index = ~~(event.normTargetY * size);
 		}
-		let newVal;
+
+		return index;
+	}
+
+	_getValue(event, setminmax) {
 		let range = setminmax[1] - setminmax[0];
+
+		let newVal;
 		if (this.orientation === "vertical") {
 			newVal = (1.0 - event.normTargetY) * range + setminmax[0];
-		} else if (this.orientation === "horizontal") {
-			newVal = (event.normTargetX) * range + setminmax[0];
+		} else {
+			newVal = event.normTargetX * range + setminmax[0];
 		}
+
 		newVal = (newVal > setminmax[1]) ? setminmax[1] : newVal;
 		newVal = (newVal < setminmax[0]) ? setminmax[0] : newVal;
-		distance[event.attributes.slider] = newVal;
+
+		return newVal;
+	}
+
+	pointerDown(event, params) {
+
+		let { distance, setminmax, size } = params;
+
+		let sliderIndex = this._getSliderIndex(event, size);
+		if (sliderIndex < 0 || sliderIndex >= size) return;
+
+		if (!Array.isArray(distance)) distance = [distance];
+
+		let newVal = this._getValue(event, setminmax);
+		distance[sliderIndex] = newVal;
+
+		this._lastPointerSlider[event.id] = sliderIndex;
 		this.setParamValue("distance", distance);
 	}
 
 	pointerMove(event, params) {
-		this.pointerDown(event, params);
+
+		let { distance, setminmax, size } = params;
+		let sliderIndex = this._getSliderIndex(event, size);
+
+		if (!Array.isArray(distance)) distance = [distance];
+
+		let newVal = this._getValue(event, setminmax);
+
+		const lastIndex = this._lastPointerSlider[event.id] || sliderIndex;
+
+		if (lastIndex !== sliderIndex) {
+
+			// boundary check for index
+			sliderIndex = sliderIndex < 0 ? 0 : sliderIndex;
+			sliderIndex = sliderIndex >= size ? size - 1 : sliderIndex;
+
+			const lastIndexVal = distance[lastIndex];
+
+			// simple linear interpolation in the direction of the finger in order to follow a bit more natural
+			let stepWidth = sliderIndex - lastIndex;
+			stepWidth = stepWidth < 0 ? -stepWidth : stepWidth;
+
+			const stepVal = (newVal - lastIndexVal) / stepWidth;
+
+			if (lastIndex < sliderIndex) {
+				for (let i = 0; i <= stepWidth; i++) {
+					distance[lastIndex + i] = lastIndexVal + i * stepVal;
+				}
+			} else if (lastIndex > sliderIndex) {
+				for (let i = 0; i <= stepWidth; i++) {
+					distance[lastIndex - i] = lastIndexVal + i * stepVal;
+				}
+			}
+		} else {
+			if (sliderIndex < 0 || sliderIndex >= size) return;
+			distance[sliderIndex] = newVal;
+		}
+
+		this._lastPointerSlider[event.id] = sliderIndex;
+		this.setParamValue("distance", distance);
+	}
+
+	pointerUp(event, params) {
+		delete this._lastPointerSlider[event.id];
+	}
+
+	resetPointers() {
+		this._lastPointerSlider = {};
 	}
 }
 
