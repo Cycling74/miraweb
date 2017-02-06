@@ -4,7 +4,10 @@ import classNames from "classnames";
 import { CONNECTION_STATES } from "xebra.js";
 import XebraStateStore from "../stores/xebraState.js";
 
+import Spinner from "./spinner.jsx";
+
 const BASE_CLASS = "mw-background";
+const STATUS_COLOR = "#999";
 
 export default class Background extends React.Component {
 
@@ -73,6 +76,6 @@ export default class Background extends React.Component {
 
 Background.STATUS_MESSAGES = Object.freeze({
 	NO_FRAMES : "No mira.frame objects in Max",
-	RECONNECTING : "Connection lost. Reconnecting...",
-	STILL_LOADING : "Loading state..."
+	RECONNECTING : <div>Connection lost. Reconnecting<Spinner color={ STATUS_COLOR } /></div>,
+	STILL_LOADING : <div>Loading state<Spinner color={ STATUS_COLOR } /></div>
 });
