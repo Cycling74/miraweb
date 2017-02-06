@@ -22,7 +22,32 @@ export default class Multislider extends MiraUIObject {
 
 	constructor(stateObj) {
 		super(stateObj);
+
 		this._values = [];
+		this._lastPointerSlider = {};
+
+		this._onAdjustPointerCachingToParamChange = this._onAdjustPointerCachingToParamChange.bind(this);
+		this._state.on("param_changed", this._onAdjustPointerCachingToParamChange);
+	}
+
+	/**
+	 * Override destroy function to detach _onAdjustPointerCachingToParamChange properly
+	 * @override
+	 */
+	destroy() {
+		this._state.removeListener("param_changed", this._onAdjustPointerCachingToParamChange);
+		super.destroy();
+	}
+
+	_onAdjustPointerCachingToParamChange(state, param) {
+		if (
+			Object.keys(this._lastPointerSlider).length &&
+			param.type === "presentation_rect" ||
+			param.type === "patching_rect" ||
+			param.type === "size"
+		) {
+			this.resetPointers();
+		}
 	}
 
 	paint(mgraphics, params) {
@@ -343,7 +368,7 @@ export default class Multislider extends MiraUIObject {
 
 			const lastIndexVal = distance[lastIndex];
 
-			// simple linear smoothing in the direction of the finger in order to follow a bit more natural
+			// simple linear interpolation in the direction of the finger in order to follow a bit more natural
 			let stepWidth = sliderIndex - lastIndex;
 			stepWidth = stepWidth < 0 ? -stepWidth : stepWidth;
 
