@@ -3,6 +3,7 @@ import classNames from "classnames";
 
 import { CONNECTION_STATES } from "xebra.js";
 import XebraStateStore from "../stores/xebraState.js";
+import FrameStore from "../stores/frame.js";
 
 import Spinner from "./spinner.jsx";
 
@@ -22,6 +23,9 @@ export default class Background extends React.Component {
 		this._unsubscribes.push(XebraStateStore.on("connection_change", this._onUpdate.bind(this)));
 		this._unsubscribes.push(XebraStateStore.on("loaded", this._onUpdate.bind(this)));
 		this._unsubscribes.push(XebraStateStore.on("reset", this._onUpdate.bind(this)));
+		this._unsubscribes.push(FrameStore.on("frame_added", this._onUpdate.bind(this)));
+		this._unsubscribes.push(FrameStore.on("frame_removed", this._onUpdate.bind(this)));
+		this._unsubscribes.push(FrameStore.on("reset", this._onUpdate.bind(this)));
 	}
 
 	componentWillUnmount() {
@@ -49,9 +53,14 @@ export default class Background extends React.Component {
 		return message;
 	}
 
+	_doShow() {
+		return FrameStore.getFrameCount() === 0;
+	}
+
 	_onUpdate() {
 		this.setState({
-			message : this._messageForAppStatus()
+			message : this._messageForAppStatus(),
+			show : this._doShow()
 		});
 	}
 
