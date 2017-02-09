@@ -1,8 +1,8 @@
 import * as ActiveFrameActions from "../actions/activeFrame.js";
 import * as FrameActions from "../actions/frame.js";
 import ActiveFrameStore from "./activeFrame.js";
+import SettingsStore from "./settings.js";
 import Store from "./base.js";
-import { VIEW_MODES } from "xebra.js";
 import findIndex from "lodash/findIndex.js";
 import toArray from "lodash/toArray.js";
 
@@ -10,7 +10,7 @@ class FrameStore extends Store {
 
 	constructor() {
 		super();
-		this._globalViewMode = VIEW_MODES.LINKED;
+
 		this._frames = {};
 
 		// Attach Action Listeners
@@ -18,14 +18,14 @@ class FrameStore extends Store {
 		this.listenTo(FrameActions.changeFrame, this._onChangeFrame.bind(this));
 		this.listenTo(FrameActions.removeFrame, this._onRemoveFrame.bind(this));
 		this.listenTo(FrameActions.reset, this._onReset.bind(this));
-		this.listenTo(FrameActions.setGlobalViewMode, this._onSetGlobalViewMode.bind(this));
+		SettingsStore.on("change_setting", this._onSetGlobalViewMode.bind(this));
 	}
 
 	_onAddFrame(frame) {
 		if (!this.getFrame(frame.id)) this._frames[frame.id] = frame;
 
 		// the viewMode to our global view mode
-		frame.viewMode = this._globalViewMode;
+		frame.viewMode = SettingsStore.getSettingState("viewMode");
 
 		if (!ActiveFrameStore.hasActiveFrame()) ActiveFrameActions.set(frame);
 
@@ -35,6 +35,7 @@ class FrameStore extends Store {
 	_onChangeFrame(frame, param) {
 		if (param.type === "taborder") this.triggerEvent("frame_resort");
 		if (param.type === "tabname") this.triggerEvent("frame_rename");
+		if (param.type === "color") this.triggerEvent("frame_tint");
 	}
 
 	_onRemoveFrame(frame) {
@@ -68,12 +69,12 @@ class FrameStore extends Store {
 		this.triggerEvent("reset");
 	}
 
-	_onSetGlobalViewMode(mode) {
-		this._globalViewMode = mode;
-		this.getFrames().forEach(function(frame) {
-			frame.viewMode = mode;
-		});
-		this.triggerEvent("globalviewmode_change");
+	_onSetGlobalViewMode(setting, mode) {
+		if (setting === "viewMode") {
+			this.getFrames().forEach(function(frame) {
+				frame.viewMode = mode;
+			});
+		}
 	}
 
 	getFrame(id) {
@@ -114,10 +115,6 @@ class FrameStore extends Store {
 		});
 
 		return frames;
-	}
-
-	getGlobalViewMode() {
-		return this._globalViewMode;
 	}
 }
 

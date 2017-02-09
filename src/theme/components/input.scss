@@ -1,0 +1,22 @@
+.mw-input,
+.mw-select {
+	border: 1px solid $input-border-color;
+	background-color: $input-color;
+	padding: $global-padding;
+	margin-bottom: $small-padding;
+	width: 100%;
+}
+
+.mw-select {
+	height: 48px;
+	text-indent: $global-padding;
+}
+
+.mw-input[type="text"],
+.mw-select {
+
+	&:focus {
+		outline: none;
+		border-color: $primary-color;
+	}
+}

@@ -3,16 +3,13 @@
 	position: relative;
 	background: $off-white;
 	display: flex;
-	display: -webkit-flex;
 
 	flex: auto;
-    -webkit-flex: auto;
 
 	> canvas {
 		position:absolute;
 		left: 2px;
 		top: 100px;
-		background: darken($off-white, 2%);
 		overflow: hidden;
 
 		user-select: none;

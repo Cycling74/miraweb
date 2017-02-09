@@ -12,33 +12,30 @@ $settings-icon-size: 30px;
 
 	user-select: none;
 	display: flex;
-	display: -webkit-flex;
 	align-items: stretch;
-	-webkit-align-items: stretch;
 	flex-direction: row;
-    -webkit-flex-direction: row;
 	justify-content: flex-start;
-	-webkit-justify-content: flex-start;
 
 	.mw-frames-frame {
-		color: $white;
-		background-color: $mid-gray;
+		color: $font-color;
 		line-height: $frame-tab-height;
 		margin-right: $frame-tab-padding;
 		border-top-left-radius: $border-radius;
 		border-top-right-radius: $border-radius;
 		text-align: center;
+        box-shadow: inset 0px -3px 3px -3px #333;
 
 		flex: 1;
-        -webkit-flex: 1;
 
 		a {
 			display: block;
 		}
 
+        &--light {
+            color: $off-white;
+        }
 		&[data-active="true"] {
-			background: $off-white;
-			color: $primary-color;
+            box-shadow: none;
 			border-bottom-color: transparent;
 		}
 	}

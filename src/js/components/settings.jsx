@@ -1,22 +1,23 @@
 import React from "react";
 import { CONNECTION_STATES, VIEW_MODES, VERSION as XEBRA_VERSION } from "xebra.js";
-import * as FrameActions from "../actions/frame.js";
 import * as SettingsActions from "../actions/settings.js";
 import * as XebraStateActions from "../actions/xebraState.js";
-import FrameStore from "../stores/frame.js";
 import SettingsStore from "../stores/settings.js";
 import XebraStateStore from "../stores/xebraState.js";
-import { SETTING_SCREENS, VERSION } from "../lib/constants.js";
+import { TAB_COLOR_MODES, SETTING_SCREENS, VERSION } from "../lib/constants.js";
 
 import { showFullScreenToggle } from "../lib/utils.js";
 
 import Button from "./button.jsx";
+import ColorChanger from "./colorChanger.jsx";
 import Column from "./column.jsx";
 import Dialog from "./dialog.jsx";
 import FormField from "./formField.jsx";
 import FullscreenToggleButton from "./fullscreenToggleButton.jsx";
 import Grid from "./grid.jsx";
 import InfoText from "./infoText.jsx";
+import Input from "./input.jsx";
+import Select from "./select.jsx";
 
 const BASE_CLASS = "mw-settings";
 
@@ -28,7 +29,6 @@ export default class Settings extends React.Component {
 		this.state = this._buildState();
 		this._unsubscribes = [];
 		this._unsubscribes.push(SettingsStore.listen(this._onUpdate.bind(this)));
-		this._unsubscribes.push(FrameStore.listen(this._onUpdate.bind(this)));
 		this._unsubscribes.push(XebraStateStore.listen(this._onUpdate.bind(this)));
 	}
 
@@ -47,8 +47,7 @@ export default class Settings extends React.Component {
 			selectedTab : SettingsStore.getSelectedTab(),
 			settings : SettingsStore.getSettings(),
 			show : SettingsStore.areShown() && SettingsStore.getShownScreen() === SETTING_SCREENS.CONFIG,
-			tab : SettingsStore.getSelectedTab(),
-			viewMode : FrameStore.getGlobalViewMode()
+			tab : SettingsStore.getSelectedTab()
 		};
 	}
 
@@ -75,7 +74,15 @@ export default class Settings extends React.Component {
 	}
 
 	_onChangeViewMode(e) {
-		FrameActions.setGlobalViewMode(parseInt(e.target.value, 10));
+		SettingsActions.changeSetting("viewMode", parseInt(e.target.value, 10));
+	}
+
+	_onChangeTabColor(color) {
+		SettingsActions.changeSetting("tabColor", color);
+	}
+
+	_onChangeTabColorMode(e) {
+		SettingsActions.changeSetting("tabColorMode", parseInt(e.target.value, 10));
 	}
 
 	_onToggleFullscreen(flag) {
@@ -89,7 +96,7 @@ export default class Settings extends React.Component {
 	render() {
 
 		let viewModeHint;
-		switch (this.state.viewMode) {
+		switch (this.state.settings.viewMode) {
 			case VIEW_MODES.LINKED:
 				viewModeHint = "Linked: Mirrors Max's current view";
 				break;
@@ -98,6 +105,19 @@ export default class Settings extends React.Component {
 				break;
 			case VIEW_MODES.PATCHING:
 				viewModeHint = "Patching: Mirrors Max's patching view";
+				break;
+		}
+
+		let tabColorHint;
+		switch (this.state.settings.tabColorMode) {
+			case TAB_COLOR_MODES.DARKEN:
+				tabColorHint = "Darken: Set the tab background relative to the frame background, just slightly darker.";
+				break;
+			case TAB_COLOR_MODES.LIGHTEN:
+				tabColorHint = "Lighten: Set the tab background relative to the frame background, just slightly brighter.";
+				break;
+			case TAB_COLOR_MODES.COLOR:
+				tabColorHint = "Fixed Color: Sets the tab background to a defined color. Change below.";
 				break;
 		}
 
@@ -123,7 +143,7 @@ export default class Settings extends React.Component {
 					<Grid>
 						<Column size={ 12 } >
 							<FormField htmlFor="max_server" label="Max Server" >
-								<input readOnly value={ this.state.connectionInfo } />
+								<Input readOnly value={ this.state.connectionInfo } />
 								{ connectionHint ? <InfoText>{ connectionHint }</InfoText> : null }
 								{ this.state.connectionStatus === CONNECTION_STATES.CONNECTED ? (
 										<Button buttonStyle="error" onClick={ this._onDisconnect.bind(this) } size="sm" >Disconnect</Button>
@@ -134,7 +154,7 @@ export default class Settings extends React.Component {
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="name" label="Client ID" >
-								<input value={ this.state.clientNameEdits || this.state.clientName }
+								<Input value={ this.state.clientNameEdits || this.state.clientName }
 									onChange={ this._onClientNameChange.bind(this) }
 									onBlur={ this._onClientNameChangeSubmit.bind(this) }
 								/>
@@ -142,24 +162,53 @@ export default class Settings extends React.Component {
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="version" label="App Version" >
-								<input readOnly value={ VERSION } />
+								<Input readOnly value={ VERSION } />
 							</FormField>
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="protocol_version" label="Xebra Protocol Version" >
-								<input readOnly value={ XEBRA_VERSION } />
+								<Input readOnly value={ XEBRA_VERSION } />
 							</FormField>
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="view_mode" label="View Mode" >
-								<select value={ this.state.viewMode } onChange={ this._onChangeViewMode.bind(this) } >
+								<Select value={ this.state.settings.viewMode } onChange={ this._onChangeViewMode.bind(this) } >
 									<option value={ VIEW_MODES.LINKED }>Linked</option>
 									<option value={ VIEW_MODES.PATCHING }>Patching</option>
 									<option value={ VIEW_MODES.PRESENTATION }>Presentation</option>
-								</select>
+								</Select>
 								<div className="text-center" >
 									<small className="text-center" >{ viewModeHint }</small>
 								</div>
+							</FormField>
+						</Column>
+						<Column size={ 12 } >
+							<FormField htmlFor="tab_color_mode" label="Tab Background" >
+								<Select value={ this.state.settings.tabColorMode } onChange={ this._onChangeTabColorMode.bind(this) } >
+									<option value={ TAB_COLOR_MODES.DARKEN }>Darker than frame</option>
+									<option value={ TAB_COLOR_MODES.LIGHTEN }>Brighter than frame</option>
+									<option value={ TAB_COLOR_MODES.COLOR }>Fixed Color</option>
+								</Select>
+								<div className="text-center" >
+									<small className="text-center" >{ tabColorHint }</small>
+								</div>
+								{ this.state.settings.tabColorMode !== TAB_COLOR_MODES.COLOR ? null : (
+										<div className="mw-tab-color-settings">
+											<Grid vertAlign="middle">
+												<Column size={ 4 } className="mw-tab-color-settings-label">
+													Tab Color:
+												</Column>
+												<Column size={ 8 } className="mw-tab-color-settings-color">
+													<ColorChanger
+														color={ this.state.settings.tabColor }
+														onChangeColor={ this._onChangeTabColor.bind(this) }
+														vertPlacement="above"
+													/>
+												</Column>
+											</Grid>
+										</div>
+									)
+								}
 							</FormField>
 						</Column>
 						{ showFullScreenToggle() ? (
