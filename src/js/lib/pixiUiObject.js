@@ -27,7 +27,7 @@ function zeroPaddedHex(intVal) {
 	return ("0" + intVal.toString(16)).slice(-2);
 }
 
-function createHexColors(vals, prefix = "0x") {
+export function createHexColors(vals, prefix = "0x") {
 	const newVals = [];
 	newVals[0] = ~~(vals[0] * 255);
 	newVals[1] = ~~(vals[1] * 255);
@@ -1146,4 +1146,4 @@ class PixiDraw extends EventEmitter {
 	}
 }
 
-module.exports = PixiDraw;
+export default PixiDraw;
