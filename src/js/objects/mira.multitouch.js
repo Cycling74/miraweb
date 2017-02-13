@@ -431,7 +431,7 @@ export default class MiraMultitouch extends MiraUIObject {
 				sprite.alpha = 1.0 - progress;
 			},
 			onEnd : () => {
-				sprite.parent.removeChild(sprite);
+				if (sprite.parent) sprite.parent.removeChild(sprite);
 				sprite.destroy();
 			}
 		});
