@@ -107,6 +107,27 @@ export default class MiraMultitouch extends MiraUIObject {
 		return touch;
 	}
 
+	_clearAllTouches() {
+		const currentTouchKeys = Object.keys(this._deviceTouches);
+		const rect = this.getScreenRect();
+
+		for (let i = 0; i < currentTouchKeys.length; i++) {
+			const touch = this._deviceTouches[currentTouchKeys[i]];
+			this._freeTouch(touch);
+
+			this.setParamValue("up_down_cancelled_touch", [
+				touch.sequence,
+				XebraStateStore.getXebraUuid(),
+				XebraStateStore.getXebraUuid(),
+				touch.touchId,
+				this.constructor.TOUCH_PHASE_CANCEL,
+				-1, // segment
+				touch.x / (rect[2] || 1),
+				touch.y / (rect[3] || 1)
+			]);
+		}
+	}
+
 	_getTouch(eventId) {
 		return this._deviceTouches[eventId] || null;
 	}
@@ -183,7 +204,9 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	_onMultitouchParamChange(stateObj, param) {
-		if (param.type === "remote_circles") {
+		if (param.type === "ignoreclick" && (param.value === 1)) {
+			this._clearAllTouches();
+		} else if (param.type === "remote_circles") {
 			const touchIds = Object.keys(this._deviceTouches);
 			const visibilityFct = !!param.value ? "show" : "hide";
 			for (let i = 0, il = touchIds.length; i < il; i++) {
