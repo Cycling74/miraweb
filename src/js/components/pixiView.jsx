@@ -91,6 +91,10 @@ export default class PixiView extends React.Component {
 		});
 	}
 
+	componentDidUpdate() {
+		setDOMRect(this._canvas.getBoundingClientRect());
+	}
+
 	_buildState() {
 		return {
 			canvasX : 0,
@@ -164,12 +168,11 @@ export default class PixiView extends React.Component {
 
 		this._renderer.resize(alignedWidth, alignedHeight);
 		this._stage.hitArea = new PIXI.Rectangle(0, 0, alignedWidth, alignedHeight);
+		setScale(scale);
 		this.setState({
 			canvasX : ~~((containerRect.width - alignedWidth) / 2),
 			canvasY : ~~((containerRect.height - alignedHeight) / 2)
 		});
-		setScale(scale);
-		setDOMRect(this._canvas.getBoundingClientRect());
 	}
 
 	_onHidePopover(popover) {
