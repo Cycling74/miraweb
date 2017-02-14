@@ -9,7 +9,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	HOST_NAME = HOST_NAME && HOST_NAME.length === 2 ? HOST_NAME[1] : window.location.hostname || "localhost";
 
 	let PORT = window.location.search.match(/port=([0-9]*)/);
-	PORT = PORT && PORT.length === 2 ? parseInt(PORT[1], 10) : 8086;
+	if (PORT && PORT.length === 2) {
+		PORT = parseInt(PORT[1], 10);
+	} else if (/^http(s)?:$/.test(window.location.protocol)) {
+		PORT = parseInt(window.location.port, 10);
+	}
+	PORT = !PORT || isNaN(PORT) ? 8086 : PORT;
 
 	Mira.init({
 		port : PORT,

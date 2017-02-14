@@ -66,6 +66,6 @@
 		"tinycolor2": "1.4.1",
 		"url-loader": "^0.5.7",
 		"webpack": "1.13.2",
-		"xebra.js": "^1.0.0"
+		"xebra.js": "^1.2.0"
 	}
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import classNames from "classnames";
 
 import { CONNECTION_STATES } from "xebra.js";
 import XebraStateStore from "../stores/xebraState.js";
@@ -15,8 +14,7 @@ export default class Background extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			message : "",
-			show : true
+			message : null
 		};
 
 		this._unsubscribes = [];
@@ -35,14 +33,18 @@ export default class Background extends React.Component {
 	}
 
 	_messageForAppStatus() {
-		let message = "";
+		let message = null;
 
 		// If connected, but the state hasn't loaded yet
 		if (XebraStateStore.getConnectionState() === CONNECTION_STATES.CONNECTED && !XebraStateStore.getIsStateLoaded()) {
 			message = this.constructor.STATUS_MESSAGES.STILL_LOADING;
 		}
-		// If connected, and state is loaded
-		else if (XebraStateStore.getConnectionState() === CONNECTION_STATES.CONNECTED && XebraStateStore.getIsStateLoaded()) {
+		// If connected, state is loaded and no frames present
+		else if (
+			XebraStateStore.getConnectionState() === CONNECTION_STATES.CONNECTED &&
+			XebraStateStore.getIsStateLoaded() &&
+			FrameStore.getFrameCount() === 0
+		) {
 			message = this.constructor.STATUS_MESSAGES.NO_FRAMES;
 		}
 		// If reconnecting
@@ -53,29 +55,21 @@ export default class Background extends React.Component {
 		return message;
 	}
 
-	_doShow() {
-		return FrameStore.getFrameCount() === 0;
-	}
-
 	_onUpdate() {
-		this.setState({
-			message : this._messageForAppStatus(),
-			show : this._doShow()
-		});
+		this.setState({ message : this._messageForAppStatus() });
 	}
 
 	render() {
-		const classes = classNames( `${BASE_CLASS}-container`, {
-			[`${BASE_CLASS}--hidden`]: !this.state.show
-		} );
+		const { message } = this.state;
+		const { bgColor } = this.props;
 
-        const style = {};
-        if (this.props.bgColor) style.backgroundColor = this.props.bgColor;
+		const style = {};
+		if (bgColor) style.backgroundColor = bgColor;
 
 		return (
-			<div className={ classes } style={ style }>
+			<div className={ `${BASE_CLASS}-container` } style={ style } >
 				<div className={ BASE_CLASS }>
-					<h2 className={ `${BASE_CLASS}-status` }>{ this.state.message }</h2>
+					{ message ? <h2 className={ `${BASE_CLASS}-status` }>{ message }</h2> : null }
 				</div>
 			</div>
 		);
