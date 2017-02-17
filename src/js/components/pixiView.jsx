@@ -77,6 +77,7 @@ export default class PixiView extends React.Component {
 			view : this._canvas,
 			antialias : true,
 			resolution : ActiveFrameStore.getResolution(),
+			transparent : true,
 			autoResize : true,
 			roundPixels : true
 		});
@@ -99,7 +100,8 @@ export default class PixiView extends React.Component {
 		return {
 			canvasX : 0,
 			canvasY : 0,
-			hidden : true
+			hidden : true,
+			canvasBgColor : "transparent"
 		};
 	}
 
@@ -204,8 +206,7 @@ export default class PixiView extends React.Component {
 			b : bgColor[2]
 		});
 
-		// set PIXI background
-		this._renderer.backgroundColor = "0x" + formattedColor.toHex();
+		const canvasBgColor = formattedColor.toHexString();
 
 		// set tab bg according to current setting
 		const tabColorMode = SettingsStore.getSettingState("tabColorMode");
@@ -229,7 +230,10 @@ export default class PixiView extends React.Component {
 		}
 
 		// we also set an actual DOM background color
-		this.setState({ bgColor : tabBgColor.toHexString() });
+		this.setState({
+			canvasBgColor : canvasBgColor,
+			bgColor : tabBgColor.toHexString()
+		});
 	}
 
 	render() {
@@ -240,7 +244,7 @@ export default class PixiView extends React.Component {
 				<canvas
 					className={ this.state.hidden ? "hidden" : "" }
 					ref={ (ref) => this._canvas = ref }
-					style={ { left : this.state.canvasX, top : this.state.canvasY } }
+					style={ { left : this.state.canvasX, top : this.state.canvasY, backgroundColor : this.state.canvasBgColor } }
 				/>
 			</div>
 		);
