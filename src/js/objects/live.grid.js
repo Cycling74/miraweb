@@ -11,8 +11,9 @@ class Cell {
 		this._needsRedraw = false;
 	}
 
-	draw(cellType, row, column, params, mgraphcs, liveGrid) {
+	draw(cellType, row, column, params, mgraphics) {
 		this._needsRedraw = false;
+		this._graphics.clear();
 		const scale = ActiveFrameStore.getScale();
 		const {
 			width,
@@ -63,7 +64,7 @@ class Cell {
 				else if (stepValues.indexOf(cellValue) > -1) {
 					this._graphics.beginFill(createHexColors(stepcolor), stepcolor[3]);
 				}
-				else if (((i + 1) % marker_vertical === 0) || (j % marker_horizontal === 0)) {
+				else if (((rows - i - 1) % marker_vertical === 0) || (j % marker_horizontal === 0)) {
 					this._graphics.beginFill(createHexColors(bgstepcolor), bgstepcolor[3]);
 				} else {
 					this._graphics.beginFill(createHexColors(bgstepcolor2), bgstepcolor2[3]);
@@ -84,15 +85,15 @@ class Cell {
 				(buttonHeight - (2 * spacing)) * scale
 			];
 			this._graphics.lineStyle(0.5, createHexColors(bordercolor), bordercolor[3]);
-			this._graphics.drawRoundedRectangle(...cellRect, rounded*scale);
+			this._graphics.drawRoundedRect(...cellRect, rounded*scale);
 			this._graphics.endFill();
 
 			this._graphics.beginFill(createHexColors([0, 0, 0, 0]), 0);
 			this._graphics.lineStyle();
 			x -= spacing;
 			y -= spacing;
-			liveGrid.currentShape = new PIXI.Rectangle(x*scale, y*scale, buttonWidth*scale, buttonHeight*scale);
-			this._graphics.drawShape(liveGrid.currentShape);
+			mgraphics.currentShape = new PIXI.Rectangle(x*scale, y*scale, buttonWidth*scale, buttonHeight*scale);
+			this._graphics.drawShape(mgraphics.currentShape);
 			mgraphics.add_attribute("col", j);
 			mgraphics.add_attribute("row", (rows - i - 1));
 			mgraphics.add_attribute("cell_type", "cell");
@@ -108,7 +109,7 @@ class Cell {
 
 			this._graphics.beginFill(createHexColors([0, 0, 0, 0]), 0);
 			this._graphics.lineStyle(0.5, createHexColors(bordercolor), bordercolor[3]);
-			this._graphics.drawRoundedRectangle(x, y, directionBounds.width, directionBounds.height, rounded);
+			this._graphics.drawRoundedRect(x*scale, y*scale, directionBounds.width*scale, directionBounds.height*scale, rounded*scale);
 			this._graphics.endFill();
 
 			this._graphics.beginFill(createHexColors(directioncolor), directioncolor[3]);
@@ -151,8 +152,8 @@ class Cell {
 			// Draw a transparent rectangle, then add identifying attrs
 			this._graphics.beginFill(createHexColors([0, 0, 0, 0]), 0);
 			this._graphics.lineStyle();
-			liveGrid.currentShape = new PIXI.Rectangle(x*scale, y*scale, directionBounds.width*scale, directionBounds.height*scale, rounded*scale);
-			this._graphics.drawShape(liveGrid.currentShape);
+			mgraphics.currentShape = new PIXI.Rectangle(x*scale, y*scale, directionBounds.width*scale, directionBounds.height*scale, rounded*scale);
+			this._graphics.drawShape(mgraphics.currentShape);
 			mgraphics.add_attribute("col", i);
 			mgraphics.add_attribute("cell_type", "direction");
 			this._graphics.endFill();
@@ -170,6 +171,9 @@ export default class LiveGrid extends MiraUIObject {
 		this._cells = null;
 		this._directionCells = null;
 		this._initialized = false;
+		this._dataShapes = null;
+		this._allButtonsNeedRedraw = false;
+		this._previousParams = null;
 		//some function which creates all of the button graphics instances
 	}
 
@@ -186,20 +190,56 @@ export default class LiveGrid extends MiraUIObject {
 			for(var j = 0; j < columns; j++) {
 				this._cells[i][j] = new Cell();
 				this._cells[i][j].draw("cell", i, j, params, mgraphics, this);
-				this._cellsContainer.addChild(this._cells[i][j]);
+				this._cellsContainer.addChild(this._cells[i][j]._graphics);
 			}
 		}
 
 		for (var i = 0; i < columns; i++) {
-			this._directionCells = new Cell();
-			this._directionCells[i].draw("direction", undefined, i, params, mgraphics, this);
-			this._cellsContainer.addChild(this._directionCells[i]);
+			this._directionCells[i] = new Cell();
+			this._directionCells[i].draw("direction", undefined, i, params, mgraphics);
+			this._cellsContainer.addChild(this._directionCells[i]._graphics);
 		}
 
-		mgraphics.addChild(this._cellsContainer);
+		mgraphics.addDisplayChild(this._cellsContainer);
+		this._dataShapes = mgraphics._dataShapes;
 	}
 
 	_redrawButtons(mgraphics, params) {
+		const {
+			columns,
+			rows
+		} = params;
+		//redraw buttons if marked dirty
+		for (var i = 0; i < rows; i++) {
+			for (var j = 0; j < columns; j++) {
+				if (this._cells[i] === undefined) {
+					this._cells[i] = new Array(columns);
+				}
+				if (this._cells[i][j] === undefined) {
+					this._cells[i][j] = new Cell();
+					this._cells[i][j]._needsRedraw = true;
+				}
+				if (this._cells[i][j]._needsRedraw) {
+					this._cells[i][j].draw("cell", i, j, params, mgraphics, this);
+				}
+			}
+		}
+
+		for (var i = 0; i < columns; i++) {
+			if (this._directionCells[i] === undefined) {
+				this._directionCells[i] = new Cell();
+				this._directionCells[i]._needsRedraw = true;
+			}
+			if (this._directionCells[i]._needsRedraw) {
+				this._directionCells[i].draw("direction", undefined, i, params, mgraphics);
+			}
+		}
+
+		//if redrawing all cells, then this._dataShapes = mgraphics._dataShapes;
+		if (this._allButtonsNeedRedraw) {
+			this._dataShapes = mgraphics._dataShapes;
+			this._allButtonsNeedRedraw = false;
+		}
 	}
 
 	_isCellInactive(row, col, distance) {
@@ -239,18 +279,42 @@ export default class LiveGrid extends MiraUIObject {
 
 	_onParameterChange(stateObj, param) {
 		super._onParameterChange(stateObj, param);
-		if (!param.type === "distance") {
-			//make all buttons render again
+		const rows = this._previousParams.rows;
+		const columns = this._previousParams.columns;
+		if (param.type !== "distance" && param.type !== "varname") {
+			for (var i = 0; i < rows; i++) {
+				for (var j = 0; j < columns; j++) {
+					this._cells[i][j]._needsRedraw = true;
+					this._cells[i][j]._graphics.clear();
+				}
+			}
+
+			for (var i = 0; i < columns; i++) {
+				this._directionCells[i]._needsRedraw = true;
+				this._directionCells[i]._graphics.clear();
+			}
+			this._allButtonsNeedRedraw = true;
+		} else {
+			// this._cellsToRedraw.forEach((cell) => {
+			// 	if (cell.type === "direction") {
+			// 		this._directionCells[cell.col]._needsRedraw = true;
+			// 	} else {
+			// 		this._cells[cell.row][cell.col]._needsRedraw = true;
+			// 	}
+			// });
+			// this._cellsToRedraw = [];
 		}
 	}
 
 	paint(mgraphics, params) {
+		this._previousParams = params;
 		if (!this._initialized) {
 			this._initializeButtons(mgraphics, params);
 			this._initialized = true;
-			this._displayNode.addDisplayChild(this._buttonContainer);
+			this._displayNode.addDisplayChild(this._cellsContainer);
 		}
 		this._redrawButtons(mgraphics, params);
+		mgraphics._dataShapes = this._dataShapes;
 	}
 
 	pointerDown(event, params) {
@@ -278,6 +342,7 @@ export default class LiveGrid extends MiraUIObject {
 				this.setParamValue("setcell", [col + 1, row + 1, 1]);
 			}
 			this._lastPositionForTouch[ event.id ] = { col, row };
+			this._cells[row][col]._needsRedraw = true;
 		} else if (cell_type === "direction") {
 			const newDirections = directionValues.map((value, index) => {
 				if (index === col) {
@@ -292,6 +357,7 @@ export default class LiveGrid extends MiraUIObject {
 				return value;
 			});
 			this.setParamValue("directions", newDirections);
+			this._directionCells[col]._needsRedraw = true;
 		}
 	}
 
@@ -312,6 +378,7 @@ export default class LiveGrid extends MiraUIObject {
 				} else {
 					this.setParamValue("setcell", [Math.round(col + 1), Math.round(row + 1), 1]);
 				}
+				this._cells[row][col]._needsRedraw = true;
 				const steps = Math.abs(lastPosition.col - col);
 				const stepInc = lastPosition.col > col ? -1 : 1;
 				const valInc = (row - lastPosition.row) / steps;
@@ -324,6 +391,7 @@ export default class LiveGrid extends MiraUIObject {
 						} else {
 							this.setParamValue("setcell", [Math.round(newCol + 1), Math.round(newRow + 1), 1]);
 						}
+						this._cells[newRow][newCol]._needsRedraw = true;
 
 					}
 				}
