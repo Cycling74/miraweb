@@ -175,6 +175,7 @@ export default class LiveGrid extends MiraUIObject {
 		this._allButtonsNeedRedraw = false;
 		this._previousParams = null;
 		//some function which creates all of the button graphics instances
+		this._cellsToRedraw = [];
 	}
 
 	_initializeButtons(mgraphics, params) {
@@ -281,7 +282,8 @@ export default class LiveGrid extends MiraUIObject {
 		super._onParameterChange(stateObj, param);
 		const rows = this._previousParams.rows;
 		const columns = this._previousParams.columns;
-		if (param.type !== "distance" && param.type !== "varname") {
+		console.log(param.type);
+		if (param.type !== "distance" && param.type !== "varname" && param.type !== "setcell" && param.type !== "directions") {
 			for (var i = 0; i < rows; i++) {
 				for (var j = 0; j < columns; j++) {
 					this._cells[i][j]._needsRedraw = true;
@@ -295,14 +297,14 @@ export default class LiveGrid extends MiraUIObject {
 			}
 			this._allButtonsNeedRedraw = true;
 		} else {
-			// this._cellsToRedraw.forEach((cell) => {
-			// 	if (cell.type === "direction") {
-			// 		this._directionCells[cell.col]._needsRedraw = true;
-			// 	} else {
-			// 		this._cells[cell.row][cell.col]._needsRedraw = true;
-			// 	}
-			// });
-			// this._cellsToRedraw = [];
+			this._cellsToRedraw.forEach((cell) => {
+				if (cell.type === "direction") {
+					this._directionCells[cell.col]._needsRedraw = true;
+				} else {
+					this._cells[cell.row][cell.col]._needsRedraw = true;
+				}
+			});
+			this._cellsToRedraw = [];
 		}
 	}
 
@@ -318,7 +320,7 @@ export default class LiveGrid extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
-		const { distance, rows, mode } = params;
+		const { distance, rows, columns, mode } = params;
 		const { cell_type, col, row } = event.attributes;
 		const inactiveConstraintsCells = distance[3];
 		const activeStepCells = distance[4];
@@ -342,7 +344,10 @@ export default class LiveGrid extends MiraUIObject {
 				this.setParamValue("setcell", [col + 1, row + 1, 1]);
 			}
 			this._lastPositionForTouch[ event.id ] = { col, row };
-			this._cells[row][col]._needsRedraw = true;
+			for (let i = 0; i < rows; i++) {
+				this._cellsToRedraw.push({row: i, col: col, type: "cell"});
+			}
+			// this._cells[row][col]._needsRedraw = true;
 		} else if (cell_type === "direction") {
 			const newDirections = directionValues.map((value, index) => {
 				if (index === col) {
@@ -357,7 +362,10 @@ export default class LiveGrid extends MiraUIObject {
 				return value;
 			});
 			this.setParamValue("directions", newDirections);
-			this._directionCells[col]._needsRedraw = true;
+			// this._directionCells[col]._needsRedraw = true;
+			for (let i = 0; i < columns; i++) {
+				this._cellsToRedraw.push({row: undefined, col: i, type: "direction"})
+			}
 		}
 	}
 
@@ -378,7 +386,10 @@ export default class LiveGrid extends MiraUIObject {
 				} else {
 					this.setParamValue("setcell", [Math.round(col + 1), Math.round(row + 1), 1]);
 				}
-				this._cells[row][col]._needsRedraw = true;
+				// this._cells[row][col]._needsRedraw = true;
+				for (let i = 0; i < rows; i++) {
+					this._cellsToRedraw.push({row: i, col: col, type: "cell"});
+				}
 				const steps = Math.abs(lastPosition.col - col);
 				const stepInc = lastPosition.col > col ? -1 : 1;
 				const valInc = (row - lastPosition.row) / steps;
@@ -391,8 +402,10 @@ export default class LiveGrid extends MiraUIObject {
 						} else {
 							this.setParamValue("setcell", [Math.round(newCol + 1), Math.round(newRow + 1), 1]);
 						}
-						this._cells[newRow][newCol]._needsRedraw = true;
-
+						// this._cells[newRow][newCol]._needsRedraw = true;
+						for (let i = 0; i < rows; i++) {
+							this._cellsToRedraw.push({row: i, col: col, type: "cell"});
+						}
 					}
 				}
 
