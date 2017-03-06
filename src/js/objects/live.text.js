@@ -38,7 +38,8 @@ export default class LiveText extends MiraUIObject {
 			fontsize,
 			fontname,
 			fontface,
-			usepicture
+			usepicture,
+			mode
 		} = params;
 		const rect = this.getScreenRect();
 
@@ -62,8 +63,10 @@ export default class LiveText extends MiraUIObject {
 				mgraphics.set_source_rgba(bgcolor);
 			}
 		}
-
-		mgraphics.rectangle(0.5, 0.5, width - 1, height - 1);
+		if (mode === "Button") {
+			mgraphics.rectangle(0.5, 0.5, width - 1, height - 1, (height / 2) - 1);
+		}
+		else mgraphics.rectangle(0.5, 0.5, width - 1, height - 1);
 		mgraphics.fill();
 
 		// draw border (eventually we might need to redefine the shape)
@@ -77,7 +80,7 @@ export default class LiveText extends MiraUIObject {
 			mgraphics.set_font_weight(fontface);
 			mgraphics.set_font_size(fontsize);
 			mgraphics.set_font_justification("center");
-			if (value === 1) {
+			if (value === 1 && mode !== "Button") {
 				mgraphics.set_source_rgba(active === 1 ? activetextoncolor : textcolor);
 				mgraphics.textLine(0, (height - 2 - fontsize) * 0.5, width, fontsize, texton);
 			} else {
@@ -88,8 +91,20 @@ export default class LiveText extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
-		const { value } = params;
-		this.setParamValue("value", ((value === 1) ? 0 : 1));
+		const { value, mode } = params;
+		this._inTouch = true;
+		if (mode === "Button") this.setParamValue("value", 1);
+		else this.setParamValue("value", ((value === 1) ? 0 : 1));
+	}
+
+	pointerUp(event, params) {
+		const { value, mode } = params;
+		if (mode === "Button") this.setParamValue("value", 0);
+		this._inTouch = false;
+	}
+
+	resetPointers() {
+		this._inTouch = false;
 	}
 }
 
