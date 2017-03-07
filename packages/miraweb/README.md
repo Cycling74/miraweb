@@ -15,7 +15,7 @@ If you'd just like to use MiraWeb the easiest way to do so is to download the Mi
 
 ## How To Build
 
-Make sure you have followed the global [repository setup instructions](../../README.md) first in order to have all dependencies setup correctly.
+Make sure you have followed the global [repository setup instructions](../../README.md#setup) first in order to have all dependencies setup correctly.
 
 If you want to build an development/debug version please run:
 

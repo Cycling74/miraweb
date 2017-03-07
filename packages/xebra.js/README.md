@@ -79,7 +79,7 @@ You like the Xebra project and would like to contribute? Perfect! Please use the
 
 Note that most users won't need to do this and should rather use the pre-built versions or make use of xebra as a npm dependecy. However if you are developing xebra you might need to build.
 
-Make sure you have followed the global [repository setup instructions](../../README.md) first in order to have all dependencies setup correctly.
+Make sure you have followed the global [repository setup instructions](../../README.md#setup) first in order to have all dependencies setup correctly.
 
 Xebra is written in ES6. Based on that the build process can either mean generating the ES5 versions to the `lib` folder or generating the bundled files in the `dist` folder.
 
