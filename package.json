@@ -1,71 +1,39 @@
 {
-	"name": "miraweb",
-	"version": "1.2.1",
-	"description": "TODO",
-	"author": {
-		"name": "Cycling '74",
-		"url": "http://cycling74.com"
-	},
-	"contributors": [
-		"Florian Demmer <florian@cycling74.com>",
-		"Sam Tarakajian <sam@cycling74.com>",
-		"Cassie Tarakajian <cassie@cycling74.com>",
-		"Ben Bracken <ben@cycling74.com>",
-		"Rohail Atlaf <rohail@cycling74.com>",
-		"Emmanuel Jourdan <ej@cycling74.com>"
-	],
-	"homepage": "http://cycling74.com",
-	"bugs": "https://github.com/Cycling74/miraweb/issues",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Cycling74/miraweb.git"
-	},
-	"scripts": {
-		"build": "rm -rf ./dev_build && webpack --config webpack/dev.config.js",
-		"build-release": "rm -rf ./build && webpack --config webpack/release.config.js",
-		"watch": "rm -rf ./dev_build && env WATCH=1 webpack --config webpack/dev.config.js",
-		"postupdate": "cd node_modules/pixi.js && npm install && npm run lib",
-		"postinstall": "cd node_modules/pixi.js && npm install && npm run lib",
-		"lint": "eslint src -c .eslintrc.json",
-		"lint-fix": "eslint src -c .eslintrc.json --fix",
-		"test": "npm run lint"
-	},
-	"dependencies": {},
-	"devDependencies": {
-		"autoprefixer": "^6.5.1",
-		"babel-core": "^6.9.1",
-		"babel-eslint": "^7.1.0",
-		"babel-loader": "^6.2.4",
-		"babel-plugin-add-module-exports": "^0.2.1",
-		"babel-preset-es2015": "^6.5.0",
-		"babel-preset-react": "^6.5.0",
-		"bowser": "^1.6.0",
-		"classnames": "^2.2.5",
-		"css-loader": "0.25.0",
-		"eslint": "^3.9.1",
-		"eslint-plugin-react": "^6.5.0",
-		"favicons-webpack-plugin": "^0.0.7",
-		"file-loader": "^0.9.0",
-		"gridlex": "^2.2.3",
-		"gyronorm": "^2.0.4",
-		"hammerjs": "^2.0.8",
-		"html-webpack-plugin": "^2.22.0",
-		"lodash": "^4.16.1",
-		"mkdirp": "^0.5.1",
-		"node-sass": "^3.10.0",
-		"normalize.css": "^4.2.0",
-		"pixi.js": "https://github.com/starakaj/pixi.js/archive/dev.tar.gz",
-		"postcss-loader": "^1.1.0",
-		"react": "^15.3.2",
-		"react-color" : "^2.11.1",
-		"react-dom": "^15.3.2",
-		"sass-loader": "4.0.2",
-		"source-map-loader": "0.1.5",
-		"style-loader": "^0.13.1",
-		"tinycolor2": "1.4.1",
-		"url-loader": "^0.5.7",
-		"webpack": "1.13.2",
-		"xebra.js": "^1.2.0"
-	}
+  "name": "miraweb",
+  "version": "1.2.1",
+  "description": "",
+  "author": {
+    "name": "Cycling '74",
+    "url": "http://cycling74.com"
+  },
+  "contributors": [
+    "Florian Demmer <florian@cycling74.com>",
+    "Sam Tarakajian <sam@cycling74.com>",
+    "Cassie Tarakajian <cassie@cycling74.com>",
+    "Ben Bracken <ben@cycling74.com>",
+    "Rohail Atlaf <rohail@cycling74.com>",
+    "Emmanuel Jourdan <ej@cycling74.com>"
+  ],
+  "homepage": "http://cycling74.com",
+  "bugs": "https://github.com/Cycling74/miraweb/issues",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cycling74/miraweb.git"
+  },
+  "scripts": {
+    "init": "npm install && lerna bootstrap",
+    "clean": "lerna clean && rimraf ./node_modules"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
+    "eslint-config-recommended": "^1.5.0",
+    "eslint-plugin-react": "^6.10.0",
+    "rimraf": "^2.6.1",
+    "lerna": "2.0.0-beta.38"
+  }
 }

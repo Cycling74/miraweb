@@ -21,8 +21,4 @@
 Thumbs.db
 Desktop.ini
 npm-debug.log
-
-# Project Files
-build
-dev_build
 node_modules
