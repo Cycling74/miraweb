@@ -23,7 +23,8 @@
   },
   "scripts": {
     "setup": "npm install && lerna bootstrap",
-    "clean": "lerna clean && rimraf ./node_modules"
+    "clean": "lerna clean && rimraf ./node_modules",
+    "testall": "lerna run test"
   },
   "dependencies": {},
   "devDependencies": {
