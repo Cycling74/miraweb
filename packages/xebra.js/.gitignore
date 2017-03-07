@@ -1,0 +1,7 @@
+# Project Files
+node_modules
+docs
+dist
+!.bin/docs
+lib
+!src/lib

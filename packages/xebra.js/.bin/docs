@@ -1,0 +1,7 @@
+# Generate Object List Tutorial
+echo "Generating Object List tutorial"
+node ./.bin/gen_objList.js;
+
+# Generate JSDoc
+echo "Generating JSDoc output"
+jsdoc -c ./docsConf.json

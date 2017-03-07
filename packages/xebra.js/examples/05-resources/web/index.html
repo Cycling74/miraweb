@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>Browsing the Max Search Path</title>
+		<style>
+			html { height: 100% }
+			body { margin: 0; min-height: 100%; display: flex; }
+			.container {
+				display: -webkit-flex;
+				display: flex;
+				-webkit-flex-direction: column;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				min-width: 100%;
+				min-height: 100%;
+			}
+			.display {
+				margin: 10px;
+				border-style: solid;
+				border-width: 5px;
+				border-color: gray;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container" class="container">
+			<img id="display" class="display"/>
+			<form onsubmit="doSearch(event)">
+			<input id="search" name="filename" type="text" placeholder="Max image file"></input>
+			<button type="submit">Search Max</button>
+			</form>
+		</div>
+		<script src="https://cycling74.s3.amazonaws.com/download/xebra.js"></script>
+		<script>
+
+			var imageResource, imageOffset = 0;
+
+			function doSearch(event) {
+				event.preventDefault();
+				document.getElementById("search").blur();
+				if (imageResource) imageResource.filename = document.getElementById("search").value.trim();
+				return false;
+			}
+
+			function updateImage(filename, dataUri) {
+				document.getElementById("display").style.display = "initial";
+				document.getElementById("display").src = dataUri;
+				document.getElementById("container").style.backgroundImage = `url(${dataUri})`;
+			}
+
+			function connectXebra() {
+				var options = {
+					hostname : "127.0.0.1", // localhost
+					port : 8086
+				};
+				xebraState = new Xebra.State(options);
+
+				xebraState.on("connection_changed", function(connectionState) {
+					if (connectionState === Xebra.CONNECTION_STATES.CONNECTED) {
+						if (imageResource) imageResource = null;
+						imageResource = xebraState.createResource();
+						imageResource.dimensions = {width: 100, height: 100};
+						imageResource.on("data_received", updateImage);
+					}
+				})
+
+				xebraState.connect();
+			}
+
+			function animate() {
+				imageOffset = (imageOffset + 0.1);
+				document.getElementById("container").style.backgroundPosition = `${imageOffset}% ${imageOffset}%`;
+				window.requestAnimationFrame(animate);
+			}
+
+			window.onload = function() {
+				document.getElementById("display").style.display = "none";
+				connectXebra();
+				animate();
+			}
+
+		</script>
+	</body>
+</html>

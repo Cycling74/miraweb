@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Simulated Acceleration with Xebra</title>
+	<style>
+		html, body {
+			margin: 0;
+		}
+	</style>
+	<script src="https://cycling74.s3.amazonaws.com/download/xebra.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+</head>
+<body>
+	<canvas id="viewport" width="600" height="600"></canvas>
+	<script src="./scene.js"></script>
+	<script>
+		var options = {
+			hostname : "127.0.0.1", // localhost
+			port : 8086,
+			supported_objects : [
+				"mira.motion"
+			]
+		};
+		var xebraState = new Xebra.State(options);
+
+		var pollHandle; // Handle to the polling request
+		var epoch = Date.now() / 1000.0;
+
+		function pollMotionData() {
+			var accel = getBallAcceleration();
+
+			if (accel) {
+				var timestamp = (Date.now() / 1000.0) - epoch;
+
+				// Send it to Max
+				xebraState.sendMotionData(
+					Xebra.MOTION_TYPES.ACCEL,
+					accel.x,
+					accel.y,
+					accel.z,
+					timestamp
+				);
+
+				if (xebraState.isMotionEnabled) {
+					pollHandle = window.requestAnimationFrame(pollMotionData);
+				}
+			}
+		}
+
+		function enablePolling() {
+			pollMotionData();
+		}
+
+		function disablePolling() {
+			if (pollHandle !== undefined) {
+				window.cancelAnimationFrame(pollHandle);
+			}
+		}
+
+		xebraState.on("motion_enabled", enablePolling);
+		xebraState.on("motion_disabled", disablePolling);
+
+		xebraState.connect();
+	</script>
+</body>
+</html>
