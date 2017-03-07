@@ -15,11 +15,11 @@
   ],
   "main": "lib/index.js",
   "homepage": "http://cycling74.com",
-  "bugs": "https://github.com/Cycling74/xebra-communicator/issues",
+  "bugs": "https://github.com/Cycling74/miraweb/issues",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cycling74/xebra-communicator.git"
+    "url": "https://github.com/Cycling74/miraweb.git"
   },
   "scripts": {
     "prelib": "rimraf ./lib",

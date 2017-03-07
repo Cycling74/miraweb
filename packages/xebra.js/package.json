@@ -1,6 +1,6 @@
 {
   "name": "xebra.js",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Xebra connects Max to the browser, and the browser to Max.",
   "author": {
     "name": "Cycling '74",
@@ -15,11 +15,11 @@
   ],
   "main": "lib/index.js",
   "homepage": "http://cycling74.com",
-  "bugs": "https://github.com/Cycling74/xebra.js/issues",
+  "bugs": "https://github.com/Cycling74/miraweb/issues",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cycling74/xebra.js.git"
+    "url": "https://github.com/Cycling74/miraweb.git"
   },
   "scripts": {
     "predocs": "rimraf ./docs",
