@@ -225,7 +225,7 @@ export default class LiveTab extends MiraUIObject {
 	}
 
 	pointerMove(event, params) {
-	let tab = event.attributes.tab;
+		let tab = event.attributes.tab;
 		if (tab !== undefined) this.setParamValue("value", tab);
 	}
 

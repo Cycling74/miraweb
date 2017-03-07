@@ -98,7 +98,7 @@ export default class LiveText extends MiraUIObject {
 	}
 
 	pointerUp(event, params) {
-		const { value, mode } = params;
+		const { mode } = params;
 		if (mode === "Button") this.setParamValue("value", 0);
 		this._inTouch = false;
 	}
