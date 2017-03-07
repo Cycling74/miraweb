@@ -21,4 +21,5 @@
 Thumbs.db
 Desktop.ini
 npm-debug.log
+lerna-debug.log
 node_modules
