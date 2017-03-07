@@ -3,7 +3,6 @@ xebra.js
 
 Xebra connects Max to the browser, and the browser to Max. Max is a visual programming language for music and multimedia developed and maintained by [Cycling '74](https://cycling74.com/).
 
-
 Adding a mira.frame object to a Max patcher creates an open websocket that exposes the contents of the Max patcher. Xebra connects to that socket and maps changes in the Max patcher to JavaScript events.
 
 ## Setup
@@ -74,17 +73,13 @@ Check out, learn more and use the Xebra.js API using the [documentation][documen
 
 You like the Xebra project and would like to contribute? Perfect! Please use the GitHub issue tracker in case you experience any bugs or get in touch for your feature requests or potential features you'd like to add. Please make sure to read our Contributing Guide before submitting any changes.
 
-[Contributing Guide](CONTRIBUTING.md)
+[Contributing Guide](../../CONTRIBUTING.md)
 
 ## How To Build
 
 Note that most users won't need to do this and should rather use the pre-built versions or make use of xebra as a npm dependecy. However if you are developing xebra you might need to build.
 
-Make sure you have Node.js and NPM installed and then in the cloned repository folder do the following to install all necessary dependencies:
-
-```
-$> npm install
-```
+Make sure you have followed the global [repository setup instructions](../../README.md) first in order to have all dependencies setup correctly.
 
 Xebra is written in ES6. Based on that the build process can either mean generating the ES5 versions to the `lib` folder or generating the bundled files in the `dist` folder.
 
