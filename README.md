@@ -1,7 +1,7 @@
 MiraWeb
 =============
 
-![MiraWeb](src/assets/miraweb_logo_bar.png)
+![MiraWeb](packages/miraweb/src/assets/miraweb_logo_bar.png)
 
 ## Setup
 
