@@ -20,7 +20,7 @@ export default class MiraUIObject extends EventEmitter {
 			mask : this.constructor.MASK === undefined ? true : this.constructor.MASK
 		});
 
-		// if hidden attr is set to '1', hide object in browser
+		// if hidden attr of object is set to '1', initialize as such
 		if (this._state.getParamValue("hidden") === 1) this._displayNode.hide();
 
 		// attach event listeners
