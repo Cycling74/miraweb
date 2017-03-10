@@ -282,7 +282,6 @@ export default class LiveGrid extends MiraUIObject {
 		super._onParameterChange(stateObj, param);
 		const rows = this._previousParams.rows;
 		const columns = this._previousParams.columns;
-		console.log(param.type);
 		if (param.type !== "distance" && param.type !== "varname" && param.type !== "setcell" && param.type !== "directions") {
 			for (var i = 0; i < rows; i++) {
 				for (var j = 0; j < columns; j++) {
@@ -296,7 +295,7 @@ export default class LiveGrid extends MiraUIObject {
 				this._directionCells[i]._graphics.clear();
 			}
 			this._allButtonsNeedRedraw = true;
-		} else {
+		} else if (param.type === "distance") {
 			this._cellsToRedraw.forEach((cell) => {
 				if (cell.type === "direction") {
 					this._directionCells[cell.col]._needsRedraw = true;
@@ -394,7 +393,7 @@ export default class LiveGrid extends MiraUIObject {
 				const stepInc = lastPosition.col > col ? -1 : 1;
 				const valInc = (row - lastPosition.row) / steps;
 				if (steps > 1) {
-					for (let i = i; i < steps; i++) {
+					for (let i = 1; i < steps; i++) {
 						const newCol = lastPosition.col + stepInc * i;
 						const newRow = lastPosition.row + valInc * i;
 						if (mode === "Step constraint") {
@@ -404,7 +403,7 @@ export default class LiveGrid extends MiraUIObject {
 						}
 						// this._cells[newRow][newCol]._needsRedraw = true;
 						for (let i = 0; i < rows; i++) {
-							this._cellsToRedraw.push({row: i, col: col, type: "cell"});
+							this._cellsToRedraw.push({row: i, col: Math.round(newCol), type: "cell"});
 						}
 					}
 				}
