@@ -5,15 +5,39 @@ import ActiveFrameStore from "../stores/activeFrame.js";
 
 const DIRECTION_MARGIN = 6;
 
+const CellStyle = Object.freeze({
+	CELL: {
+		INACTIVE: "INACTIVE",
+		ACTIVE: "ACTIVE",
+		MARKED: "MARKED",
+		DEFAULT: "DEFAULT"
+	},
+	DIRECTION: {
+		LEFT: "LEFT",
+		RIGHT: "RIGHT",
+		CROSS: "CROSS"
+	}
+});
+
 class Cell {
 	constructor() {
 		this._graphics = new PIXI.Graphics();
 		this._needsRedraw = false;
+		this._cellStyle = undefined;
+	}
+
+	set cellStyle(cs) {
+		if (this._cellStyle !== cs) {
+			this._cellStyle = cs;
+			this._needsRedraw = true;
+		}
 	}
 
 	draw(cellType, row, column, params, mgraphics) {
 		this._needsRedraw = false;
 		this._graphics.clear();
+		if (this._cellStyle === undefined) return;
+
 		const scale = ActiveFrameStore.getScale();
 		const {
 			width,
@@ -57,25 +81,19 @@ class Cell {
 			let y = (i * buttonHeight) + spacing;
 			let cellValue = (j * 1000) + (rows - i - 1);
 
-			if (mode === "Step Edit") {
-				if (inactiveValues.indexOf(cellValue) > -1) {
-					this._graphics.beginFill(createHexColors([0, 0, 0, 0]), 0);
-				}
-				else if (stepValues.indexOf(cellValue) > -1) {
+			switch (this._cellStyle) {
+				case CellStyle.CELL.ACTIVE:
 					this._graphics.beginFill(createHexColors(stepcolor), stepcolor[3]);
-				}
-				else if (((rows - i - 1) % marker_vertical === 0) || (j % marker_horizontal === 0)) {
+					break;
+				case CellStyle.CELL.INACTIVE:
+					this._graphics.beginFill(createHexColors([0, 0, 0, 0]), 0);
+					break;
+				case CellStyle.CELL.MARKED:
 					this._graphics.beginFill(createHexColors(bgstepcolor), bgstepcolor[3]);
-				} else {
+					break;
+				case CellStyle.CELL.DEFAULT:
 					this._graphics.beginFill(createHexColors(bgstepcolor2), bgstepcolor2[3]);
-				}
-			}
-			else if (mode === "Step constraint") {
-				if (inactiveValues.indexOf(cellValue) > -1) {
-					this._graphics.beginFill(createHexColors([0, 0, 0, 0]), 0);
-				} else {
-					this._graphics.beginFill(createHexColors(stepcolor), stepcolor[3]);
-				}
+					break;
 			}
 
 			let cellRect = [
@@ -115,7 +133,7 @@ class Cell {
 			this._graphics.beginFill(createHexColors(directioncolor), directioncolor[3]);
 
 			// Triangle left
-			if (directionValues[i] === 2) {
+			if (this._cellStyle === CellStyle.DIRECTION.LEFT) {
 				const polyX = x + (2 * padding);
 				const polyY = y + padding;
 				const points = [[0, 0], [0, triangleBase], [triangleHeight, triangleBase / 2]];
@@ -126,7 +144,7 @@ class Cell {
 				this._graphics.endFill();
 			}
 			// Triangle right
-			else if (directionValues[i] === 0) {
+			else if (this._cellStyle === CellStyle.DIRECTION.RIGHT) {
 				const polyX = x + (2 * padding);
 				const polyY = y + padding;
 				const points = [[0, triangleBase / 2], [triangleHeight, 0], [triangleHeight, triangleBase]]
@@ -137,7 +155,7 @@ class Cell {
 				this._graphics.endFill();
 			}
 			// Cross
-			else if (directionValues[i] === 1) {
+			else if (this._cellStyle === CellStyle.DIRECTION.CROSS) {
 				let startX = (1 / 4) * buttonWidth;
 				let startY = (1 / 4) * direction_height;
 				this._graphics.lineStyle(2, createHexColors(directioncolor), directioncolor[3]);
@@ -220,9 +238,6 @@ export default class LiveGrid extends MiraUIObject {
 					this._cells[i][j] = new Cell();
 					this._cells[i][j]._needsRedraw = true;
 				}
-				if (this._cells[i][j]._needsRedraw) {
-					this._cells[i][j].draw("cell", i, j, params, mgraphics, this);
-				}
 			}
 		}
 
@@ -231,8 +246,18 @@ export default class LiveGrid extends MiraUIObject {
 				this._directionCells[i] = new Cell();
 				this._directionCells[i]._needsRedraw = true;
 			}
-			if (this._directionCells[i]._needsRedraw) {
-				this._directionCells[i].draw("direction", undefined, i, params, mgraphics);
+		}
+
+		this._updateCellStyles(params);
+
+		for (var j = 0; j < columns; j++) {
+			for (var i = 0; i < rows; i++) {
+				if (this._cells[i][j]._needsRedraw) {
+					this._cells[i][j].draw("cell", i, j, params, mgraphics, this);
+				}
+			}
+			if (this._directionCells[j]._needsRedraw) {
+				this._directionCells[j].draw("direction", undefined, j, params, mgraphics);
 			}
 		}
 
@@ -275,7 +300,58 @@ export default class LiveGrid extends MiraUIObject {
 			constraint[value + 1] = 0;
 		});
 		constraint[row + 1] = this._currentDragValue;
-		this.setParamValue("constraint", constraint);		
+		this.setParamValue("constraint", constraint);
+	}
+
+	_updateCellStyles(params) {
+		const {
+			columns,
+			rows,
+			mode,
+			distance,
+			marker_horizontal,
+			marker_vertical
+		} = params;
+		const inactiveConstraintsCells = distance[3];
+		const activeStepCells = distance[4];
+		const inactiveValues = distance.slice(5, 5 + inactiveConstraintsCells);
+		const stepValues = distance.slice(5 + inactiveConstraintsCells, 5 + inactiveConstraintsCells + activeStepCells);
+		const directionValues = distance.slice(5 + inactiveConstraintsCells + activeStepCells);
+
+		let retVal;
+
+		for (let column = 0; column < columns; column++) {
+			for (let row = 0; row < rows; row++) {
+				let cellValue = (column * 1000) + (rows - row - 1);
+
+				if (mode === "Step Edit") {
+					if (inactiveValues.indexOf(cellValue) > -1) {
+						retVal = CellStyle.CELL.INACTIVE;
+					}
+					else if (stepValues.indexOf(cellValue) > -1) {
+						retVal = CellStyle.CELL.ACTIVE;
+					}
+					else if (((rows - row - 1) % marker_vertical === 0) || (column % marker_horizontal === 0)) {
+						retVal = CellStyle.CELL.MARKED;
+					} else {
+						retVal = CellStyle.CELL.DEFAULT;
+					}
+				}
+				else if (mode === "Step constraint") {
+					if (inactiveValues.indexOf(cellValue) > -1) {
+						retVal = CellStyle.CELL.INACTIVE;
+					} else {
+						retVal = CellStyle.CELL.ACTIVE;
+					}
+				}
+				this._cells[row][column].cellStyle = retVal;
+			}
+
+			if (directionValues[column] === 2) retVal = CellStyle.DIRECTION.LEFT;
+			if (directionValues[column] === 0) retVal = CellStyle.DIRECTION.RIGHT;
+			if (directionValues[column] === 1) retVal = CellStyle.DIRECTION.CROSS;
+			this._directionCells[column].cellStyle = retVal;
+		}
 	}
 
 	_onParameterChange(stateObj, param) {
@@ -286,24 +362,23 @@ export default class LiveGrid extends MiraUIObject {
 			for (var i = 0; i < rows; i++) {
 				for (var j = 0; j < columns; j++) {
 					this._cells[i][j]._needsRedraw = true;
-					this._cells[i][j]._graphics.clear();
 				}
 			}
 
 			for (var i = 0; i < columns; i++) {
 				this._directionCells[i]._needsRedraw = true;
-				this._directionCells[i]._graphics.clear();
 			}
 			this._allButtonsNeedRedraw = true;
 		} else if (param.type === "distance") {
-			this._cellsToRedraw.forEach((cell) => {
-				if (cell.type === "direction") {
-					this._directionCells[cell.col]._needsRedraw = true;
-				} else {
-					this._cells[cell.row][cell.col]._needsRedraw = true;
-				}
-			});
-			this._cellsToRedraw = [];
+			const params = {
+				marker_horizontal: this._state.getParamValue("marker_horizontal"),
+				marker_vertical: this._state.getParamValue("marker_vertical"),
+				mode: this._state.getParamValue("mode"),
+				columns: this._state.getParamValue("columns"),
+				rows: this._state.getParamValue("rows"),
+				distance: param.value
+			};
+			this._updateCellStyles(params);
 		}
 	}
 
@@ -344,7 +419,7 @@ export default class LiveGrid extends MiraUIObject {
 			}
 			this._lastPositionForTouch[ event.id ] = { col, row };
 			for (let i = 0; i < rows; i++) {
-				this._cellsToRedraw.push({row: i, col: col, type: "cell"});
+				// this._cellsToRedraw.push({row: i, col: col, type: "cell"});
 			}
 			// this._cells[row][col]._needsRedraw = true;
 		} else if (cell_type === "direction") {
@@ -358,12 +433,12 @@ export default class LiveGrid extends MiraUIObject {
 					// thus, the reason for this very strange line of code. 
 					return ((value + 1) % 3) - 1;
 				}
-				return value;
+				return (value % 3) - 1;
 			});
 			this.setParamValue("directions", newDirections);
 			// this._directionCells[col]._needsRedraw = true;
 			for (let i = 0; i < columns; i++) {
-				this._cellsToRedraw.push({row: undefined, col: i, type: "direction"})
+				// this._cellsToRedraw.push({row: i, col: Math.round(newCol), type: "cell"});
 			}
 		}
 	}
@@ -386,9 +461,9 @@ export default class LiveGrid extends MiraUIObject {
 					this.setParamValue("setcell", [Math.round(col + 1), Math.round(row + 1), 1]);
 				}
 				// this._cells[row][col]._needsRedraw = true;
-				for (let i = 0; i < rows; i++) {
-					this._cellsToRedraw.push({row: i, col: col, type: "cell"});
-				}
+				// for (let i = 0; i < rows; i++) {
+				// 	this._cellsToRedraw.push({row: i, col: col, type: "cell"});
+				// }
 				const steps = Math.abs(lastPosition.col - col);
 				const stepInc = lastPosition.col > col ? -1 : 1;
 				const valInc = (row - lastPosition.row) / steps;
@@ -402,9 +477,9 @@ export default class LiveGrid extends MiraUIObject {
 							this.setParamValue("setcell", [Math.round(newCol + 1), Math.round(newRow + 1), 1]);
 						}
 						// this._cells[newRow][newCol]._needsRedraw = true;
-						for (let i = 0; i < rows; i++) {
-							this._cellsToRedraw.push({row: i, col: Math.round(newCol), type: "cell"});
-						}
+						// for (let i = 0; i < rows; i++) {
+						// 	this._cellsToRedraw.push({row: i, col: Math.round(newCol), type: "cell"});
+						// }
 					}
 				}
 
