@@ -20,6 +20,9 @@ export default class MiraUIObject extends EventEmitter {
 			mask : this.constructor.MASK === undefined ? true : this.constructor.MASK
 		});
 
+		// if hidden attr of object is set to '1', initialize as such
+		if (this._state.getParamValue("hidden") === 1) this._displayNode.hide();
+
 		// attach event listeners
 		this._displayNode.on("pointer_event", this._triggerEvent.bind(this));
 		if (doGestures) this._displayNode.on("gesture_event", this._triggerEvent.bind(this));
@@ -78,7 +81,6 @@ export default class MiraUIObject extends EventEmitter {
 			this.emit("toggle_hide", this);
 			return;
 		}
-
 		// If we've reached this point, then the parameter is one of those that should invalidate
 		// the cached text
 		this.invalidateCachedText();
