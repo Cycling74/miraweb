@@ -41,6 +41,25 @@ export default class Number extends MiraUIObject {
 				}
 			}
 		}
+		if (format === "Binary") {
+				retStr = (value >>> 0).toString(2);
+			}
+		else if (format === "Hex") {
+				retStr = value.toString(16).toUpperCase();
+			}
+		else if (format === "Roland Octal") {
+				retStr = ((value>>3)+1).toString() + ((value&7)+1).toString();
+			}
+		else if (format === "MIDI" || format === "MIDI (C4)") {
+			const octave = (value / 12) - 1;
+			const noteArray = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+			let base = 2
+			if (format === "MIDI (C4)") base = 1;
+			const note = noteArray[value % 12] + (Math.floor(value / 12) - base).toString();
+				if (value <= 127 && value >= 0) retStr = note;
+				else if (value < 0) retStr = "-";
+				else if (value > 127) retStr = "+";
+			}
 		return retStr;
 	}
 
