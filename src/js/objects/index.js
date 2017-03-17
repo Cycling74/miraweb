@@ -1,7 +1,7 @@
 import Button from "./button.js";
 import Comment from "./comment.js";
 import Dial from "./dial.js";
-import Flonumber from "./flonumber.js";
+// import Flonumber from "./flonumber.js";
 import Fpic from "./fpic.js";
 import Gain from "./gain.js";
 import Kslider from "./kslider.js";
@@ -29,7 +29,7 @@ export default {
 	Button,
 	Comment,
 	Dial,
-	Flonumber,
+	// Flonumber,
 	Fpic,
 	Gain,
 	Kslider,
