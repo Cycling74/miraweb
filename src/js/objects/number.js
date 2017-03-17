@@ -51,7 +51,6 @@ export default class Number extends MiraUIObject {
 				retStr = ((value>>3)+1).toString() + ((value&7)+1).toString();
 			}
 		else if (format === "MIDI" || format === "MIDI (C4)") {
-			const octave = (value / 12) - 1;
 			const noteArray = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 			let base = 2
 			if (format === "MIDI (C4)") base = 1;
