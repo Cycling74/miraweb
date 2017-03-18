@@ -27,38 +27,50 @@ export default class Number extends MiraUIObject {
 
 		let retStr;
 
-		if (format === "Decimal (Integer)") {
-			retStr = parseInt(value).toString();
-		} else {
-			if (value % 1 === 0 && numdecimalplaces === 0) {
-				retStr = value + ".";
-			}
-			else {
-				if (numdecimalplaces === 0) {
-					retStr = parseFloat(value.toFixed(MAX_NUM_DECIMAL_PLACES)).toString();
-				} else {
-					retStr = value.toFixed(numdecimalplaces);
+		switch(format) {
+			case "Decimal (Integer)":
+				retStr = parseInt(value).toString();
+				break;
+
+			case "Decimal (Floating-Point)":
+				if (value % 1 === 0 && numdecimalplaces === 0) {
+					retStr = value + ".";
 				}
-			}
-		}
-		if (format === "Binary") {
+				else {
+					if (numdecimalplaces === 0) {
+						retStr = parseFloat(value.toFixed(MAX_NUM_DECIMAL_PLACES)).toString();
+					} else {
+						retStr = value.toFixed(numdecimalplaces);
+					}
+				}
+				break;
+
+			case "MIDI":
+			case "MIDI (C4)":
+				const noteArray = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+				let base = 2
+				if (format === "MIDI (C4)") base = 1;
+				const note = noteArray[value % 12] + (Math.floor(value / 12) - base).toString();
+					if (value <= 127 && value >= 0) retStr = note;
+					else if (value < 0) retStr = "-";
+					else if (value > 127) retStr = "+";
+				break;
+
+			case "Binary":
 				retStr = (value >>> 0).toString(2);
-			}
-		else if (format === "Hex") {
+				break;
+
+			case "Hex":
 				retStr = value.toString(16).toUpperCase();
-			}
-		else if (format === "Roland Octal") {
+				break;
+
+			case "Roland Octal":
 				retStr = ((value>>3)+1).toString() + ((value&7)+1).toString();
-			}
-		else if (format === "MIDI" || format === "MIDI (C4)") {
-			const noteArray = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-			let base = 2
-			if (format === "MIDI (C4)") base = 1;
-			const note = noteArray[value % 12] + (Math.floor(value / 12) - base).toString();
-				if (value <= 127 && value >= 0) retStr = note;
-				else if (value < 0) retStr = "-";
-				else if (value > 127) retStr = "+";
-			}
+				break;
+
+			default:
+				break;
+		}
 		return retStr;
 	}
 
