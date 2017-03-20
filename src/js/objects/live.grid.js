@@ -107,9 +107,7 @@ class Cell {
 			mgraphics.add_attribute("cell_type", "cell");
 			this._graphics.endFill();
 		} else if (cellType === "direction") {
-			let i = j; // this is a terrible hack, deepest of apologies.
-
-			let x = (i * buttonWidth) + spacing;
+			let x = (j * buttonWidth) + spacing;
 			let y = rows * buttonHeight + directionMargin;
 			const padding = 2 * spacing;
 			const triangleBase = direction_height - (2 * spacing) - (2 * padding);
@@ -150,11 +148,11 @@ class Cell {
 				let startY = (1 / 4) * direction_height;
 				this._graphics.lineStyle(2, createHexColors(directioncolor), directioncolor[3]);
 
-				this._graphics.moveTo(((i * buttonWidth) + startX) * scale, (y + startY) * scale);
-				this._graphics.lineTo(((i * buttonWidth) + buttonWidth - startX) * scale, (y + direction_height - startY) * scale);
-
-				this._graphics.moveTo(((i * buttonWidth) + buttonWidth - startX) * scale, (y + startY) * scale);
-				this._graphics.lineTo(((i * buttonWidth) + startX) * scale, (y + direction_height - startY) * scale);
+				this._graphics.moveTo(((j * buttonWidth) + startX) * scale, (y + startY) * scale);
+				this._graphics.lineTo(((j * buttonWidth) + buttonWidth - startX) * scale, (y + direction_height - startY) * scale);
+ 
+				this._graphics.moveTo(((j * buttonWidth) + buttonWidth - startX) * scale, (y + startY) * scale);
+				this._graphics.lineTo(((j * buttonWidth) + startX) * scale, (y + direction_height - startY) * scale);
 			}
 
 			// Draw a transparent rectangle, then add identifying attrs
@@ -162,7 +160,7 @@ class Cell {
 			this._graphics.lineStyle();
 			mgraphics.currentShape = new PIXI.Rectangle(x * scale, y * scale, directionBounds.width * scale, directionBounds.height * scale, rounded * scale);
 			this._graphics.drawShape(mgraphics.currentShape);
-			mgraphics.add_attribute("col", i);
+			mgraphics.add_attribute("col", j);
 			mgraphics.add_attribute("cell_type", "direction");
 			this._graphics.endFill();
 		}
