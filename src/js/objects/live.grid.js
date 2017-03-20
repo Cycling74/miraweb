@@ -45,31 +45,19 @@ class Cell {
 			bgstepcolor,
 			bgstepcolor2,
 			bordercolor,
-			hbgcolor,
 			columns,
 			direction,
 			direction_height,
 			directioncolor,
-			marker_horizontal,
-			marker_vertical,
-			mode,
 			rows,
 			spacing,
-			stepcolor,
-			currentstep,
-			distance
+			stepcolor
 		} = params;
 		let { rounded } = params;
 		const directionMargin = DIRECTION_MARGIN;
 		const buttonWidth = width / columns;
 		const buttonHeight = (direction === 1) ? ((height - direction_height - directionMargin ) / rows) : (height / rows);
 		rounded = Math.min(rounded, buttonHeight / 2 - 0.5);
-
-		const inactiveConstraintsCells = distance[3];
-		const activeStepCells = distance[4];
-		const inactiveValues = distance.slice(5, 5 + inactiveConstraintsCells);
-		const stepValues = distance.slice(5 + inactiveConstraintsCells, 5 + inactiveConstraintsCells + activeStepCells);
-		const directionValues = distance.slice(5 + inactiveConstraintsCells + activeStepCells);
 
 		const directionBounds = { width : buttonWidth - 2 * spacing, height : direction_height - 1};
 
@@ -79,7 +67,6 @@ class Cell {
 		if (cellType === "cell") {
 			let x = (j * buttonWidth) + spacing;
 			let y = (i * buttonHeight) + spacing;
-			let cellValue = (j * 1000) + (rows - i - 1);
 
 			switch (this._cellStyle) {
 				case CellStyle.CELL.ACTIVE:
@@ -92,6 +79,9 @@ class Cell {
 					this._graphics.beginFill(createHexColors(bgstepcolor), bgstepcolor[3]);
 					break;
 				case CellStyle.CELL.DEFAULT:
+					this._graphics.beginFill(createHexColors(bgstepcolor2), bgstepcolor2[3]);
+					break;
+				default:
 					this._graphics.beginFill(createHexColors(bgstepcolor2), bgstepcolor2[3]);
 					break;
 			}
@@ -192,6 +182,7 @@ export default class LiveGrid extends MiraUIObject {
 		this._dataShapes = null;
 		this._allButtonsNeedRedraw = false;
 		this._previousParams = null;
+		this._currentstepContainer = new PIXI.Graphics();
 	}
 
 	_initializeButtons(mgraphics, params) {
@@ -203,7 +194,7 @@ export default class LiveGrid extends MiraUIObject {
 		this._cells = new Array(rows).fill();
 		this._cells = this._cells.map(row => new Array(columns));
 		this._directionCells = new Array(columns);
-		for (var i = 0; i < rows; i++) {
+		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < columns; j++) {
 				this._cells[i][j] = new Cell();
 				this._cells[i][j].draw("cell", i, j, params, mgraphics, this);
@@ -211,7 +202,7 @@ export default class LiveGrid extends MiraUIObject {
 			}
 		}
 
-		for (var i = 0; i < columns; i++) {
+		for (let i = 0; i < columns; i++) {
 			this._directionCells[i] = new Cell();
 			this._directionCells[i].draw("direction", undefined, i, params, mgraphics);
 			this._cellsContainer.addChild(this._directionCells[i]._graphics);
@@ -227,8 +218,8 @@ export default class LiveGrid extends MiraUIObject {
 			rows
 		} = params;
 		// redraw buttons if marked dirty
-		for (var i = 0; i < rows; i++) {
-			for (var j = 0; j < columns; j++) {
+		for (let i = 0; i < rows; i++) {
+			for (let j = 0; j < columns; j++) {
 				if (this._cells[i] === undefined) {
 					this._cells[i] = new Array(columns);
 				}
@@ -239,7 +230,7 @@ export default class LiveGrid extends MiraUIObject {
 			}
 		}
 
-		for (var i = 0; i < columns; i++) {
+		for (let i = 0; i < columns; i++) {
 			if (this._directionCells[i] === undefined) {
 				this._directionCells[i] = new Cell();
 				this._directionCells[i]._needsRedraw = true;
@@ -248,8 +239,8 @@ export default class LiveGrid extends MiraUIObject {
 
 		this._updateCellStyles(params);
 
-		for (var j = 0; j < columns; j++) {
-			for (var i = 0; i < rows; i++) {
+		for (let j = 0; j < columns; j++) {
+			for (let i = 0; i < rows; i++) {
 				if (this._cells[i][j]._needsRedraw) {
 					this._cells[i][j].draw("cell", i, j, params, mgraphics, this);
 				}
@@ -357,13 +348,13 @@ export default class LiveGrid extends MiraUIObject {
 		const rows = this._previousParams.rows;
 		const columns = this._previousParams.columns;
 		if (param.type !== "distance" && param.type !== "varname" && param.type !== "setcell" && param.type !== "directions" && param.type !== "constraint") {
-			for (var i = 0; i < rows; i++) {
+			for (let i = 0; i < rows; i++) {
 				for (let j = 0; j < columns; j++) {
 					this._cells[i][j]._needsRedraw = true;
 				}
 			}
 
-			for (var i = 0; i < columns; i++) {
+			for (let i = 0; i < columns; i++) {
 				this._directionCells[i]._needsRedraw = true;
 			}
 			this._allButtonsNeedRedraw = true;
@@ -381,26 +372,43 @@ export default class LiveGrid extends MiraUIObject {
 	}
 
 	paint(mgraphics, params) {
+		const {
+			currentstep,
+			hbgcolor,
+			rows,
+			columns,
+			width,
+			height,
+			direction,
+			direction_height
+		} = params;
 		this._previousParams = params;
 		if (!this._initialized) {
 			this._initializeButtons(mgraphics, params);
 			this._initialized = true;
 			this._displayNode.addDisplayChild(this._cellsContainer);
+			this._displayNode.addDisplayChild(this._currentstepContainer);
 		}
 		this._redrawButtons(mgraphics, params);
 		mgraphics._dataShapes = this._dataShapes;
+
+		// currentstep indicator
+		const buttonWidth = width / columns;
+		const buttonHeight = (direction === 1) ? ((height - direction_height - DIRECTION_MARGIN ) / rows) : (height / rows);
+		const scale = ActiveFrameStore.getScale();
+
+		this._currentstepContainer.clear();
+		this._currentstepContainer.beginFill(createHexColors(hbgcolor), hbgcolor[3]);
+		this._currentstepContainer.drawRect(buttonWidth * (currentstep - 1) * scale, 0, buttonWidth * scale, buttonHeight * rows * scale);
+		this._currentstepContainer.endFill();
 	}
 
 	pointerDown(event, params) {
-		const { distance, rows, columns, mode } = params;
+		const { distance, rows, mode } = params;
 		const { cell_type, col, row } = event.attributes;
 		const inactiveConstraintsCells = distance[3];
 		const activeStepCells = distance[4];
-		const inactiveValues = distance.slice(5, 5 + inactiveConstraintsCells);
-		const stepValues = distance.slice(5 + inactiveConstraintsCells, 5 + inactiveConstraintsCells + activeStepCells);
 		const directionValues = distance.slice(5 + inactiveConstraintsCells + activeStepCells);
-
-		const cellValue = (col * 1000) + row;
 
 		this._typeForTouch[ event.id ] = cell_type;
 
