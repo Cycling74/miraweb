@@ -358,7 +358,7 @@ export default class LiveGrid extends MiraUIObject {
 		super._onParameterChange(stateObj, param);
 		const rows = this._previousParams.rows;
 		const columns = this._previousParams.columns;
-		if (param.type !== "distance" && param.type !== "varname" && param.type !== "setcell" && param.type !== "directions") {
+		if (param.type !== "distance" && param.type !== "varname" && param.type !== "setcell" && param.type !== "directions" && param.type !== "constraint") {
 			for (var i = 0; i < rows; i++) {
 				for (var j = 0; j < columns; j++) {
 					this._cells[i][j]._needsRedraw = true;
