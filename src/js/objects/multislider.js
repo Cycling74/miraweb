@@ -112,7 +112,7 @@ export default class Multislider extends MiraUIObject {
 			for (let i = 0; i < size; i++) {
 				let sliderX = ((width) / range) * (distance[i] - min);
 				sliderX += (thickness * 0.3);
-				sliderX = Math.min(Math.max(sliderX, thickness), width) - thickness/2;
+				sliderX = Math.min(Math.max(sliderX, thickness), width) - thickness / 2;
 				let zeroX = 0;
 
 				if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") {
@@ -216,7 +216,7 @@ export default class Multislider extends MiraUIObject {
 			for (let i = 0; i < size; i++) {
 				let sliderY = ((height) / range) * (distance[i] - min);
 				sliderY += (thickness * 0.3);
-				sliderY = Math.min(Math.max(sliderY, thickness), height) - thickness/2;
+				sliderY = Math.min(Math.max(sliderY, thickness), height) - thickness / 2;
 				let zeroY = 0;
 
 				if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") {

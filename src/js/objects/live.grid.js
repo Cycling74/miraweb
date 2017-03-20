@@ -1,21 +1,21 @@
 import MiraUIObject from "./base.js";
 import * as PIXI from "pixi.js";
-import { createHexColors } from '../lib/pixiUiObject.js';
+import { createHexColors } from "../lib/pixiUiObject.js";
 import ActiveFrameStore from "../stores/activeFrame.js";
 
 const DIRECTION_MARGIN = 6;
 
 const CellStyle = Object.freeze({
-	CELL: {
-		INACTIVE: "INACTIVE",
-		ACTIVE: "ACTIVE",
-		MARKED: "MARKED",
-		DEFAULT: "DEFAULT"
+	CELL : {
+		INACTIVE : "INACTIVE",
+		ACTIVE : "ACTIVE",
+		MARKED : "MARKED",
+		DEFAULT : "DEFAULT"
 	},
-	DIRECTION: {
-		LEFT: "LEFT",
-		RIGHT: "RIGHT",
-		CROSS: "CROSS"
+	DIRECTION : {
+		LEFT : "LEFT",
+		RIGHT : "RIGHT",
+		CROSS : "CROSS"
 	}
 });
 
@@ -103,21 +103,21 @@ class Cell {
 				(buttonHeight - (2 * spacing)) * scale
 			];
 			this._graphics.lineStyle(0.5, createHexColors(bordercolor), bordercolor[3]);
-			this._graphics.drawRoundedRect(...cellRect, rounded*scale);
+			this._graphics.drawRoundedRect(...cellRect, rounded * scale);
 			this._graphics.endFill();
 
 			this._graphics.beginFill(createHexColors([0, 0, 0, 0]), 0);
 			this._graphics.lineStyle();
 			x -= spacing;
 			y -= spacing;
-			mgraphics.currentShape = new PIXI.Rectangle(x*scale, y*scale, buttonWidth*scale, buttonHeight*scale);
+			mgraphics.currentShape = new PIXI.Rectangle(x * scale, y * scale, buttonWidth * scale, buttonHeight * scale);
 			this._graphics.drawShape(mgraphics.currentShape);
 			mgraphics.add_attribute("col", j);
 			mgraphics.add_attribute("row", (rows - i - 1));
 			mgraphics.add_attribute("cell_type", "cell");
 			this._graphics.endFill();
 		} else if (cellType === "direction") {
-			let i = j; //this is a terrible hack, deepest of apologies.
+			let i = j; // this is a terrible hack, deepest of apologies.
 
 			let x = (i * buttonWidth) + spacing;
 			let y = rows * buttonHeight + directionMargin;
@@ -127,7 +127,7 @@ class Cell {
 
 			this._graphics.beginFill(createHexColors([0, 0, 0, 0]), 0);
 			this._graphics.lineStyle(0.5, createHexColors(bordercolor), bordercolor[3]);
-			this._graphics.drawRoundedRect(x*scale, y*scale, directionBounds.width*scale, directionBounds.height*scale, rounded*scale);
+			this._graphics.drawRoundedRect(x * scale, y * scale, directionBounds.width * scale, directionBounds.height * scale, rounded * scale);
 			this._graphics.endFill();
 
 			this._graphics.beginFill(createHexColors(directioncolor), directioncolor[3]);
@@ -147,7 +147,7 @@ class Cell {
 			else if (this._cellStyle === CellStyle.DIRECTION.RIGHT) {
 				const polyX = x + (2 * padding);
 				const polyY = y + padding;
-				const points = [[0, triangleBase / 2], [triangleHeight, 0], [triangleHeight, triangleBase]]
+				const points = [[0, triangleBase / 2], [triangleHeight, 0], [triangleHeight, triangleBase]];
 				const polygon = new PIXI.Polygon(points.map((point) => {
 					return new PIXI.Point((point[0] + polyX) * scale, (point[1] + polyY) * scale);
 				}));
@@ -161,16 +161,16 @@ class Cell {
 				this._graphics.lineStyle(2, createHexColors(directioncolor), directioncolor[3]);
 
 				this._graphics.moveTo(((i * buttonWidth) + startX) * scale, (y + startY) * scale);
-				this._graphics.lineTo(((i * buttonWidth) + buttonWidth - startX)*scale, (y + direction_height - startY)*scale);
+				this._graphics.lineTo(((i * buttonWidth) + buttonWidth - startX) * scale, (y + direction_height - startY) * scale);
 
-				this._graphics.moveTo(((i * buttonWidth) + buttonWidth - startX)*scale, (y + startY)*scale);
-				this._graphics.lineTo(((i * buttonWidth) + startX)*scale, (y + direction_height - startY)*scale);
+				this._graphics.moveTo(((i * buttonWidth) + buttonWidth - startX) * scale, (y + startY) * scale);
+				this._graphics.lineTo(((i * buttonWidth) + startX) * scale, (y + direction_height - startY) * scale);
 			}
 
 			// Draw a transparent rectangle, then add identifying attrs
 			this._graphics.beginFill(createHexColors([0, 0, 0, 0]), 0);
 			this._graphics.lineStyle();
-			mgraphics.currentShape = new PIXI.Rectangle(x*scale, y*scale, directionBounds.width*scale, directionBounds.height*scale, rounded*scale);
+			mgraphics.currentShape = new PIXI.Rectangle(x * scale, y * scale, directionBounds.width * scale, directionBounds.height * scale, rounded * scale);
 			this._graphics.drawShape(mgraphics.currentShape);
 			mgraphics.add_attribute("col", i);
 			mgraphics.add_attribute("cell_type", "direction");
@@ -192,12 +192,10 @@ export default class LiveGrid extends MiraUIObject {
 		this._dataShapes = null;
 		this._allButtonsNeedRedraw = false;
 		this._previousParams = null;
-		//some function which creates all of the button graphics instances
-		this._cellsToRedraw = [];
 	}
 
 	_initializeButtons(mgraphics, params) {
-		//if cells are drawing themselves
+		// if cells are drawing themselves
 		const {
 			columns,
 			rows
@@ -206,7 +204,7 @@ export default class LiveGrid extends MiraUIObject {
 		this._cells = this._cells.map(row => new Array(columns));
 		this._directionCells = new Array(columns);
 		for (var i = 0; i < rows; i++) {
-			for(var j = 0; j < columns; j++) {
+			for (let j = 0; j < columns; j++) {
 				this._cells[i][j] = new Cell();
 				this._cells[i][j].draw("cell", i, j, params, mgraphics, this);
 				this._cellsContainer.addChild(this._cells[i][j]._graphics);
@@ -228,7 +226,7 @@ export default class LiveGrid extends MiraUIObject {
 			columns,
 			rows
 		} = params;
-		//redraw buttons if marked dirty
+		// redraw buttons if marked dirty
 		for (var i = 0; i < rows; i++) {
 			for (var j = 0; j < columns; j++) {
 				if (this._cells[i] === undefined) {
@@ -261,7 +259,7 @@ export default class LiveGrid extends MiraUIObject {
 			}
 		}
 
-		//if redrawing all cells, then this._dataShapes = mgraphics._dataShapes;
+		// if redrawing all cells, then this._dataShapes = mgraphics._dataShapes;
 		if (this._allButtonsNeedRedraw) {
 			this._dataShapes = mgraphics._dataShapes;
 			this._allButtonsNeedRedraw = false;
@@ -360,7 +358,7 @@ export default class LiveGrid extends MiraUIObject {
 		const columns = this._previousParams.columns;
 		if (param.type !== "distance" && param.type !== "varname" && param.type !== "setcell" && param.type !== "directions" && param.type !== "constraint") {
 			for (var i = 0; i < rows; i++) {
-				for (var j = 0; j < columns; j++) {
+				for (let j = 0; j < columns; j++) {
 					this._cells[i][j]._needsRedraw = true;
 				}
 			}
@@ -371,12 +369,12 @@ export default class LiveGrid extends MiraUIObject {
 			this._allButtonsNeedRedraw = true;
 		} else if (param.type === "distance") {
 			const params = {
-				marker_horizontal: this._state.getParamValue("marker_horizontal"),
-				marker_vertical: this._state.getParamValue("marker_vertical"),
-				mode: this._state.getParamValue("mode"),
-				columns: this._state.getParamValue("columns"),
-				rows: this._state.getParamValue("rows"),
-				distance: param.value
+				marker_horizontal : this._state.getParamValue("marker_horizontal"),
+				marker_vertical : this._state.getParamValue("marker_vertical"),
+				mode : this._state.getParamValue("mode"),
+				columns : this._state.getParamValue("columns"),
+				rows : this._state.getParamValue("rows"),
+				distance : param.value
 			};
 			this._updateCellStyles(params);
 		}
@@ -418,10 +416,6 @@ export default class LiveGrid extends MiraUIObject {
 				this.setParamValue("setcell", [col + 1, row + 1, 1]);
 			}
 			this._lastPositionForTouch[ event.id ] = { col, row };
-			for (let i = 0; i < rows; i++) {
-				// this._cellsToRedraw.push({row: i, col: col, type: "cell"});
-			}
-			// this._cells[row][col]._needsRedraw = true;
 		} else if (cell_type === "direction") {
 			const newDirections = directionValues.map((value, index) => {
 				if (index === col) {
@@ -430,16 +424,12 @@ export default class LiveGrid extends MiraUIObject {
 					// set -1 => returns 0
 					// set 0 => returns 1
 					// set 1 => returns 2
-					// thus, the reason for this very strange line of code. 
+					// thus, the reason for this very strange line of code.
 					return ((value + 1) % 3) - 1;
 				}
 				return (value % 3) - 1;
 			});
 			this.setParamValue("directions", newDirections);
-			// this._directionCells[col]._needsRedraw = true;
-			for (let i = 0; i < columns; i++) {
-				// this._cellsToRedraw.push({row: i, col: Math.round(newCol), type: "cell"});
-			}
 		}
 	}
 
@@ -460,10 +450,6 @@ export default class LiveGrid extends MiraUIObject {
 				} else {
 					this.setParamValue("setcell", [Math.round(col + 1), Math.round(row + 1), 1]);
 				}
-				// this._cells[row][col]._needsRedraw = true;
-				// for (let i = 0; i < rows; i++) {
-				// 	this._cellsToRedraw.push({row: i, col: col, type: "cell"});
-				// }
 				const steps = Math.abs(lastPosition.col - col);
 				const stepInc = lastPosition.col > col ? -1 : 1;
 				const valInc = (row - lastPosition.row) / steps;
@@ -476,10 +462,6 @@ export default class LiveGrid extends MiraUIObject {
 						} else {
 							this.setParamValue("setcell", [Math.round(newCol + 1), Math.round(newRow + 1), 1]);
 						}
-						// this._cells[newRow][newCol]._needsRedraw = true;
-						// for (let i = 0; i < rows; i++) {
-						// 	this._cellsToRedraw.push({row: i, col: Math.round(newCol), type: "cell"});
-						// }
 					}
 				}
 
