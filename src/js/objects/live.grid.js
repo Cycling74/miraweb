@@ -341,21 +341,25 @@ export default class LiveGrid extends MiraUIObject {
 		}
 	}
 
-	_onParameterChange(stateObj, param) {
-		super._onParameterChange(stateObj, param);
+	_markAllButtonsDirty() {
 		const rows = this._previousParams.rows;
 		const columns = this._previousParams.columns;
-		if (param.type !== "distance" && param.type !== "varname" && param.type !== "setcell" && param.type !== "directions" && param.type !== "constraint") {
-			for (let i = 0; i < rows; i++) {
-				for (let j = 0; j < columns; j++) {
-					this._cells[i][j]._needsRedraw = true;
-				}
+		for (let i = 0; i < rows; i++) {
+			for (let j = 0; j < columns; j++) {
+				this._cells[i][j]._needsRedraw = true;
 			}
+		}
 
-			for (let i = 0; i < columns; i++) {
-				this._directionCells[i]._needsRedraw = true;
-			}
-			this._allButtonsNeedRedraw = true;
+		for (let i = 0; i < columns; i++) {
+			this._directionCells[i]._needsRedraw = true;
+		}
+		this._allButtonsNeedRedraw = true;
+	}
+
+	_onParameterChange(stateObj, param) {
+		super._onParameterChange(stateObj, param);
+		if (param.type !== "distance" && param.type !== "varname" && param.type !== "setcell" && param.type !== "directions" && param.type !== "constraint") {
+			this._markAllButtonsDirty();
 		} else if (param.type === "distance") {
 			const params = {
 				marker_horizontal : this._state.getParamValue("marker_horizontal"),
@@ -381,19 +385,27 @@ export default class LiveGrid extends MiraUIObject {
 			direction_height
 		} = params;
 		this._previousParams = params;
+
 		if (!this._initialized) {
 			this._initializeButtons(mgraphics, params);
 			this._initialized = true;
 			this._displayNode.addDisplayChild(this._cellsContainer);
 			this._displayNode.addDisplayChild(this._currentstepContainer);
 		}
+		const scale = ActiveFrameStore.getScale();
+		if (this._previousParams.scale !== scale) {
+			this._markAllButtonsDirty();
+		}
+		this._previousParams.scale = scale;
+
 		this._redrawButtons(mgraphics, params);
 		mgraphics._dataShapes = this._dataShapes;
 
 		// currentstep indicator
 		const buttonWidth = width / columns;
 		const buttonHeight = (direction === 1) ? ((height - direction_height - DIRECTION_MARGIN ) / rows) : (height / rows);
-		const scale = ActiveFrameStore.getScale();
+
+		console.log("calling paint with scale: " + scale);
 
 		this._currentstepContainer.clear();
 		this._currentstepContainer.beginFill(createHexColors(hbgcolor), hbgcolor[3]);
