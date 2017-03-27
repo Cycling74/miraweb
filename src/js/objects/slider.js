@@ -5,6 +5,57 @@ export default class Slider extends MiraUIObject {
 	constructor(stateObj) {
 		super(stateObj);
 		this._orientation = null;
+		this._previousPointerPosition = null;
+	}
+
+	_handlePointerEvent(event, params, isDown = false) {
+		const {
+			distance,
+			floatoutput,
+			relative,
+		} = params;
+
+		let { size } = params;
+
+		let newVal;
+
+		if (floatoutput === 0) {
+			size -= 1;
+		}
+
+		const interactionCoords = this.interactionCoordsForEvent(event);
+
+		if (relative === "Relative") {
+			if (this._previousPointerPosition === null) {
+				this._previousPointerPosition = interactionCoords;
+			}
+			let delta = 0;
+			if (this._orientation === "vertical") {
+				delta = (1 - interactionCoords[1]) - (1 - this._previousPointerPosition[1]);
+			} else if (this._orientation === "horizontal") {
+				delta = interactionCoords[0] - this._previousPointerPosition[0];
+			}
+			newVal = distance + size * delta;
+		} else {
+			if (this._orientation === "vertical") {
+				newVal = size * (1 - interactionCoords[1]);
+			} else if (this._orientation === "horizontal") {
+				newVal = size * (interactionCoords[0]);
+			}
+		}
+
+		if (!floatoutput) newVal = Math.round(newVal);
+		newVal = (newVal > size) ? size : newVal;
+		newVal = (newVal < 0) ? 0 : newVal;
+		this.setParamValue("distance", newVal);
+		params.distance = newVal; // Need to set this before passing params to the popover
+
+		if (!this.isPopoverVisible()) {
+			this.showPopover(this._popoverType(), this._popoverDescription(params));
+		}
+		this.updatePopover(this._popoverDescription(params));
+
+		this._previousPointerPosition = interactionCoords;
 	}
 
 	_popoverType() {
@@ -215,38 +266,15 @@ export default class Slider extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
-		const { floatoutput } = params;
-		let { size } = params;
-		let newVal;
-		if (floatoutput === 0) {
-			size -= 1;
-		}
-
-		const interactionCoords = this.interactionCoordsForEvent(event);
-
-		if (this._orientation === "vertical") {
-			newVal = size * (1 - interactionCoords[1]);
-		} else if (this._orientation === "horizontal") {
-			newVal = size * (interactionCoords[0]);
-		}
-
-		if (!floatoutput) newVal = Math.round(newVal);
-		newVal = (newVal > size) ? size : newVal;
-		newVal = (newVal < 0) ? 0 : newVal;
-		this.setParamValue("distance", newVal);
-		params.distance = newVal; // Need to set this before passing params to the popover
-
-		if (!this.isPopoverVisible()) {
-			this.showPopover(this._popoverType(), this._popoverDescription(params));
-		}
-		this.updatePopover(this._popoverDescription(params));
+		this._handlePointerEvent(event, params);
 	}
 
 	pointerMove(event, params) {
-		this.pointerDown(event, params);
+		this._handlePointerEvent(event, params);
 	}
 
 	pointerUp(event, params) {
+		this._previousPointerPosition = null;
 		if (this.isPopoverVisible()) this.hidePopover();
 		this.render();
 	}

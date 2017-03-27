@@ -10,6 +10,52 @@ export default class LiveSlider extends MiraUIObject {
 	constructor(stateObj) {
 		super(stateObj);
 		this._inTouch = false;
+		this._previousPointerPosition = null;
+	}
+
+	_handlePointerEvent(event, params) {
+		const {
+			distance,
+			orientation,
+			relative
+		} = params;
+		let newVal;
+
+		const interactionCoords = this.interactionCoordsForEvent(event);
+
+		if (relative === "Relative") {
+			if (this._previousPointerPosition === null) {
+				this._previousPointerPosition = interactionCoords;
+			}
+			let delta = 0;
+			if (orientation === "Vertical") {
+				delta = (1 - interactionCoords[1]) - (1 - this._previousPointerPosition[1]);
+			} else if (this._orientation === "horizontal") {
+				delta = interactionCoords[0] - this._previousPointerPosition[0];
+			}
+			newVal = distance + delta;
+		} else {
+			if (orientation === "Vertical") {
+				newVal = 1 - interactionCoords[1];
+			} else if (this._orientation === "horizontal") {
+				newVal = interactionCoords[0];
+			}
+		}
+
+		newVal = (newVal > 1) ? 1 : newVal;
+		newVal = (newVal < 0) ? 0 : newVal;
+		this.setParamValue("distance", newVal);
+		const displayvalue = this._state.getParamValue("displayvalue");
+
+		if (!this._inTouch) {
+			this._inTouch = true;
+			this.render();
+			this.showPopover(POPOVER_TYPE, displayvalue);
+		} else {
+			this.updatePopover(displayvalue);
+		}
+
+		this._previousPointerPosition = interactionCoords;
 	}
 
 	paint(mgraphics, params) {
@@ -128,43 +174,23 @@ export default class LiveSlider extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
-		const { orientation } = params;
-		let newVal;
-
-		const interactionCoords = this.interactionCoordsForEvent(event);
-
-		if (orientation === "Vertical") {
-			newVal = (1 - interactionCoords[1]);
-		} else if (orientation === "Horizontal") {
-			newVal = (interactionCoords[0]);
-		}
-
-		newVal = (newVal > 1) ? 1 : newVal;
-		newVal = (newVal < 0) ? 0 : newVal;
-		this.setParamValue("distance", newVal);
-		const displayvalue = this._state.getParamValue("displayvalue");
-
-		if (!this._inTouch) {
-			this._inTouch = true;
-			this.render();
-			this.showPopover(POPOVER_TYPE, displayvalue);
-		} else {
-			this.updatePopover(displayvalue);
-		}
+		this._handlePointerEvent(event, params);
 	}
 
 	pointerMove(event, params) {
-		this.pointerDown(event, params);
+		this._handlePointerEvent(event, params);
 	}
 
 	pointerUp(event, params) {
 		this._inTouch = false;
+		this._previousPointerPosition = null;
 		this.hidePopover();
 		this.render();
 	}
 
 	resetPointers() {
 		this._inTouch = false;
+		this._previousPointerPosition = null;
 	}
 }
 
