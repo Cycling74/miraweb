@@ -6,10 +6,7 @@ const path = require("path");
 helpers.logToConsole("Setting up repository. This might take a bit...");
 helpers.logToConsole("");
 helpers
-	.execCommand(null, "npm", ["set", "progress=false"])
-	.then(() => {
-		return helpers.execCommand("Installing NPM dependencies", "npm", ["install"]);
-	})
+	.execCommand("Installing NPM dependencies", "npm", ["install"])
 	.then(() => {
 		return helpers.execCommand("Install and setup included package dependencies", "lerna", ["bootstrap"]);
 	})
