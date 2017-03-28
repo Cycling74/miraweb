@@ -11,6 +11,7 @@ export default class LiveSlider extends MiraUIObject {
 		super(stateObj);
 		this._inTouch = false;
 		this._previousPointerPosition = null;
+		this._relativeAccum = null;
 	}
 
 	_handlePointerEvent(event, params) {
@@ -26,6 +27,7 @@ export default class LiveSlider extends MiraUIObject {
 		if (relative === "Relative") {
 			if (this._previousPointerPosition === null) {
 				this._previousPointerPosition = interactionCoords;
+				this._relativeAccum = distance;
 			}
 			let delta = 0;
 			if (orientation === "Vertical") {
@@ -33,7 +35,9 @@ export default class LiveSlider extends MiraUIObject {
 			} else if (this._orientation === "horizontal") {
 				delta = interactionCoords[0] - this._previousPointerPosition[0];
 			}
-			newVal = distance + delta;
+			this._relativeAccum += delta;
+			this._relativeAccum = Math.max(0, Math.min(1, this._relativeAccum));
+			newVal = this._relativeAccum;
 		} else {
 			if (orientation === "Vertical") {
 				newVal = 1 - interactionCoords[1];
@@ -182,8 +186,7 @@ export default class LiveSlider extends MiraUIObject {
 	}
 
 	pointerUp(event, params) {
-		this._inTouch = false;
-		this._previousPointerPosition = null;
+		this.resetPointers();
 		this.hidePopover();
 		this.render();
 	}
@@ -191,6 +194,7 @@ export default class LiveSlider extends MiraUIObject {
 	resetPointers() {
 		this._inTouch = false;
 		this._previousPointerPosition = null;
+		this._relativeAccum = null;
 	}
 }
 
