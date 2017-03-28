@@ -61,11 +61,14 @@ export default class Number extends MiraUIObject {
 				break;
 
 			case "Hex":
-				retStr = value.toString(16).toUpperCase();
+				retStr = (value >>> 0).toString(16).toUpperCase();
 				break;
 
 			case "Roland Octal":
-				retStr = ((value>>3)+1).toString() + ((value&7)+1).toString();
+				const mask = Math.pow(2, 16) - 1;
+				let dec1 = ((value>>3)+1);
+				let dec2 = ((value&7)+1);
+				retStr = dec1.toString() + dec2.toString();
 				break;
 
 			default:
