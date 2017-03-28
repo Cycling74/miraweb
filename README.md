@@ -1,7 +1,7 @@
 MiraWeb
 =============
 
-![MiraWeb](packages/miraweb/src/assets/miraweb_logo_bar.png)
+![MiraWeb](src/assets/miraweb_logo_bar.png)
 
 
 ## Setup
@@ -58,17 +58,17 @@ $> npm run clean
 You can build the MiraWeb client using one of the following three scripts/configurations.
 
 ```
-// development build
+// development build -> dev_build folder
 $> npm run build
 ```
 
 ```
-// release build
+// release build -> build folder
 $> npm run build-release
 ```
 
 ```
-// watch for changes and rerun development build
+// watch for changes and rerun development build -> dev_build folder
 $> npm run watch
 ```
 
