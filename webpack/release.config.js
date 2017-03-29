@@ -27,7 +27,8 @@ commonConfig.plugins.push(new webpack.DefinePlugin({
 	"process.env" : {
 		NODE_ENV : JSON.stringify("production")
 	},
-	__DEBUG__ : false
+	__DEBUG__ : false,
+	__MW_DEV_SERVER__ : false
 }));
 
 commonConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({

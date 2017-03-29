@@ -22,14 +22,17 @@ commonConfig.plugins.push(new HtmlWebpackPlugin({
 }));
 
 commonConfig.plugins.push(new webpack.DefinePlugin({
-	__DEBUG__ : true
+	__DEBUG__ : true,
+	__MW_DEV_SERVER__ : process.env.MW_DEV_SERVER === "true"
 }));
 
-commonConfig.devServer = {
-	hot : false,
-	overlay : {
-		errors : true
-	}
-};
+if (process.env.MW_DEV_SERVER === "true") {
+	commonConfig.devServer = {
+		hot : false,
+		overlay : {
+			errors : true
+		}
+	};
+}
 
 module.exports = commonConfig;
