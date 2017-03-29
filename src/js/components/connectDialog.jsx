@@ -45,6 +45,13 @@ export default class MiraConnectDialog extends React.Component {
 		});
 	}
 
+	componentDidMount() {
+		// force connect in debug build
+		if (__MW_DEV_SERVER__ && this._connectionShowsDialog(this.state.connectionState)) {
+			this._onConnect();
+		}
+	}
+
 	_connectionShowsDialog( status ) {
 		const showStates = ( CONNECTION_STATES.INIT | CONNECTION_STATES.CONNECTING | CONNECTION_STATES.CONNECTION_FAIL | CONNECTION_STATES.DISCONNECTED );
 		return (status & showStates) > 0;
