@@ -40,8 +40,8 @@
   "devDependencies": {
     "autoprefixer": "^6.5.1",
     "babel-core": "^6.9.1",
-    "babel-loader": "^6.2.4",
     "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.2.4",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-plugin-transform-runtime": "^6.15.0",
@@ -50,13 +50,13 @@
     "bowser": "^1.6.0",
     "classnames": "^2.2.5",
     "css-loader": "0.25.0",
-    "favicons-webpack-plugin": "^0.0.7",
-    "file-loader": "^0.9.0",
     "eslint": "^3.17.1",
     "eslint-config-recommended": "^1.5.0",
     "eslint-plugin-react": "^6.10.0",
+    "favicons-webpack-plugin": "^0.0.7",
+    "file-loader": "^0.9.0",
     "gridlex": "^2.2.3",
-    "gyronorm": "^2.0.4",
+    "gyronorm": "^2.0.6",
     "hammerjs": "^2.0.8",
     "html-webpack-plugin": "^2.22.0",
     "lerna": "2.0.0-beta.38",
@@ -75,6 +75,6 @@
     "style-loader": "^0.13.1",
     "tinycolor2": "1.4.1",
     "url-loader": "^0.5.7",
-    "webpack": "1.13.2"
+    "webpack": "2.3.2",
   }
 }
