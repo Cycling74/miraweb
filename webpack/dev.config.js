@@ -25,4 +25,11 @@ commonConfig.plugins.push(new webpack.DefinePlugin({
 	__DEBUG__ : true
 }));
 
+commonConfig.devServer = {
+	hot : false,
+	overlay : {
+		errors : true
+	}
+};
+
 module.exports = commonConfig;

@@ -22,15 +22,12 @@
     "url": "https://github.com/Cycling74/miraweb.git"
   },
   "scripts": {
-
     "setup": "node ./.bin/setup.js",
     "setup:pixi": "node ./.bin/buildPixi.js",
     "clean": "node ./.bin/clean.js",
-
     "build": "rimraf ./dev_build && webpack --config webpack/dev.config.js",
     "build-release": "rimraf ./build && webpack --config webpack/release.config.js",
-    "watch": "rimraf ./dev_build && env WATCH=1 webpack --config webpack/dev.config.js",
-
+    "serve": "webpack-dev-server --config webpack/dev.config.js --open --inline --progress",
     "lint": "eslint src -c ./.eslintrc.json",
     "lint-fix": "eslint src -c ./.eslintrc.json --fix",
     "test": "npm run lint",
@@ -76,5 +73,6 @@
     "tinycolor2": "1.4.1",
     "url-loader": "^0.5.7",
     "webpack": "2.3.2",
+    "webpack-dev-server": "^2.4.2"
   }
 }

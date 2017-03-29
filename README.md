@@ -58,6 +58,13 @@ $> npm run clean
 You can build the MiraWeb client using one of the following three scripts/configurations.
 
 ```
+// start dev-server on http://localhost:8080
+// watches for changes and does live reloading
+// initial bundle build can take a few sec -> console shows progress
+$> npm run serve
+```
+
+```
 // development build -> dev_build folder
 $> npm run build
 ```
@@ -67,10 +74,6 @@ $> npm run build
 $> npm run build-release
 ```
 
-```
-// watch for changes and rerun development build -> dev_build folder
-$> npm run watch
-```
 
 ### Tests
 
