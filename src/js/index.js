@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	let PORT = window.location.search.match(/port=([0-9]*)/);
 	if (PORT && PORT.length === 2) {
 		PORT = parseInt(PORT[1], 10);
-	} else if (/^http(s)?:$/.test(window.location.protocol)) {
+	} else if (!__DEBUG__ && /^http(s)?:$/.test(window.location.protocol)) { // don't use served port when running webpack-dev-server
 		PORT = parseInt(window.location.port, 10);
 	}
 	PORT = !PORT || isNaN(PORT) ? 8086 : PORT;
