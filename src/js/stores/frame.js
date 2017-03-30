@@ -6,6 +6,8 @@ import Store from "./base.js";
 import findIndex from "lodash/findIndex.js";
 import toArray from "lodash/toArray.js";
 
+const NONE_ORDER = "<none>";
+
 class FrameStore extends Store {
 
 	constructor() {
@@ -94,12 +96,12 @@ class FrameStore extends Store {
 			const indexA = a.getParamValue("taborder");
 			const indexB = b.getParamValue("taborder");
 
-			if (indexA && indexB) {
+			if (indexA !== NONE_ORDER && indexB !== NONE_ORDER) {
 				if (indexA < indexB) return -1;
 				if (indexA > indexB) return 1;
-			} else if (indexA) {
+			} else if (indexA === NONE_ORDER) {
 				return -1;
-			} else if (indexB) {
+			} else if (indexB === NONE_ORDER) {
 				return 1;
 			}
 
