@@ -10,6 +10,10 @@ export function capitalize(text) {
 	return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+export function clamp(v, lo, hi) {
+	return v < hi ? v > lo ? v : lo : hi;
+}
+
 function toPrefixed(prop) {
 	const upperCaseProp = capitalize(prop);
 	const props = [prop];
