@@ -1,5 +1,5 @@
 import MiraUIObject from "./base.js";
-import { toRad } from "../lib/utils.js";
+import { clamp, toRad } from "../lib/utils.js";
 import { POPOVER_TYPES } from "../stores/popover.js";
 
 const POPOVER_TYPE = POPOVER_TYPES.VALUE_LABEL;
@@ -7,7 +7,10 @@ const POPOVER_TYPE = POPOVER_TYPES.VALUE_LABEL;
 export default class LiveDial extends MiraUIObject {
 	constructor(stateObj) {
 		super(stateObj);
+
 		this._inTouch = false;
+		this._touchInitialDistance = 0;
+		this._touchInitialYCoord = 0;
 	}
 
 	paint(mgraphics, params) {
@@ -214,9 +217,13 @@ export default class LiveDial extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
-		const { displayvalue } = params;
+		const { displayvalue, distance } = params;
 		const height = this.getScreenRect()[3];
-		this.lastY = event.normTargetY * height;
+
+		// cache initial coord and distance
+		this._touchInitialYCoord = event.normTargetY * height;
+		this._touchInitialDistance = distance;
+
 		if (!this._inTouch) {
 			this._inTouch = true;
 			this.showPopover(POPOVER_TYPE, displayvalue);
@@ -224,16 +231,15 @@ export default class LiveDial extends MiraUIObject {
 	}
 
 	pointerMove(event, params) {
-		const { distance, displayvalue } = params;
+		const { displayvalue } = params;
 		const height = this.getScreenRect()[3];
+
 		let currentY = event.normTargetY * height;
 		let newVal;
 
-		newVal = distance + (0.005) * (this.lastY - currentY);
-		newVal = (newVal > 1.0) ? 1.0 : newVal;
-		newVal = (newVal < 0) ? 0 : newVal;
+		newVal = this._touchInitialDistance + (0.005) * (this._touchInitialYCoord - currentY);
+		newVal = clamp(newVal, 0, 1);
 
-		this.lastY = currentY;
 		this.setParamValue("distance", newVal);
 		this.updatePopover(displayvalue);
 	}
