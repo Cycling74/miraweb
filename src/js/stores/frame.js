@@ -38,6 +38,7 @@ class FrameStore extends Store {
 		if (param.type === "taborder") this.triggerEvent("frame_resort");
 		if (param.type === "tabname") this.triggerEvent("frame_rename");
 		if (param.type === "color") this.triggerEvent("frame_tint");
+		if (param.type === "mira_focus" && param.value === 1) ActiveFrameActions.set(frame);
 	}
 
 	_onRemoveFrame(frame) {
