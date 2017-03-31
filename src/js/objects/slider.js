@@ -5,52 +5,37 @@ export default class Slider extends MiraUIObject {
 	constructor(stateObj) {
 		super(stateObj);
 		this._orientation = null;
-		this._previousPointerPosition = null;
-		this._relativeAccum = null;
+
+		this._touchPreviousCoord = 0;
+		this._touchPreviousDist = 0;
 	}
 
 	_handlePointerEvent(event, params, isDown = false) {
 		const {
-			distance,
 			floatoutput,
-			relative,
+			relative
 		} = params;
 
 		let { size } = params;
+		if (floatoutput === 0) size -= 1;
+
+		let currentPos = this.interactionCoordsForEvent(event);
+		currentPos = this._orientation === "vertical" ? currentPos[1] : currentPos[0];
 
 		let newVal;
 
-		if (floatoutput === 0) {
-			size -= 1;
-		}
-
-		const interactionCoords = this.interactionCoordsForEvent(event);
-
 		if (relative === "Relative") {
-			if (this._previousPointerPosition === null) {
-				this._previousPointerPosition = interactionCoords;
-				this._relativeAccum = size !== 0 ? distance / size : distance;
-			}
-			let delta = 0;
-			if (this._orientation === "vertical") {
-				delta = (1 - interactionCoords[1]) - (1 - this._previousPointerPosition[1]);
-			} else if (this._orientation === "horizontal") {
-				delta = interactionCoords[0] - this._previousPointerPosition[0];
-			}
-			this._relativeAccum += delta;
-			this._relativeAccum = Math.max(0, Math.min(1, this._relativeAccum));
-			newVal = size * this._relativeAccum;
+			const delta = currentPos - this._touchPreviousCoord;
+			newVal = this._touchPreviousDist + (this._orientation === "vertical" ?  -delta * size : delta * size);
 		} else {
-			if (this._orientation === "vertical") {
-				newVal = size * (1 - interactionCoords[1]);
-			} else if (this._orientation === "horizontal") {
-				newVal = size * (interactionCoords[0]);
-			}
+			newVal = this._orientation === "vertical" ? 1 - currentPos : currentPos;
+			newVal *= size;
 		}
 
 		if (!floatoutput) newVal = Math.round(newVal);
 		newVal = (newVal > size) ? size : newVal;
 		newVal = (newVal < 0) ? 0 : newVal;
+
 		this.setParamValue("distance", newVal);
 		params.distance = newVal; // Need to set this before passing params to the popover
 
@@ -59,7 +44,8 @@ export default class Slider extends MiraUIObject {
 		}
 		this.updatePopover(this._popoverDescription(params));
 
-		this._previousPointerPosition = interactionCoords;
+		this._touchPreviousCoord = currentPos;
+		this._touchPreviousDist = newVal;
 	}
 
 	_popoverType() {
@@ -270,6 +256,9 @@ export default class Slider extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
+		const { distance, orientation } = params;
+		this._touchPreviousDist = distance;
+		this._touchPreviousCoord = orientation === "Vertical" ? this.interactionCoordsForEvent(event)[1] : this.interactionCoordsForEvent(event)[0];
 		this._handlePointerEvent(event, params);
 	}
 
@@ -278,8 +267,8 @@ export default class Slider extends MiraUIObject {
 	}
 
 	pointerUp(event, params) {
-		this._previousPointerPosition = null;
-		this._relativeAccum = null;
+		this._touchPreviousCoord = 0;
+		this._touchPreviousDist = 0;
 		if (this.isPopoverVisible()) this.hidePopover();
 		this.render();
 	}
