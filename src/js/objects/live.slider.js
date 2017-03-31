@@ -32,7 +32,7 @@ export default class LiveSlider extends MiraUIObject {
 			let delta = 0;
 			if (orientation === "Vertical") {
 				delta = (1 - interactionCoords[1]) - (1 - this._previousPointerPosition[1]);
-			} else if (this._orientation === "horizontal") {
+			} else if (orientation === "Horizontal") {
 				delta = interactionCoords[0] - this._previousPointerPosition[0];
 			}
 			this._relativeAccum += delta;
@@ -41,7 +41,7 @@ export default class LiveSlider extends MiraUIObject {
 		} else {
 			if (orientation === "Vertical") {
 				newVal = 1 - interactionCoords[1];
-			} else if (this._orientation === "horizontal") {
+			} else if (orientation === "Horizontal") {
 				newVal = interactionCoords[0];
 			}
 		}
