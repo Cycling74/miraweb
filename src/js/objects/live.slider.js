@@ -9,46 +9,34 @@ export default class LiveSlider extends MiraUIObject {
 
 	constructor(stateObj) {
 		super(stateObj);
+
 		this._inTouch = false;
-		this._previousPointerPosition = null;
-		this._relativeAccum = null;
+		this._touchInitialCoord = 0;
+		this._touchInitialDist = 0;
 	}
 
 	_handlePointerEvent(event, params) {
 		const {
-			distance,
 			orientation,
 			relative
 		} = params;
+
 		let newVal;
 
-		const interactionCoords = this.interactionCoordsForEvent(event);
+		let currentPos = this.interactionCoordsForEvent(event);
+		currentPos = orientation === "Vertical" ? currentPos[1] : currentPos[0];
 
 		if (relative === "Relative") {
-			if (this._previousPointerPosition === null) {
-				this._previousPointerPosition = interactionCoords;
-				this._relativeAccum = distance;
-			}
-			let delta = 0;
-			if (orientation === "Vertical") {
-				delta = (1 - interactionCoords[1]) - (1 - this._previousPointerPosition[1]);
-			} else if (this._orientation === "horizontal") {
-				delta = interactionCoords[0] - this._previousPointerPosition[0];
-			}
-			this._relativeAccum += delta;
-			this._relativeAccum = Math.max(0, Math.min(1, this._relativeAccum));
-			newVal = this._relativeAccum;
+			const delta = currentPos - this._touchInitialCoord;
+			newVal = orientation === "Vertical" ? this._touchInitialDist - delta : this._touchInitialDist + delta;
 		} else {
-			if (orientation === "Vertical") {
-				newVal = 1 - interactionCoords[1];
-			} else if (this._orientation === "horizontal") {
-				newVal = interactionCoords[0];
-			}
+			newVal = orientation === "Vertical" ? 1 - currentPos : currentPos;
 		}
 
-		newVal = (newVal > 1) ? 1 : newVal;
-		newVal = (newVal < 0) ? 0 : newVal;
+		newVal = newVal < 0 ? 0 : newVal;
+		newVal = newVal > 1 ? 1 : newVal;
 		this.setParamValue("distance", newVal);
+
 		const displayvalue = this._state.getParamValue("displayvalue");
 
 		if (!this._inTouch) {
@@ -58,8 +46,6 @@ export default class LiveSlider extends MiraUIObject {
 		} else {
 			this.updatePopover(displayvalue);
 		}
-
-		this._previousPointerPosition = interactionCoords;
 	}
 
 	paint(mgraphics, params) {
@@ -178,6 +164,11 @@ export default class LiveSlider extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
+		const { distance, orientation } = params;
+
+		this._touchInitialDist = distance;
+		this._touchInitialCoord = orientation === "Vertical" ? this.interactionCoordsForEvent(event)[1] : this.interactionCoordsForEvent(event)[0];
+
 		this._handlePointerEvent(event, params);
 	}
 
@@ -193,8 +184,8 @@ export default class LiveSlider extends MiraUIObject {
 
 	resetPointers() {
 		this._inTouch = false;
-		this._previousPointerPosition = null;
-		this._relativeAccum = null;
+		this._touchInitialCoord = 0;
+		this._touchInitialDist = 0;
 	}
 }
 
