@@ -9,8 +9,8 @@ export default class LiveDial extends MiraUIObject {
 		super(stateObj);
 
 		this._inTouch = false;
-		this._touchInitialDistance = 0;
-		this._touchInitialYCoord = 0;
+		this._touchPreviousDistance = 0;
+		this._touchPreviousYCoord = 0;
 	}
 
 	paint(mgraphics, params) {
@@ -221,8 +221,8 @@ export default class LiveDial extends MiraUIObject {
 		const height = this.getScreenRect()[3];
 
 		// cache initial coord and distance
-		this._touchInitialYCoord = event.normTargetY * height;
-		this._touchInitialDistance = distance;
+		this._touchPreviousYCoord = event.normTargetY * height;
+		this._touchPreviousDistance = distance;
 
 		if (!this._inTouch) {
 			this._inTouch = true;
@@ -237,11 +237,14 @@ export default class LiveDial extends MiraUIObject {
 		let currentY = event.normTargetY * height;
 		let newVal;
 
-		newVal = this._touchInitialDistance + (0.005) * (this._touchInitialYCoord - currentY);
+		newVal = this._touchPreviousDistance + (0.005) * (this._touchPreviousYCoord - currentY);
 		newVal = clamp(newVal, 0, 1);
 
 		this.setParamValue("distance", newVal);
 		this.updatePopover(displayvalue);
+
+		this._touchPreviousYCoord = currentY;
+		this._touchPreviousDistance = newVal;
 	}
 
 	pointerUp(event, params) {
