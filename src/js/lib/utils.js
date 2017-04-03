@@ -58,6 +58,10 @@ export function isiOSDevice() {
 	return bowser.ios;
 }
 
+export function isMobileOrTabletDevice() {
+	return bowser.mobile || bowser.tablet;
+}
+
 export function whichiOSDevice() {
 	if (!isiOSDevice()) return null;
 	const devices = ["ipad", "iphone", "ipod"];
