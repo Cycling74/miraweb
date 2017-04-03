@@ -1,8 +1,6 @@
 import MiraUIObject from "./base.js";
 import { POPOVER_TYPES } from "../stores/popover.js";
-import { clamp, isMobileOrTabletDevice } from "../lib/utils.js";
-
-const USE_PSEUDORELATIVE_MODE = !isMobileOrTabletDevice();
+import { clamp } from "../lib/utils.js";
 
 export default class Slider extends MiraUIObject {
 	constructor(stateObj) {
@@ -25,13 +23,13 @@ export default class Slider extends MiraUIObject {
 		let currentPos = this.interactionCoordsForEvent(event);
 		currentPos = this._orientation === "vertical" ? currentPos[1] : currentPos[0];
 
-		if (isPointerDown && relative !== "Relative" && USE_PSEUDORELATIVE_MODE) {
+		if (isPointerDown && relative !== "Relative") {
 			this._touchPreviousDist = this._orientation === "vertical" ? 1 - currentPos : currentPos;
 			this._touchPreviousDist *= size;
 			this._touchPreviousDist = clamp(this._touchPreviousDist, 0, size);
 		}
 
-		if (relative === "Relative" || USE_PSEUDORELATIVE_MODE) {
+		if (relative === "Relative") {
 			const delta = currentPos - this._touchPreviousCoord;
 			this._touchPreviousDist += (this._orientation === "vertical" ?  -delta * size : delta * size);
 		} else {

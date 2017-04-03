@@ -1,12 +1,11 @@
 import MiraUIObject from "./base.js";
 import { POPOVER_TYPES } from "../stores/popover.js";
-import { clamp, isMobileOrTabletDevice } from "../lib/utils.js";
+import { clamp } from "../lib/utils.js";
 
 const LINE_WIDTH = 2;
 const PADDING = 8;
 const PIXELS_PER_STEP = 3;
 const POPOVER_TYPE = POPOVER_TYPES.VALUE_LABEL;
-const USE_PSEUDORELATIVE_MODE = !isMobileOrTabletDevice();
 
 export default class LiveSlider extends MiraUIObject {
 
@@ -52,17 +51,13 @@ export default class LiveSlider extends MiraUIObject {
 
 		let usableSteps = this._getUsableStepsForParams(params);
 
-		if (isPointerDown && relative !== "Relative" && USE_PSEUDORELATIVE_MODE) {
+		if (isPointerDown && relative !== "Relative") {
 			this._touchPreviousDist = orientation === "Vertical" ? 1 - currentPos : currentPos;
 			this._touchPreviousDist = clamp(this._touchPreviousDist, 0, 1);
 		}
 
-		if (relative === "Relative" || USE_PSEUDORELATIVE_MODE) {
+		if (relative === "Relative") {
 			let delta = currentPos - this._touchPreviousCoord;
-			if (usableSteps !== 0) {
-				delta *= this.interactionRect[orientation === "Vertical" ? 3 : 2] / usableSteps;
-				delta /= PIXELS_PER_STEP;
-			}
 			this._touchPreviousDist = orientation === "Vertical" ? this._touchPreviousDist - delta : this._touchPreviousDist + delta;
 		} else {
 			this._touchPreviousDist = orientation === "Vertical" ? 1 - currentPos : currentPos;
