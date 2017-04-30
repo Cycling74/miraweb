@@ -6,17 +6,17 @@ import ActiveFrameStore from "../stores/activeFrame.js";
 const DIRECTION_MARGIN = 6;
 
 const CellStyle = Object.freeze({
-	CELL : {
+	CELL : Object.freeze({
 		INACTIVE : "INACTIVE",
 		ACTIVE : "ACTIVE",
 		MARKED : "MARKED",
 		DEFAULT : "DEFAULT"
-	},
-	DIRECTION : {
+	}),
+	DIRECTION : Object.freeze({
 		LEFT : "LEFT",
 		RIGHT : "RIGHT",
 		CROSS : "CROSS"
-	}
+	})
 });
 
 class Cell {
