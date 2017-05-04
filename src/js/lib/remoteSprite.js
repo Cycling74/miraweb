@@ -7,9 +7,11 @@ export default class RemoteSprite extends EventEmitter {
 		super();
 		this._display = new PIXI.Container();
 		this._handleData = this._handleData.bind(this);
+		this._clear = this._clear.bind(this);
 		this._resource = xebraResource;
 		this._resource.on("data_received", this._handleData);
-		this._sprite = undefined;
+		this._resource.on("clear", this._clear);
+		this._sprite = null;
 	}
 
 	get display() {
@@ -30,18 +32,29 @@ export default class RemoteSprite extends EventEmitter {
 		}
 	}
 
-	_handleData(filenamename, data_uri_string) {
-		let newSprite = new PIXI.Sprite.fromImage(data_uri_string);
-		this._display.addChild(newSprite);
-
+	_destroySprite() {
 		if (this._sprite) {
 			this._sprite.parent.removeChild(this._sprite);
 			this._sprite.destroy();
+			this._sprite = null;
 		}
+	}
+
+	_handleData(filenamename, data_uri_string) {
+
+		this._destroySprite();
+
+		let newSprite = new PIXI.Sprite.fromImage(data_uri_string);
+		this._display.addChild(newSprite);
 
 		this._sprite = newSprite;
 		this._sprite.width = this.dimensions.width;
 		this._sprite.height = this.dimensions.height;
+		this.emit("update");
+	}
+
+	_clear() {
+		this._destroySprite();
 		this.emit("update");
 	}
 
