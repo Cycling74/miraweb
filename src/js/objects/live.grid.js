@@ -264,8 +264,6 @@ export default class LiveGrid extends MiraUIObject {
 		const cellIsInactive = inactiveValues.find(value => value === cellValue);
 		const cellIsActive = stepValues.find(value => value === cellValue);
 
-		console.log('Inactive: ', cellIsInactive);
-		console.log('Active: ', cellIsActive);
 		if (cellIsInactive === undefined && matrixmode && cellIsActive !== undefined ) {
 			return false;
 		} else if (cellIsInactive === undefined && !matrixmode) {
@@ -412,8 +410,6 @@ export default class LiveGrid extends MiraUIObject {
 		// currentstep indicator
 		const buttonWidth = width / columns;
 		const buttonHeight = (direction === 1) ? ((height - direction_height - DIRECTION_MARGIN ) / rows) : (height / rows);
-
-		console.log("calling paint with scale: " + scale);
 
 		this._currentstepContainer.clear();
 		this._currentstepContainer.beginFill(createHexColors(hbgcolor), hbgcolor[3]);
