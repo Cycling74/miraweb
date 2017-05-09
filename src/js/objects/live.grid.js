@@ -261,13 +261,15 @@ export default class LiveGrid extends MiraUIObject {
 		const inactiveValues = distance.slice(5, 5 + inactiveConstraintsCells);
 		const stepValues = distance.slice(5 + inactiveConstraintsCells, 5 + inactiveConstraintsCells + activeStepCells);
 		const cellValue = (col * 1000) + row;
-		const cellIsInactive = inactiveValues.find(value => value === cellValue);
-		const cellIsActive = stepValues.find(value => value === cellValue);
+		const cellIsInactive = inactiveValues.indexOf(cellValue) >= 0;
+		const cellIsActive = stepValues.indexOf(cellValue) >= 0;
 
-		if (cellIsInactive === undefined && matrixmode && cellIsActive !== undefined ) {
-			return false;
-		} else if (cellIsInactive === undefined && !matrixmode) {
-			return false;
+		if (!cellIsInactive) {
+			if (matrixmode && cellIsActive) {
+				return false;
+			} else if (!matrixmode) {
+				return false;
+			}
 		}
 		return true;
 	}
