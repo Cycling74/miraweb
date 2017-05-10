@@ -255,13 +255,21 @@ export default class LiveGrid extends MiraUIObject {
 		}
 	}
 
-	_isCellInactive(row, col, distance) {
+	_isCellInactive(row, col, distance, matrixmode) {
 		const inactiveConstraintsCells = distance[3];
+		const activeStepCells = distance[4];
 		const inactiveValues = distance.slice(5, 5 + inactiveConstraintsCells);
+		const stepValues = distance.slice(5 + inactiveConstraintsCells, 5 + inactiveConstraintsCells + activeStepCells);
 		const cellValue = (col * 1000) + row;
-		const cellIsInactive = inactiveValues.find(value => value === cellValue);
-		if (cellIsInactive === undefined) {
-			return false;
+		const cellIsInactive = inactiveValues.indexOf(cellValue) >= 0;
+		const cellIsActive = stepValues.indexOf(cellValue) >= 0;
+
+		if (!cellIsInactive) {
+			if (matrixmode && cellIsActive) {
+				return false;
+			} else if (!matrixmode) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -405,8 +413,6 @@ export default class LiveGrid extends MiraUIObject {
 		const buttonWidth = width / columns;
 		const buttonHeight = (direction === 1) ? ((height - direction_height - DIRECTION_MARGIN ) / rows) : (height / rows);
 
-		console.log("calling paint with scale: " + scale);
-
 		this._currentstepContainer.clear();
 		this._currentstepContainer.beginFill(createHexColors(hbgcolor), hbgcolor[3]);
 		this._currentstepContainer.drawRect(buttonWidth * (currentstep - 1) * scale, 0, buttonWidth * scale, buttonHeight * rows * scale);
@@ -414,7 +420,7 @@ export default class LiveGrid extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
-		const { distance, rows, mode } = params;
+		const { distance, rows, mode, matrixmode } = params;
 		const { cell_type, col, row } = event.attributes;
 		const inactiveConstraintsCells = distance[3];
 		const activeStepCells = distance[4];
@@ -424,14 +430,23 @@ export default class LiveGrid extends MiraUIObject {
 
 		if (cell_type === "cell") {
 			if (mode === "Step constraint") {
-				if (this._isCellInactive(row, col, distance)) {
+				if (this._isCellInactive(row, col, distance, matrixmode)) {
 					this._currentDragValue = 1;
 				} else {
 					this._currentDragValue = 0;
 				}
 				this._setConstraint(row, col, distance, rows);
 			} else {
-				this.setParamValue("setcell", [col + 1, row + 1, 1]);
+				if (matrixmode) {
+					if (this._isCellInactive(row, col, distance, matrixmode)) {
+						this._currentDragValue = 1;
+					} else {
+						this._currentDragValue = 0;
+					}
+					this.setParamValue("setcell", [col + 1, row + 1, this._currentDragValue]);
+				} else {
+					this.setParamValue("setcell", [col + 1, row + 1, 1]);
+				}
 			}
 			this._lastPositionForTouch[ event.id ] = { col, row };
 		} else if (cell_type === "direction") {
@@ -454,19 +469,23 @@ export default class LiveGrid extends MiraUIObject {
 	pointerMove(event, params) {
 		const touchType = this._typeForTouch[ event.id ];
 		const lastPosition = this._lastPositionForTouch[ event.id ];
-		const { rows, mode, distance } = params;
+		const { rows, mode, distance, matrixmode } = params;
 		const { cell_type, col, row } = event.attributes;
 
 		if (touchType === "cell" && cell_type === "cell") {
 			if (lastPosition.col !== col || lastPosition.row !== row) {
 				if (mode === "Step constraint") {
-					const cellInactive = this._isCellInactive(row, col, distance);
+					const cellInactive = this._isCellInactive(row, col, distance, matrixmode);
 					if (cellInactive && this._currentDragValue === 1
 						|| !cellInactive && this._currentDragValue === 0) {
 						this._setConstraint(row, col, distance, rows);
 					}
 				} else {
-					this.setParamValue("setcell", [Math.round(col + 1), Math.round(row + 1), 1]);
+					if (matrixmode) {
+						this.setParamValue("setcell", [Math.round(col + 1), Math.round(row + 1), this._currentDragValue]);
+					} else {
+						this.setParamValue("setcell", [Math.round(col + 1), Math.round(row + 1), 1]);
+					}
 				}
 				const steps = Math.abs(lastPosition.col - col);
 				const stepInc = lastPosition.col > col ? -1 : 1;
@@ -478,7 +497,11 @@ export default class LiveGrid extends MiraUIObject {
 						if (mode === "Step constraint") {
 							this._setConstraint(newRow, newCol, distance, rows);
 						} else {
-							this.setParamValue("setcell", [Math.round(newCol + 1), Math.round(newRow + 1), 1]);
+							if (matrixmode) {
+								this.setParamValue("setcell", [Math.round(newCol + 1), Math.round(newRow + 1), this._currentDragValue]);
+							} else {
+								this.setParamValue("setcell", [Math.round(newCol + 1), Math.round(newRow + 1), 1]);
+							}
 						}
 					}
 				}
