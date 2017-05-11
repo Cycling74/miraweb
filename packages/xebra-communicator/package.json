@@ -27,8 +27,7 @@
 
     "lint": "eslint src -c ./.eslintrc.json",
     "test": "npm run lint",
-    "preversion": "npm run test",
-    "version": "npm run lib"
+    "prepublish": "npm run lib"
   },
   "dependencies": {
     "lodash.defaults": "^4.2.0"
