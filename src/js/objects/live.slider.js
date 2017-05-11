@@ -4,7 +4,6 @@ import { clamp } from "../lib/utils.js";
 
 const LINE_WIDTH = 2;
 const PADDING = 8;
-const PIXELS_PER_STEP = 3;
 const POPOVER_TYPE = POPOVER_TYPES.VALUE_LABEL;
 
 export default class LiveSlider extends MiraUIObject {
@@ -44,12 +43,9 @@ export default class LiveSlider extends MiraUIObject {
 			relative
 		} = params;
 
-		let newVal;
 
 		let currentPos = this.interactionCoordsForEvent(event);
 		currentPos = orientation === "Vertical" ? currentPos[1] : currentPos[0];
-
-		let usableSteps = this._getUsableStepsForParams(params);
 
 		if (isPointerDown && relative !== "Relative") {
 			this._touchPreviousDist = orientation === "Vertical" ? 1 - currentPos : currentPos;

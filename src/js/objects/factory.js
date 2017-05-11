@@ -9,7 +9,9 @@ for (let i = 0, il = classNames.length; i < il; i++) {
 	if (typeof objClass.NAME === "string") {
 		UI_OBJECTS_BY_NAME[objClass.NAME] = objClass;
 	} else {
-		objClass.NAME.forEach((name) => UI_OBJECTS_BY_NAME[name] = objClass);
+		objClass.NAME.forEach((name) => {
+			UI_OBJECTS_BY_NAME[name] = objClass;
+		});
 	}
 }
 

@@ -150,7 +150,7 @@ class Cell {
 
 				this._graphics.moveTo(((j * buttonWidth) + startX) * scale, (y + startY) * scale);
 				this._graphics.lineTo(((j * buttonWidth) + buttonWidth - startX) * scale, (y + direction_height - startY) * scale);
- 
+
 				this._graphics.moveTo(((j * buttonWidth) + buttonWidth - startX) * scale, (y + startY) * scale);
 				this._graphics.lineTo(((j * buttonWidth) + startX) * scale, (y + direction_height - startY) * scale);
 			}

@@ -27,9 +27,9 @@ export default class Number extends MiraUIObject {
 
 		let retStr;
 
-		switch(format) {
+		switch (format) {
 			case "Decimal (Integer)":
-				retStr = parseInt(value).toString();
+				retStr = parseInt(value, 10).toString();
 				break;
 
 			case "Decimal (Floating-Point)":
@@ -46,16 +46,21 @@ export default class Number extends MiraUIObject {
 				break;
 
 			case "MIDI":
-			case "MIDI (C4)":
+			case "MIDI (C4)": {
+
 				const noteArray = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-				let base = 2
+				let base = 2;
 				if (format === "MIDI (C4)") base = 1;
 				const note = noteArray[value % 12] + (Math.floor(value / 12) - base).toString();
-					if (value <= 127 && value >= 0) retStr = note;
-					else if (value < 0) retStr = "-";
-					else if (value > 127) retStr = "+";
+				if (value <= 127 && value >= 0) {
+					retStr = note;
+				} else if (value < 0) {
+					retStr = "-";
+				} else if (value > 127) {
+					retStr = "+";
+				}
 				break;
-
+			}
 			case "Binary":
 				retStr = (value >>> 0).toString(2);
 				break;
@@ -64,13 +69,12 @@ export default class Number extends MiraUIObject {
 				retStr = (value >>> 0).toString(16).toUpperCase();
 				break;
 
-			case "Roland Octal":
-				const mask = Math.pow(2, 16) - 1;
-				let dec1 = ((value>>3)+1);
-				let dec2 = ((value&7)+1);
+			case "Roland Octal": {
+				let dec1 = ((value >> 3) + 1);
+				let dec2 = ((value & 7) + 1);
 				retStr = dec1.toString() + dec2.toString();
 				break;
-
+			}
 			default:
 				break;
 		}
@@ -82,7 +86,6 @@ export default class Number extends MiraUIObject {
 			fontsize,
 			fontname,
 			fontface,
-			format,
 			bgcolor,
 			textcolor,
 			tricolor,
