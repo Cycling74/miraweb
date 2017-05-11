@@ -32,7 +32,7 @@
     "lint-fix": "eslint src -c ./.eslintrc.json --fix",
     "test": "npm run lint",
     "testall": "npm run test && lerna run test",
-    "publish": "lerna run test; lerna publish"
+    "publish": "node ./.bin/bumpMWVersion.js; lerna run test; lerna publish"
   },
   "dependencies": {},
   "devDependencies": {
@@ -58,6 +58,7 @@
     "gyronorm": "^2.0.6",
     "hammerjs": "^2.0.8",
     "html-webpack-plugin": "^2.22.0",
+    "inquirer": "^3.0.6",
     "lerna": "2.0.0-beta.38",
     "lodash": "^4.16.1",
     "mkdirp": "^0.5.1",
@@ -70,6 +71,7 @@
     "react-dom": "^15.3.2",
     "rimraf": "^2.6.1",
     "sass-loader": "4.0.2",
+    "semver": "^5.3.0",
     "source-map-loader": "0.1.5",
     "style-loader": "^0.13.1",
     "tinycolor2": "1.4.1",
