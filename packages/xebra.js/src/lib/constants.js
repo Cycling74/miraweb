@@ -1,4 +1,13 @@
 /**
+ * Filename for an empty XebraResource
+ * @static
+ * @constant
+ * @memberof Xebra
+ * @type {String}
+ */
+const EMPTY_RESOURCE = "<none>";
+
+/**
  * Motion Types supported by Xebra. Use these as type identifiers when calling sendMotionData on Xebra.State.
  * @static
  * @constant
@@ -50,6 +59,21 @@ const LIVE_UNIT_STYLES = Object.freeze({
 	LIVE_UNIT_NATIVE : "Native"
 });
 
+
+/**
+ * Unit Styles of live.* objects.
+ * @static
+ * @constant
+ * @memberof Xebra
+ * @type {object}
+ * @property {string} LIVE_UNIT_INT - Integer Unit Style
+ */
+const LIVE_VALUE_TYPES = Object.freeze({
+	FLOAT : "Float",
+	ENUM : "Enum",
+	INT : "Int (0-255)"
+});
+
 /**
  * Available View Modes of XebraState.
  * @static
@@ -67,7 +91,9 @@ const VIEW_MODES = Object.freeze({
 });
 
 export {
+	EMPTY_RESOURCE,
 	LIVE_UNIT_STYLES,
+	LIVE_VALUE_TYPES,
 	MOTION_TYPES,
 	VIEW_MODES
 };

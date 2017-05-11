@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import { extname } from "path";
+import { EMPTY_RESOURCE } from "./constants.js";
 
 let XEBRA_RESOURCE_ID = 0;
 
@@ -43,6 +44,7 @@ class Resource extends EventEmitter {
 		this._id = ++XEBRA_RESOURCE_ID;
 		this._width = 1;
 		this._height = 1;
+		this._filename = EMPTY_RESOURCE;
 		this._objectContext = parentObjectId;
 	}
 
@@ -76,6 +78,10 @@ class Resource extends EventEmitter {
 	 */
 	get objectContext() {
 		return this._objectContext;
+	}
+
+	get isEmpty() {
+		return this.filename === EMPTY_RESOURCE;
 	}
 
 	/**
@@ -125,9 +131,30 @@ class Resource extends EventEmitter {
 	}
 
 	/**
+	 * Clears the resource content
+	 * @private
+	 */
+	clear() {
+		this._width = 1;
+		this._height = 1;
+		this._filename = EMPTY_RESOURCE;
+
+		/**
+		 * @event Resource.clear
+		 * Called whenever the resource is cleared and its content is now empty
+		 */
+		this.emit("clear");
+	}
+
+	/**
 	 * Be sure to call this when the Resource is no longer needed.
 	 */
 	destroy() {
+		/**
+		 * @event Resource.destroy
+		 * Called whenever the resource is about to be destroyed
+		 */
+		this.emit("destroy");
 		this.removeAllListeners();
 	}
 

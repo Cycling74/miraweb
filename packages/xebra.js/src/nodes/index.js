@@ -10,7 +10,7 @@ import liveScalingObjectMixin from "./liveScalingObjectMixin.js";
 import resourceObjectMixin from "./resourceObjectMixin.js";
 
 const LIVE_DISPLAY_VALUE_OBJECT_TYPES = [OBJECTS.LIVE_DIAL, OBJECTS.LIVE_NUMBOX, OBJECTS.LIVE_SLIDER];
-const LIVE_SCALING_OBJECT_TYPES = [OBJECTS.LIVE_DIAL, OBJECTS.LIVE_SLIDER];
+const LIVE_SCALING_OBJECT_TYPES = [OBJECTS.LIVE_DIAL, OBJECTS.LIVE_NUMBOX, OBJECTS.LIVE_SLIDER];
 const RESOURCE_OBJECT_TYPES = [OBJECTS.FPIC, OBJECTS.LIVE_TAB, OBJECTS.LIVE_TEXT];
 
 function getInstanceForObjectType(id, type, creationSeq, parentId) {

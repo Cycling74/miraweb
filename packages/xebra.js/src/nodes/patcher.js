@@ -29,6 +29,8 @@ class PatcherNode extends ObjectNode {
 		this._scriptingNamesById = new Map();
 
 		this._view = null;
+
+		this.on("initialized", this._updateViewMode);
 	}
 
 	// Bound callbacks using fat arrow notation
@@ -200,7 +202,9 @@ class PatcherNode extends ObjectNode {
 	 * @see Xebra.VIEW_MODES
 	 */
 	get viewMode() {
-		if (!this._view) return VIEW_MODES.PATCHING;
+		if (!this._view) {
+			return this.getParamValue("openinpresentation") ? VIEW_MODES.PRESENTATION : VIEW_MODES.PATCHING;
+		}
 		return this._view.getParamValue("presentation") ? VIEW_MODES.PRESENTATION : VIEW_MODES.PATCHING;
 	}
 

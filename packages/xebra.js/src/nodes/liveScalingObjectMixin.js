@@ -1,5 +1,14 @@
+import { LIVE_VALUE_TYPES } from "../lib/constants.js";
+import { OBJECTS, PARAMETER_ATTR } from "../lib/objectList.js";
+
 function clamp(v, lo, hi) {
 	return v < hi ? v > lo ? v : lo : hi;
+}
+
+function alignStep(min, max, value, steps) {
+	const range = max - min;
+	const singleStep = range / steps;
+	return Math.floor(value / singleStep) * singleStep;
 }
 
 /**
@@ -27,34 +36,77 @@ export default (objClass) => class extends objClass {
 		this._ignoredValueSeq = 0;
 	}
 
-	// Bound callbacks using fat arrow notation
-
-	/**
-	 * Callback for handling scaling related parameter events
-	 * @private
-	 */
-	_onParamSetForScaling = (param) => {
-		if (param.type === "distance") {
-			let dist = clamp(param.value, 0, 1);
-			const [min, max] = this.getParamValue("_parameter_range");
-			const pExpo = this.getParamValue("_parameter_exponent") || 1;
-
-			if (pExpo !== 1) dist = Math.pow(dist, pExpo);
-			const val = (dist * (max - min)) + min;
-			const valueParam = this._getParamForType("value");
-			if (valueParam) valueParam.modify(val, valueParam.types, valueParam.remoteSequence + 1);
-		}
-	}
-	// End of bound callbacks
-
 	/**
 	 * @ignore
 	 * @override
 	 * @memberof LiveScalingObjectMixin
 	 * @instance
 	 */
-	addParam(param) {
-		super.addParam(param);
-		param.on("set", this._onParamSetForScaling);
+	setParamValue(type, value) {
+		// Handle live.slider and live.dial distance
+		if (type === "distance") {
+
+			const distParam = this._getParamForType(type);
+
+			if (!distParam) return;
+
+			let dist = clamp(value, 0, 1);
+
+			const parameterType = this.getParamValue(PARAMETER_ATTR.TYPE);
+			const parameterSteps = this.getParamValue(PARAMETER_ATTR.STEPS);
+
+			let [min, max] = this.getParamValue(PARAMETER_ATTR.RANGE);
+
+			// Steps and enum handler
+			if (parameterType === LIVE_VALUE_TYPES.ENUM) {
+				[min, max] = [0, this.getParamValue(PARAMETER_ATTR.RANGE).length - 1];
+				dist = alignStep(0, 1, dist, max);
+			} else if (parameterSteps > 1) {
+				dist = alignStep(0, 1, dist, parameterSteps - 1);
+			} else if (parameterType === LIVE_VALUE_TYPES.INT) {
+				dist = alignStep(0, 1, dist, max - min);
+			}
+
+			// set distance
+			distParam.value = dist;
+
+			// calc and set scaled value
+			const valueParam = this._getParamForType("value");
+			if (!valueParam) return;
+
+			let expDist = dist;
+			const pExpo = this.getParamValue(PARAMETER_ATTR.EXPONENT) || 1;
+			if (pExpo !== 1) expDist = Math.pow(expDist, pExpo);
+
+			let val = (expDist * (max - min)) + min;
+			if (parameterType !== LIVE_VALUE_TYPES.FLOAT) val = Math.round(val);
+
+			valueParam.modify(val, valueParam.types, valueParam.remoteSequence + 1);
+
+		}
+		// Handle live.numbox
+		else if (type === "value" && this.type === OBJECTS.LIVE_NUMBOX) {
+
+			const parameterType = this.getParamValue(PARAMETER_ATTR.TYPE);
+			const parameterSteps = this.getParamValue(PARAMETER_ATTR.STEPS);
+
+			const [min, max] = parameterType === LIVE_VALUE_TYPES.ENUM ? [0, this.getParamValue(PARAMETER_ATTR.RANGE).length - 1] : this.getParamValue(PARAMETER_ATTR.RANGE);
+			let val = clamp(value, min, max);
+
+			if (parameterType === LIVE_VALUE_TYPES.ENUM) {
+				val = alignStep(min, max, val, max);
+			} else if (parameterSteps > 1) {
+				val = alignStep(min, max, val, parameterSteps - 1);
+			} else {
+				val = Math.round(val);
+			}
+
+			const param = this._getParamForType(type);
+			if (param) param.value = val;
+
+		} else {
+			super.setParamValue(type, value);
+			return;
+		}
 	}
 };

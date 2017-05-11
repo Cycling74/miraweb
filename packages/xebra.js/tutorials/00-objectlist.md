@@ -212,6 +212,10 @@ live.grid
 	* stepcolor
 	* distance
 	* touchy
+	* directions
+	* setcell
+	* currentstep
+	* constraint
 
 live.numbox
 

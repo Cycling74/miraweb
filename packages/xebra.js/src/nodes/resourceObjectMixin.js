@@ -1,5 +1,10 @@
 import { OBJECTS } from "../lib/objectList.js";
+import { EMPTY_RESOURCE } from "../lib/constants.js";
 import { ResourceController } from "../lib/resource.js";
+
+function isImage(v) {
+	return v && v !== EMPTY_RESOURCE;
+}
 
 /**
  * Request and manage remote resources from the Max seach path. A resource includes both metadata, like image size and
@@ -61,12 +66,20 @@ export default (objClass) => class extends objClass {
 	_onParamChangeForResources = (param) => {
 		if (this._type === OBJECTS.FPIC) {
 			if (param.type === "pic") {
-				this._resources[0].filename = param.value;
+				if (isImage(param.value)) {
+					this._resources[0].filename = param.value;
+				} else if (!this._resources[0].isEmpty) {
+					this._resources[0].clear();
+				}
 			}
 		} else if (this._type === OBJECTS.LIVE_TEXT) {
 			if (param.type === "pictures") {
 				for (let i = 0; i < param.value.length; i++) {
-					this._resources[i].filename = param.value[i];
+					if (isImage(param.value[i])) {
+						this._resources[i].filename = param.value[i];
+					} else if (!this._resources[i].isEmpty) {
+						this._resources[i].clear();
+					}
 				}
 			}
 		} else if (this._type === OBJECTS.LIVE_TAB) {

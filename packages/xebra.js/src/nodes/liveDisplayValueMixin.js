@@ -1,6 +1,8 @@
-import { LIVE_UNIT_STYLES } from "../lib/constants.js";
+import { LIVE_VALUE_TYPES, LIVE_UNIT_STYLES } from "../lib/constants.js";
+import { PARAMETER_ATTR } from "../lib/objectList.js";
+import { sprintf } from "sprintf-js";
 
-function stringForLiveValue(liveValue, unitStyle) {
+function stringForLiveValue(liveValue, unitStyle, paramValueType, customUnit) {
 	if (liveValue === undefined || unitStyle === undefined) return "";
 
 	let outVal = null;
@@ -46,7 +48,7 @@ function stringForLiveValue(liveValue, unitStyle) {
 			}
 			break;
 		case LIVE_UNIT_STYLES.LIVE_UNIT_PERCENT:
-			if (Math.abs(liveValue) >= 100) {
+			if (Math.abs(liveValue) >= 100 || paramValueType === LIVE_VALUE_TYPES.INT) {
 				outVal = `${Math.round(liveValue)} %`;
 			} else if (Math.abs(liveValue) >= 10) {
 				outVal = (liveValue).toFixed(1) + " %";
@@ -84,8 +86,22 @@ function stringForLiveValue(liveValue, unitStyle) {
 			break;
 		}
 		case LIVE_UNIT_STYLES.LIVE_UNIT_CUSTOM:
+
+			if (customUnit.indexOf("%") >= 0) {
+				// wrap in try catch here in order to catch invalid sprintf format strings
+				try {
+					outVal = sprintf(customUnit, liveValue);
+				} catch (e) {
+					outVal = customUnit;
+				}
+			} else {
+				outVal = `${paramValueType === LIVE_VALUE_TYPES.INT ? Math.round(liveValue) : (liveValue).toFixed(2)} ${customUnit}`;
+			}
+
+			break;
+
 		case LIVE_UNIT_STYLES.LIVE_UNIT_NATIVE:
-			outVal = (liveValue).toFixed(2);
+			outVal = paramValueType === LIVE_VALUE_TYPES.INT ? Math.round(liveValue) : (liveValue).toFixed(2);
 			break;
 		default:
 			outVal = "";
@@ -128,10 +144,26 @@ export default (objClass) => class extends objClass {
 	*/
 	getParamValue(type) {
 		if (type === "displayvalue") {
+
+			const paramValueType = this.getParamValue(PARAMETER_ATTR.TYPE);
 			const val = this.getParamValue("value");
-			const unitStyle = this.getParamValue("_parameter_unitstyle");
-			return stringForLiveValue(val, unitStyle);
+
+			if (paramValueType === LIVE_VALUE_TYPES.ENUM) {
+				const enums = this.getParamValue(PARAMETER_ATTR.RANGE);
+
+				const roundedVal = Math.round(val);
+
+				if (!enums.length) return "";
+
+				if (roundedVal <= 0) return enums[0];
+				if (roundedVal >= enums.length) return enums[enums.length - 1];
+
+				return enums[roundedVal];
+			}
+
+			return stringForLiveValue(val, this.getParamValue(PARAMETER_ATTR.UNIT_STYLE), paramValueType, this.getParamValue(PARAMETER_ATTR.CUSTOM_UNITS));
 		}
+
 		return super.getParamValue(type);
 	}
 
