@@ -1,5 +1,5 @@
 import MiraUIObject from "./base.js";
-import { toRad } from "../lib/utils.js";
+import { clamp, toRad } from "../lib/utils.js";
 import { POPOVER_TYPES } from "../stores/popover.js";
 
 const POPOVER_TYPE = POPOVER_TYPES.VALUE_LABEL;
@@ -7,7 +7,10 @@ const POPOVER_TYPE = POPOVER_TYPES.VALUE_LABEL;
 export default class LiveDial extends MiraUIObject {
 	constructor(stateObj) {
 		super(stateObj);
+
 		this._inTouch = false;
+		this._touchPreviousDistance = 0;
+		this._touchPreviousYCoord = 0;
 	}
 
 	paint(mgraphics, params) {
@@ -53,7 +56,7 @@ export default class LiveDial extends MiraUIObject {
 		}
 		const dialRadius = dialheight / 2;
 
-		const dialCenterX = width * 0.5;
+		let dialCenterX = width * 0.5;
 		let dialCenterY = height * 0.5 + 1;
 		if (appearance === "Panel") {
 			dialCenterY += 10;
@@ -70,6 +73,7 @@ export default class LiveDial extends MiraUIObject {
 		} else if (appearance === "Tiny") {
 			if (showname) {
 				dialCenterY += 6;
+				dialCenterX = 10;
 			}
 		}
 
@@ -167,11 +171,15 @@ export default class LiveDial extends MiraUIObject {
 		mgraphics.set_font_weight(fontface);
 		mgraphics.set_font_size(fontsize);
 		mgraphics.set_font_justification("center");
+
 		if (showname === 1) {
+			if (appearance === "Tiny") mgraphics.set_font_justification("left");
+			else mgraphics.set_font_justification("center");
 			mgraphics.textLine(0, panelOffset, width, fontsize, _parameter_shortname);
 		}
+
 		if (shownumber === 1) {
-			const tinyOffset = appearance === "Tiny" ? 2 : 0;
+			const tinyOffset = appearance === "Tiny" ? 12 : 0;
 			if (appearance === "Tiny") {
 				mgraphics.set_font_justification("left");
 			}
@@ -214,9 +222,13 @@ export default class LiveDial extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
-		const { displayvalue } = params;
+		const { displayvalue, distance } = params;
 		const height = this.getScreenRect()[3];
-		this.lastY = event.normTargetY * height;
+
+		// cache initial coord and distance
+		this._touchPreviousYCoord = event.normTargetY * height;
+		this._touchPreviousDistance = distance;
+
 		if (!this._inTouch) {
 			this._inTouch = true;
 			this.showPopover(POPOVER_TYPE, displayvalue);
@@ -224,18 +236,20 @@ export default class LiveDial extends MiraUIObject {
 	}
 
 	pointerMove(event, params) {
-		const { distance, displayvalue } = params;
+		const { displayvalue } = params;
 		const height = this.getScreenRect()[3];
+
 		let currentY = event.normTargetY * height;
 		let newVal;
 
-		newVal = distance + (0.005) * (this.lastY - currentY);
-		newVal = (newVal > 1.0) ? 1.0 : newVal;
-		newVal = (newVal < 0) ? 0 : newVal;
+		newVal = this._touchPreviousDistance + (0.005) * (this._touchPreviousYCoord - currentY);
+		newVal = clamp(newVal, 0, 1);
 
-		this.lastY = currentY;
 		this.setParamValue("distance", newVal);
 		this.updatePopover(displayvalue);
+
+		this._touchPreviousYCoord = currentY;
+		this._touchPreviousDistance = newVal;
 	}
 
 	pointerUp(event, params) {
