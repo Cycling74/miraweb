@@ -81,15 +81,7 @@ Note that most users won't need to do this and should rather use the pre-built v
 
 Make sure you have followed the global [repository setup instructions](../../README.md#setup) first in order to have all dependencies setup correctly.
 
-Xebra is written in ES6. Based on that the build process can either mean generating the ES5 versions to the `lib` folder or generating the bundled files in the `dist` folder.
-
-To do the former simply run a
-
-```
-$> npm run lib
-```
-
-To generate the bundled versions (`dist/xebra.js` and `dist/xebra.min.js`) please run
+Xebra is written in ES6. Based on that the build process covers generating the ES5 versions to the `lib` folder or generating the bundled files in the `dist` folder via
 
 ```
 $> npm run build

@@ -13,7 +13,7 @@ Please use the GitHub issue tracker in case you experience any bugs or get in to
 XebraCommunicator is written in ES6. In order to generate the ES5 lib version please run
 
 ```
-$> npm run lib
+$> npm run build
 ```
 
 ## License
