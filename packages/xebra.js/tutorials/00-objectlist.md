@@ -55,6 +55,7 @@ dial
 	* bgcolor
 	* needlecolor
 	* outlinecolor
+	* vtracking
 
 flonum
 
@@ -69,6 +70,7 @@ flonum
 	* fontsize
 	* fontname
 	* fontface
+	* format
 	* bgcolor
 	* textcolor
 	* tricolor
@@ -137,6 +139,9 @@ live.button
 	* hidden
 	* ignoreclick
 	* varname
+	* _parameter_longname
+	* _parameter_shortname
+	* _parameter_range
 	* active
 	* bgcolor
 	* bgoncolor
@@ -155,6 +160,14 @@ live.dial
 	* hidden
 	* ignoreclick
 	* varname
+	* _parameter_units
+	* _parameter_exponent
+	* _parameter_longname
+	* _parameter_range
+	* _parameter_shortname
+	* _parameter_steps
+	* _parameter_type
+	* _parameter_unitstyle
 	* fontname
 	* fontsize
 	* fontface
@@ -174,10 +187,6 @@ live.dial
 	* tribordercolor
 	* tricolor
 	* distance
-	* _parameter_shortname
-	* _parameter_unitstyle
-	* _parameter_range
-	* _parameter_exponent
 	* value
 
 live.grid
@@ -226,6 +235,14 @@ live.numbox
 	* hidden
 	* ignoreclick
 	* varname
+	* _parameter_units
+	* _parameter_exponent
+	* _parameter_longname
+	* _parameter_range
+	* _parameter_shortname
+	* _parameter_steps
+	* _parameter_type
+	* _parameter_unitstyle
 	* activebgcolor
 	* active
 	* activeslidercolor
@@ -241,9 +258,6 @@ live.numbox
 	* fontname
 	* fontface
 	* fontsize
-	* _parameter_range
-	* _parameter_unitstyle
-	* _parameter_exponent
 
 live.slider
 
@@ -254,10 +268,19 @@ live.slider
 	* hidden
 	* ignoreclick
 	* varname
+	* _parameter_units
+	* _parameter_exponent
+	* _parameter_longname
+	* _parameter_range
+	* _parameter_shortname
+	* _parameter_steps
+	* _parameter_type
+	* _parameter_unitstyle
 	* fontname
 	* fontsize
 	* fontface
 	* orientation
+	* relative
 	* showname
 	* shownumber
 	* slidercolor
@@ -265,10 +288,6 @@ live.slider
 	* tribordercolor
 	* trioncolor
 	* tricolor
-	* _parameter_range
-	* _parameter_shortname
-	* _parameter_unitstyle
-	* _parameter_exponent
 	* value
 	* distance
 
@@ -281,6 +300,9 @@ live.tab
 	* hidden
 	* ignoreclick
 	* varname
+	* _parameter_longname
+	* _parameter_shortname
+	* _parameter_range
 	* active
 	* activebgcolor
 	* activebgoncolor
@@ -303,7 +325,6 @@ live.tab
 	* fontname
 	* fontsize
 	* fontface
-	* _parameter_range
 	* value
 	* usepicture
 
@@ -316,6 +337,9 @@ live.text
 	* hidden
 	* ignoreclick
 	* varname
+	* _parameter_longname
+	* _parameter_shortname
+	* _parameter_range
 	* activebgcolor
 	* active
 	* bgcolor
@@ -333,6 +357,7 @@ live.text
 	* fontface
 	* pictures
 	* usepicture
+	* mode
 
 live.toggle
 
@@ -343,6 +368,9 @@ live.toggle
 	* hidden
 	* ignoreclick
 	* varname
+	* _parameter_longname
+	* _parameter_shortname
+	* _parameter_range
 	* bgcolor
 	* activebgcolor
 	* bgoncolor
@@ -462,6 +490,7 @@ multislider
 	* drawpeaks
 	* signed
 	* spacing
+	* settype
 
 number
 
@@ -476,6 +505,7 @@ number
 	* fontsize
 	* fontname
 	* fontface
+	* format
 	* bgcolor
 	* textcolor
 	* tricolor
@@ -547,6 +577,7 @@ slider
 	* min
 	* mult
 	* orientation
+	* relative
 	* size
 	* thickness
 
