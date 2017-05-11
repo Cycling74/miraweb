@@ -1,14 +1,16 @@
-var path = require("path");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
-var webpack = require("webpack");
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
 
-var commonConfig = require("./common.config.js");
+const commonConfig = require("./common.config.js");
 
 // Output
-commonConfig.output = { path : "build", filename : "app.js" };
+commonConfig.output = {
+	path : path.join(__dirname, "..", "build"),
+	filename : "app.js"
+};
 
 // Misc
-commonConfig.debug = false;
 commonConfig.devtool = "cheap-module-source-map";
 
 // Add Plugins
@@ -25,7 +27,8 @@ commonConfig.plugins.push(new webpack.DefinePlugin({
 	"process.env" : {
 		NODE_ENV : JSON.stringify("production")
 	},
-	__DEBUG__ : false
+	__DEBUG__ : false,
+	__MW_DEV_SERVER__ : false
 }));
 
 commonConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({

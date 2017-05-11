@@ -6,7 +6,13 @@ const UI_OBJECTS_BY_NAME = {};
 const classNames = Object.keys(UIObjects);
 for (let i = 0, il = classNames.length; i < il; i++) {
 	const objClass = UIObjects[classNames[i]];
-	UI_OBJECTS_BY_NAME[objClass.NAME] = objClass;
+	if (typeof objClass.NAME === "string") {
+		UI_OBJECTS_BY_NAME[objClass.NAME] = objClass;
+	} else {
+		objClass.NAME.forEach((name) => {
+			UI_OBJECTS_BY_NAME[name] = objClass;
+		});
+	}
 }
 
 

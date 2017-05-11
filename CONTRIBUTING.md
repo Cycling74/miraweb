@@ -1,7 +1,7 @@
 Contributing Guidelines
 =============
 
-MiraWeb is an open source project and contributions and help from the community are strongly encouraged and important to improve the software. Here are some things we'd like you to keep in mind in order to help with keeping the process smooth and organized.
+MiraWeb and its accompanying packages are open source projects and contributions and help from the community are strongly encouraged and important to improve the software. Here are some things we'd like you to keep in mind in order to help with keeping the process smooth and organized.
 
 ## Bug Reports / Feature Requests
 

@@ -21,8 +21,11 @@
 Thumbs.db
 Desktop.ini
 npm-debug.log
+lerna-debug.log
+node_modules
 
-# Project Files
+# MiraWeb Project Files
 build
 dev_build
 node_modules
+mw_debug.log

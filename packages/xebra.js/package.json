@@ -1,0 +1,61 @@
+{
+  "name": "xebra.js",
+  "version": "1.2.0",
+  "description": "Xebra connects Max to the browser, and the browser to Max.",
+  "author": {
+    "name": "Cycling '74",
+    "url": "http://cycling74.com"
+  },
+  "contributors": [
+    "Florian Demmer <florian@cycling74.com>",
+    "Sam Tarakajian <sam@cycling74.com>",
+    "Jeremy Bernstein <jeremy@cycling74.com>",
+    "Ben Bracken <ben@cycling74.com>",
+    "Cassie Tarakajian <cassie@cycling74.com>"
+  ],
+  "main": "lib/index.js",
+  "homepage": "http://cycling74.com",
+  "bugs": "https://github.com/Cycling74/miraweb/issues",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cycling74/miraweb.git"
+  },
+  "scripts": {
+    "predocs": "rimraf ./docs",
+    "docs": "sh ./.bin/docs",
+
+    "prebuild": "rimraf ./lib; rimraf ./dist",
+    "build": "babel ./src -d ./lib; node ./.bin/build.js",
+
+    "lint": "eslint src -c ./.eslintrc.json",
+    "test": "npm run lint",
+    "prepublish": "npm run build",
+    "postpublish": "npm run docs && node ./.bin/publish_docs.js"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.18.0",
+    "lodash.pick": "^4.4.0",
+    "lodash.uniq": "^4.5.0",
+    "sprintf-js": "^1.0.3",
+    "xebra-communicator": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-register": "^6.18.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
+    "eslint": "^3.12.1",
+    "gh-pages": "^0.12.0",
+    "jaguarjs-jsdoc": "git://github.com/fde31/jaguarjs-jsdoc#xebra_docs",
+    "jsdoc": "^3.4.2",
+    "jsdoc-babel": "^0.2.1",
+    "rimraf": "2.5.4",
+    "uglify-js": "^2.7.3"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  }
+}

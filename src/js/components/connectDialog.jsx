@@ -31,6 +31,7 @@ export default class MiraConnectDialog extends React.Component {
 			fullscreen : SettingsStore.getSettingState("fullscreen"),
 			hostname : props.hostname || "",
 			port : props.port || "",
+			name : SettingsStore.getSettingState("name"),
 			attemptToConnectTo : null
 		};
 
@@ -43,6 +44,13 @@ export default class MiraConnectDialog extends React.Component {
 		this._unsubscribes.forEach((f) => {
 			f();
 		});
+	}
+
+	componentDidMount() {
+		// force connect in debug build
+		if (__MW_DEV_SERVER__ && this._connectionShowsDialog(this.state.connectionState)) {
+			this._onConnect();
+		}
 	}
 
 	_connectionShowsDialog( status ) {
@@ -71,6 +79,10 @@ export default class MiraConnectDialog extends React.Component {
 
 	_onConnect() {
 		if (this.state.connectionState === CONNECTION_STATES.CONNECTING) return;
+
+		if (this.state.name && this.state.name.length) XebraStateActions.changeClientName(this.state.name);
+		SettingsActions.changeSetting("name", this.state.name);
+
 		XebraStateActions.init({
 			hostname : this.state.hostname,
 			port : this.state.port
@@ -92,7 +104,7 @@ export default class MiraConnectDialog extends React.Component {
 						Enter the details of the Max host to connect to.
 					</Column>
 					<Column size={ 12 } >
-						<FormField htmlFor="hostname" label="Hostname" >
+						<FormField htmlFor="hostname" label="Hostname*" >
 							<Input
 								name="hostname"
 								onChange={ this._onChangeValue.bind(this) }
@@ -103,13 +115,24 @@ export default class MiraConnectDialog extends React.Component {
 						</FormField>
 					</Column>
 					<Column size={ 12 } >
-						<FormField htmlFor="port" label="Port" >
+						<FormField htmlFor="port" label="Port*" >
 							<Input
 								name="port"
 								onChange={ this._onChangeValue.bind(this) }
 								placeholder="Port"
 								type="text"
 								value={ this.state.port }
+							/>
+						</FormField>
+					</Column>
+					<Column size={ 12 } >
+						<FormField htmlFor="name" label="Client Name" >
+							<Input
+								name="name"
+								onChange={ this._onChangeValue.bind(this) }
+								placeholder="optional"
+								type="text"
+								value={ this.state.name }
 							/>
 						</FormField>
 					</Column>

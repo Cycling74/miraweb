@@ -1,0 +1,8 @@
+{
+    "presets" : ["es2015"],
+    "sourceMap" : true,
+	"plugins" : [
+		"babel-plugin-add-module-exports",
+		"babel-plugin-transform-class-properties"
+	]
+}

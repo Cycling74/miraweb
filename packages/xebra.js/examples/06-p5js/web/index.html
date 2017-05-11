@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>p5.js and Xebra</title>
+	<style>
+		html, body {
+			margin: 0;
+		}
+	</style>
+	<script src="https://cycling74.s3.amazonaws.com/download/xebra.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/p5.min.js"></script>
+	<script src="../../js/lib/boid.js"></script>
+</head>
+<body>
+	<script>
+		var boids = [];
+		var sketchFrame;
+		var frameRect;
+		var scaleSketch = 1.5;
+		var multisliderX;
+		var multisliderY;
+
+		function setup() {
+			connectXebra();
+			frameRate(30);
+		}
+
+		function draw() {
+			background(51);
+			if (sketchFrame) {
+				var distanceX = [];
+				var distanceY = [];
+				for (var i = 0; i < boids.length; i++) {
+					boids[i].run(boids);
+
+					//get position of boids to set multislider value
+					var xPos = boids[i].position.x/width;
+					var yPos = boids[i].position.y/height;
+					distanceX.push(xPos);
+					distanceY.push(yPos);
+				}
+				var multisliderXObject = sketchFrame.getObject(multisliderX);
+				multisliderXObject.setParamValue("distance", distanceX);
+				var multisliderYObject = sketchFrame.getObject(multisliderY);
+				multisliderYObject.setParamValue("distance", distanceY);
+			}
+		}
+
+		function connectXebra() {
+			var options = {
+				hostname : "127.0.0.1", // localhost
+				port : 8086,
+				supported_objects : Xebra.SUPPORTED_OBJECTS
+			};
+
+			var xebraState = new Xebra.State(options);
+
+			xebraState.on("frame_added", function(frame) {
+				sketchFrame = frame;
+				if (frame.viewMode === Xebra.VIEW_MODES.PRESENTATION) {
+					frameRect = frame.getParamValue("presentation_rect");
+				} else {
+					frameRect = frame.getParamValue("patching_rect");
+				}
+				createCanvas(frameRect[2]*scaleSketch, frameRect[3]*scaleSketch);
+				background(51);
+			});
+
+			xebraState.on("object_added", function(object) {
+				if (object.getParamValue("varname") === "multisliderX") {
+					multisliderX = object._id;
+					var size = object.getParamValue("size");
+					for (var i = 0; i < size; i++) {
+						boids.push(new Boid(random(width), random(height)));
+					}
+				} else if (object.getParamValue("varname") === "multisliderY") {
+					multisliderY = object._id;
+				}
+			});
+
+			xebraState.connect();
+		}
+	</script>
+</body>
+</html>

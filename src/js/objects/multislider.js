@@ -111,7 +111,7 @@ export default class Multislider extends MiraUIObject {
 			for (let i = 0; i < size; i++) {
 				let sliderX = ((width) / range) * (distance[i] - min);
 				sliderX += (thickness * 0.3);
-				sliderX = Math.min(Math.max(sliderX, thickness), width) - thickness/2;
+				sliderX = Math.min(Math.max(sliderX, thickness), width) - thickness / 2;
 				let zeroX = 0;
 
 				if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") {
@@ -215,7 +215,7 @@ export default class Multislider extends MiraUIObject {
 			for (let i = 0; i < size; i++) {
 				let sliderY = ((height) / range) * (distance[i] - min);
 				sliderY += (thickness * 0.3);
-				sliderY = Math.min(Math.max(sliderY, thickness), height) - thickness/2;
+				sliderY = Math.min(Math.max(sliderY, thickness), height) - thickness / 2;
 				let zeroY = 0;
 
 				if (setstyle === "Point Scroll" || setstyle === "Line Scroll" || setstyle === "Reverse Point Scroll" || setstyle === "Reverse Line Scroll") {
@@ -350,7 +350,7 @@ export default class Multislider extends MiraUIObject {
 	}
 
 	pointerMove(event, params) {
-
+		const { settype } = params;
 		let { distance, setminmax, size } = params;
 		let sliderIndex = this._getSliderIndex(event, size);
 
@@ -376,16 +376,19 @@ export default class Multislider extends MiraUIObject {
 
 			if (lastIndex < sliderIndex) {
 				for (let i = 0; i <= stepWidth; i++) {
-					distance[lastIndex + i] = lastIndexVal + i * stepVal;
+					if (settype === "Integer") distance[lastIndex + i] = Math.round(lastIndexVal + i * stepVal);
+					else distance[lastIndex + i] = lastIndexVal + i * stepVal;
 				}
 			} else if (lastIndex > sliderIndex) {
 				for (let i = 0; i <= stepWidth; i++) {
-					distance[lastIndex - i] = lastIndexVal + i * stepVal;
+					if (settype === "Integer") distance[lastIndex - i] = Math.round(distance[lastIndex - i] = lastIndexVal + i * stepVal);
+					else distance[lastIndex - i] = lastIndexVal + i * stepVal;
 				}
 			}
 		} else {
 			if (sliderIndex < 0 || sliderIndex >= size) return;
-			distance[sliderIndex] = newVal;
+			if (settype === "Integer") distance[sliderIndex] = Math.round(newVal);
+			else distance[sliderIndex] = newVal;
 		}
 
 		this._lastPointerSlider[event.id] = sliderIndex;

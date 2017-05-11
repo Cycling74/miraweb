@@ -27,7 +27,7 @@ function zeroPaddedHex(intVal) {
 	return ("0" + intVal.toString(16)).slice(-2);
 }
 
-function createHexColors(vals, prefix = "0x") {
+export function createHexColors(vals, prefix = "0x") {
 	const newVals = [];
 	newVals[0] = ~~(vals[0] * 255);
 	newVals[1] = ~~(vals[1] * 255);
@@ -971,20 +971,20 @@ class PixiDraw extends EventEmitter {
 	// Max uses the fontface attribute for both fontWeight and fontStyle, so we must parse the attribute's value
 	set_font_weight(val) {
 		if (val === "regular") {
-			this._fontWeight = 'normal';
-			this._fontStyle = 'normal';
+			this._fontWeight = "normal";
+			this._fontStyle = "normal";
 		}
 		if (val === "bold") {
-			this._fontWeight = 'bold';
-			this._fontStyle = 'normal';
+			this._fontWeight = "bold";
+			this._fontStyle = "normal";
 		}
-		if (val ==="italic") {
-			this._fontWeight = 'normal';
-			this._fontStyle = 'italic';
+		if (val === "italic") {
+			this._fontWeight = "normal";
+			this._fontStyle = "italic";
 		}
 		if (val === "bold italic") {
-			this._fontWeight = 'bold';
-			this._fontStyle = 'italic';
+			this._fontWeight = "bold";
+			this._fontStyle = "italic";
 		}
 	}
 
@@ -1146,4 +1146,4 @@ class PixiDraw extends EventEmitter {
 	}
 }
 
-module.exports = PixiDraw;
+export default PixiDraw;

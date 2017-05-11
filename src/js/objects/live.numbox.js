@@ -1,9 +1,13 @@
 import MiraUIObject from "./base.js";
+import { LIVE_VALUE_TYPES } from "xebra.js";
 
 export default class LiveNumbox extends MiraUIObject {
 	constructor(stateObj) {
 		super(stateObj);
+
 		this._inTouch = false;
+		this._touchInitialVal = 0;
+		this._touchInitialYCoord = 0;
 	}
 
 	// TODO: mode button
@@ -62,31 +66,23 @@ export default class LiveNumbox extends MiraUIObject {
 	}
 
 	pointerDown(event, params) {
+		const { value } = params;
 		const [ , , , height ] = this.getScreenRect();
-		this.lastY = event.normTargetY * height;
+
+		this._touchInitialYCoord = event.normTargetY * height;
+		this._touchInitialVal = value;
 		this._inTouch = true;
 		this.render();
 	}
 
 	pointerMove(event, params) {
-		const { _parameter_range, value } = params;
+		const { _parameter_type } = params;
 		const [ , , , height ] = this.getScreenRect();
+		const moveFactor = _parameter_type === LIVE_VALUE_TYPES.ENUM ? 0.1 : 0.6;
+
 		let currentY = event.normTargetY * height;
-		let newVal;
-		if (currentY > this.lastY) {
-			newVal = value - 1;
-
-		} else if (currentY < this.lastY) {
-			newVal = value + 1;
-
-		} else {
-			newVal = value;
-		}
-		if (newVal > _parameter_range[1]) newVal = _parameter_range[1];
-		if (newVal < _parameter_range[0]) newVal = _parameter_range[0];
-
-		this.lastY = currentY;
-		this.setParamValue("value", newVal);
+		let newVal = this._touchInitialVal + moveFactor * (this._touchInitialYCoord - currentY);
+		this.setParamValue("value", Math.round(newVal));
 	}
 
 	pointerUp(event, params) {

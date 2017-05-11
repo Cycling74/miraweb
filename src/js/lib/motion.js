@@ -1,4 +1,4 @@
-import GyroNorm from "gyronorm/dist/gyronorm.complete.min.js";
+import GyroNorm from "gyronorm";
 import { EventEmitter } from "events";
 
 class Motion extends EventEmitter {

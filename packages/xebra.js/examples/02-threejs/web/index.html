@@ -1,0 +1,193 @@
+<!--
+	Make a Max patch with sliders and dials, see them represented in 3D.
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>Brick and mortar Max</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="https://cycling74.s3.amazonaws.com/download/xebra.js"></script>
+		<script src="./resources.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
+		<script>
+
+			var camera, scene, container;
+			var rockTexture, rockNormals;
+			var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
+			var cubes = {};
+			var miraFrame;
+			var maxObjectTextures = {};
+
+			function addBox(object) {
+				var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+				var material = new THREE.MeshPhongMaterial({
+					color: 0xffffff,
+					map: maxObjectTextures[object.type].texture,
+					normalMap: maxObjectTextures[object.type].normals,
+					specular: 0xffffff,
+					shininess: 2,
+					shading: THREE.SmoothShading
+				});
+				var cube = new THREE.Mesh( geometry, material );
+
+				cubes[object.id] = cube;
+				updateBox(object);
+				scene.add(cube);
+			}
+
+			function updateBox(object) {
+				var mesh = cubes[object.id];
+				var maxObjectRect;
+				var relX, relY, relWidth, relHeight;
+				var frameWidth, frameHeight;
+				var screenWidth = renderer.getSize().width, screenHeight = renderer.getSize().height;
+				var magicScale = 0.0021;
+				var relDistance;
+				var color = object.getParamValue("bgcolor");
+
+				mesh.material.color = new THREE.Color(color[0], color[1], color[2]);
+				maxObjectRect = miraFrame.getRelativeRect(object);
+				frameWidth = miraFrame.getParamValue("patching_rect")[2];
+				frameHeight = miraFrame.getParamValue("patching_rect")[3];
+				relWidth = 2 * maxObjectRect[2] / frameWidth;
+				relHeight = 2 * maxObjectRect[3] / frameHeight;
+				relX = ((maxObjectRect[0] / frameWidth) - 0.5) * 2 + relWidth/2;
+				relY = ((1.0 - maxObjectRect[1] / frameHeight) - 0.5) * 2 - relHeight/2;
+				relDistance = object.getParamValue("distance") / object.getParamValue("size");
+
+				mesh.scale.set(relWidth * screenWidth * magicScale, relHeight * screenHeight * magicScale, 1);
+				mesh.position.set(relX * screenWidth * magicScale, relY * screenHeight * magicScale, - relDistance * 5);
+			}
+
+			function updateAllBoxes() {
+				miraFrame.getObjects().forEach(function(object) {
+					if (maxObjectTextures.hasOwnProperty(object.type)) updateBox(object);
+				});
+			}
+
+			function removeBox(object) {
+				scene.remove(cubes[object.id]);
+				delete cubes[object.id];
+			}
+
+			function createTextureFromUri(uri) {
+				var image = document.createElement('img');
+				var texture = new THREE.Texture(image);
+				image.onload = function()  {
+						texture.needsUpdate = true;
+				};
+				image.src = uri;
+				return texture;
+			}
+
+			function initializeScene() {
+				camera = new THREE.PerspectiveCamera( 40, WIDTH / HEIGHT, 1, 10000 );
+				camera.position.set( 0, 0, 5 );
+				scene = new THREE.Scene();
+
+				var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+				directionalLight.position.set( 1, 1, 1 );
+				scene.add( directionalLight );
+
+				var sphere = new THREE.SphereGeometry( 0.025, 16, 16 );
+				var light1 = new THREE.PointLight( 0xffffdd, 1.0, 50 );
+				light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xffffdd } ) ) );
+				scene.add( light1 );
+
+				var textureLoader = new THREE.TextureLoader();
+				brickTexture = createTextureFromUri(resourcesBrickTextureData);
+				brickNormals = createTextureFromUri(resourcesBrickNormalsData);
+				rockTexture = createTextureFromUri(resourcesStoneTextureData);
+				rockNormals = createTextureFromUri(resourcesStoneNormalsData);
+
+				maxObjectTextures = {
+					slider: {
+						texture: brickTexture,
+						normals: brickNormals
+					},
+					dial: {
+						texture: rockTexture,
+						normals: rockNormals
+					}
+				};
+
+				container = document.createElement('div');
+				document.body.appendChild(container);
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setClearColor( 0x050505 );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( WIDTH, HEIGHT );
+				container.appendChild(renderer.domElement);
+
+				window.addEventListener("resize", onWindowResize);
+			}
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				updateAllBoxes();
+			}
+
+			function bindFrame(frame) {
+				miraFrame = frame;
+				frame.on("object_added", function(object) {
+					if (maxObjectTextures.hasOwnProperty(object.type)) addBox(object);
+				});
+
+				frame.on("object_removed", function(object) {
+					if (maxObjectTextures.hasOwnProperty(object.type)) removeBox(object);
+				});
+
+				frame.on("object_changed", function(object, param) {
+					if (maxObjectTextures.hasOwnProperty(object.type)) updateBox(object);
+				});
+
+				frame.on("param_changed", function(object, param) {
+					if (["patching_rect", "presentation_rect", "presentation"].indexOf(param.type) >= 0) {
+						updateAllBoxes();
+					}
+				});
+			}
+
+			function connectXebra() {
+				var options = {
+					hostname : "127.0.0.1", // localhost
+					port : 8086,
+					supported_objects : Xebra.SUPPORTED_OBJECTS
+				};
+
+				var xebraState = new Xebra.State(options);
+
+				// Bind to the first mira.frame object that gets added
+				xebraState.once("frame_added", function(frame) {
+					bindFrame(frame);
+				});
+
+				xebraState.connect();
+			}
+
+			function animate() {
+				requestAnimationFrame(animate);
+				render();
+			}
+
+			function render() {
+				renderer.render(scene, camera);
+			}
+
+			window.onload = function() {
+				initializeScene();
+				connectXebra();
+				animate();
+			}
+
+		</script>
+	</body>
+</html>
