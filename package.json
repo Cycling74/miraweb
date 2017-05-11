@@ -31,7 +31,8 @@
     "lint": "eslint src -c ./.eslintrc.json",
     "lint-fix": "eslint src -c ./.eslintrc.json --fix",
     "test": "npm run lint",
-    "testall": "npm run test && lerna run test"
+    "testall": "npm run test && lerna run test",
+    "publish": "lerna run test; lerna publish"
   },
   "dependencies": {},
   "devDependencies": {
