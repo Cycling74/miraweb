@@ -25,14 +25,12 @@
     "predocs": "rimraf ./docs",
     "docs": "sh ./.bin/docs",
 
-    "prebuild": "rimraf ./dist",
-    "build": "node ./.bin/build.js",
-    "prelib": "rimraf ./lib",
-    "lib": "babel ./src -d ./lib",
+    "prebuild": "rimraf ./lib; rimraf ./dist",
+    "build": "babel ./src -d ./lib; node ./.bin/build.js",
 
     "lint": "eslint src -c ./.eslintrc.json",
     "test": "npm run lint",
-    "prepublish": "npm run lib",
+    "prepublish": "npm run build",
     "postpublish": "npm run docs && node ./.bin/publish_docs.js"
   },
   "dependencies": {

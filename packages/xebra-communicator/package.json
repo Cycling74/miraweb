@@ -22,8 +22,8 @@
     "url": "https://github.com/Cycling74/miraweb.git"
   },
   "scripts": {
-    "prelib": "rimraf ./lib",
-    "lib": "babel ./src -d ./lib",
+    "prebuild": "rimraf ./lib",
+    "build": "babel ./src -d ./lib",
 
     "lint": "eslint src -c ./.eslintrc.json",
     "test": "npm run lint",
