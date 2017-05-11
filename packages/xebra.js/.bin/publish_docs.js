@@ -6,7 +6,9 @@ const path = require('path');
 const packageInfo = require(path.join(__dirname, '..', 'package.json'));
 
 const options = {
-	message: "updating Docs to version " + packageInfo.version
+	message: "updating Docs to version " + packageInfo.version,
+	repo: 'https://github.com/Cycling74/xebra.js.git',
+	tag: packageInfo.version
 }
 
 ghpages.publish(path.join(process.cwd(), 'docs'), options, (err) =>
