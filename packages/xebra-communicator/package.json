@@ -1,6 +1,6 @@
 {
   "name": "xebra-communicator",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Communication helper for Xebra.js",
   "author": {
     "name": "Cycling '74",
@@ -24,7 +24,6 @@
   "scripts": {
     "prebuild": "rimraf ./lib",
     "build": "babel ./src -d ./lib",
-
     "lint": "eslint src -c ./.eslintrc.json",
     "test": "npm run lint",
     "prepublish": "npm run build"

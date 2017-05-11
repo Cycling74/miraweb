@@ -1,6 +1,6 @@
 {
   "name": "xebra.js",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Xebra connects Max to the browser, and the browser to Max.",
   "author": {
     "name": "Cycling '74",
@@ -24,10 +24,8 @@
   "scripts": {
     "predocs": "rimraf ./docs",
     "docs": "sh ./.bin/docs",
-
     "prebuild": "rimraf ./lib; rimraf ./dist",
     "build": "babel ./src -d ./lib; node ./.bin/build.js",
-
     "lint": "eslint src -c ./.eslintrc.json",
     "test": "npm run lint",
     "prepublish": "npm run build",
@@ -38,7 +36,7 @@
     "lodash.pick": "^4.4.0",
     "lodash.uniq": "^4.5.0",
     "sprintf-js": "^1.0.3",
-    "xebra-communicator": "^1.0.0"
+    "xebra-communicator": "^1.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
