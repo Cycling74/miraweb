@@ -154,7 +154,7 @@ export default class Settings extends React.Component {
 						</Column>
 						<Column size={ 12 } >
 							<FormField htmlFor="name" label="Client ID" >
-								<Input value={ this.state.clientNameEdits || this.state.clientName }
+								<Input value={ this.state.clientNameEdits !== null ? this.state.clientNameEdits : this.state.clientName }
 									onChange={ this._onClientNameChange.bind(this) }
 									onBlur={ this._onClientNameChangeSubmit.bind(this) }
 								/>
