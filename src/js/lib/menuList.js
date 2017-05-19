@@ -111,6 +111,8 @@ export default class MenuList extends PixiDraw {
 			rectWidth,
 			rectHeight
 		];
+
+		// Try to make sure that the rect is onscreen
 		if (rect[0] + rect[2] > dims[2]) rect[0] = dims[2] - rect[0];
 		if (rect[0] < 0) rect[0] = 0;
 		return rect;
