@@ -111,6 +111,8 @@ export default class MenuList extends PixiDraw {
 			rectWidth,
 			rectHeight
 		];
+		if (rect[0] + rect[2] > dims[2]) rect[0] = dims[2] - rect[0];
+		if (rect[0] < 0) rect[0] = 0;
 		return rect;
 	}
 
