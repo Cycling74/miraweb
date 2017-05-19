@@ -29,6 +29,18 @@ commonConfig.plugins.push(new webpack.DefinePlugin({
 if (process.env.MW_DEV_SERVER === "true") {
 	commonConfig.devServer = {
 		hot : false,
+		host : "0.0.0.0",
+		/*
+		 * Adding this for now until WebpackDevServer has better whitelisting approaches
+		 * wrt hostname checks (WIP on https://github.com/webpack/webpack-dev-server/pull/899)
+		 * Luckily MW doesn't include any sensitive data, settings, env variables etc.
+		 * that might be affected by setting disableHostCheck to 'true'.
+		 * If you'd like to read more:
+		 *		* https://github.com/webpack/webpack-dev-server/issues/882
+		 *		* https://github.com/webpack/webpack-dev-server/releases/tag/v2.4.3
+		 */
+
+		disableHostCheck : true,
 		overlay : {
 			errors : true
 		}
