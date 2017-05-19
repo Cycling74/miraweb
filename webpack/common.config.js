@@ -53,6 +53,11 @@ const config = {
 			}
 		]
 	},
+	resolve: {
+		alias: {
+			gyronorm: 'gyronorm/dist/gyronorm.complete.js'
+		}
+	},
 	plugins : [
 		new webpack.DefinePlugin({
 			__VERSION__ : JSON.stringify(pck.version),
