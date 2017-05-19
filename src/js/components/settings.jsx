@@ -61,7 +61,11 @@ export default class Settings extends React.Component {
 
 	_onClientNameChangeSubmit(e) {
 		const name = e.target.value;
-		if (name) XebraStateActions.changeClientName(e.target.value);
+		if (name && name.length) {
+			XebraStateActions.changeClientName(e.target.value);
+			SettingsActions.changeSetting("name", e.target.value);
+		}
+
 		this.setState({ clientNameEdits : null });
 	}
 
