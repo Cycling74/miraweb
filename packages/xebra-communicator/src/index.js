@@ -128,11 +128,14 @@ class XebraCommunicator extends EventEmitter {
 
 	set name(name) {
 		this._name = name;
-		this._sendMessage("set_client_params", {
-			xebraUuid : this._xebraUuid,
-			name : this._name,
-			uid : this._uuid
-		});
+		// sjt --- See #87, we shouldn't be setting client params if we haven't received a server-assigned id
+		if (this._xebraUuid !== null) {
+			this._sendMessage("set_client_params", {
+				xebraUuid : this._xebraUuid,
+				name : this._name,
+				uid : this._uuid
+			});
+		}
 		this.emit(XEBRA_MESSAGES.CLIENT_PARAM_CHANGE, "name", this._name);
 	}
 
