@@ -41,7 +41,8 @@
 			var messenger = document.getElementById("messenger");
 			var message = document.getElementById("message");
 			// Set a placeholder screen name.
-			var screenname = "anon"
+			var screenname = getScreenName();
+			nameInput.value = screenname;
 			nameInput.setAttribute("placeholder", screenname);
 
 			// Set up xebra.js
@@ -69,6 +70,7 @@
 				event.preventDefault();
 				screenname = nameInput.value;
 				nameInput.setAttribute("placeholder", screenname);
+				setScreenName(screenname);
 			})
 
 			// Define how to handle a new chat message submitted via the bottom form.
@@ -82,6 +84,19 @@
 				xebraState.sendMessageToChannel("newMessageFromClient", packet);
 				message.value = "";
 			});
+
+			// Retrieve a previously entered name from the browser’s local storage
+			function getScreenName() {
+				if(!localStorage.getItem("screenname")) {
+				  return "anon";
+				} else {
+				  return localStorage.getItem("screenname");
+				}
+			}
+			// Save an entered name to the browser’s local storage
+			function setScreenName(name) {
+				localStorage.setItem("screenname", name)
+			}
 
 			// Load history
 			function loadChatHistory(data) {
