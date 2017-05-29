@@ -59,15 +59,8 @@
 			xebraState.on("channel_message_received", function(name, data) {
 				if (name === "newMessageFromServer") {
 					addNewMessage(data);
-				} else if (name === "supplyChatHistory") {
-					if (data.target === xebraState.name) {
-						container.innerHTML = null;
-						for (var message in data.history) {
-							if (data.history.hasOwnProperty(message)) {
-								addNewMessage(data.history[message]);
-							}
-						}
-					}
+				} else if (name === "supplyChatHistory" && data.target === xebraState.name) {
+					loadChatHistory(data);
 				}
 			});
 
@@ -89,6 +82,16 @@
 				xebraState.sendMessageToChannel("newMessageFromClient", packet);
 				message.value = "";
 			});
+
+			// Load history
+			function loadChatHistory(data) {
+				container.innerHTML = null;
+				for (var message in data.history) {
+					if (data.history.hasOwnProperty(message)) {
+						addNewMessage(data.history[message]);
+					}
+				}
+			}
 
 			// Add a chat message to the bottom of the chat window.
 			function addNewMessage(message) {
