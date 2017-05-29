@@ -2,7 +2,7 @@
 What if you want to access your xebra sketch remotely? What if you want a lot of users to have access to your xebra sketch? The solution is to use tunneling.
 
 ## localtunnel
-Localtunnel is an npm package, therefore a prerequisite to installing it is installing node.
+Localtunnel is an npm package, therefore a prerequisite to installing it is installing [node](https://nodejs.org/).
 ```bash
 $ npm install -g localtunnel
 $ lt -p <port_of_xebra_sketch> -s <your_custom_subdomain>
