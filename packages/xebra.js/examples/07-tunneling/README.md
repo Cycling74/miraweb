@@ -4,6 +4,7 @@ What if you want to access your xebra sketch remotely? What if you want a lot of
 ## localtunnel
 `localtunnel` is an npm package, therefore a prerequisite to installing it is installing [node](https://nodejs.org/). `localtunnel` will allow us to open up a connection to the outside world from the command line.
 ```bash
+# install the localtunnel package globally
 $ npm install -g localtunnel
 $ lt -p <port_of_xebra_sketch> -s <your_custom_subdomain>
 ```
