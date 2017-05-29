@@ -38,6 +38,21 @@
 		"subpatcher_template" : "Snappy",
 		"boxes" : [ 			{
 				"box" : 				{
+					"fontface" : 1,
+					"fontsize" : 18.0,
+					"id" : "obj-3",
+					"linecount" : 4,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 885.0, 15.0, 300.0, 87.0 ],
+					"style" : "",
+					"text" : "See README.md for instructions on how to get this connected and available to other computers, phones, tablets, fridges…"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"bubble" : 1,
 					"id" : "obj-73",
 					"linecount" : 2,
@@ -109,7 +124,6 @@
 					"numoutlets" : 4,
 					"outlettype" : [ "dictionary", "", "", "" ],
 					"patching_rect" : [ 450.0, 135.0, 95.0, 22.0 ],
-					"presentation_rect" : [ 286.0, 517.0, 0.0, 0.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"parameter_enable" : 0
@@ -323,52 +337,28 @@
 , 			{
 				"box" : 				{
 					"data" : 					{
-						"20170528T234110+02:00-MiraWeb-5a5c1f" : 						{
-							"time" : "20170528T234110+02:00",
-							"text" : "hi!",
+						"20170529T093326+02:00-MiraWeb-a5d456" : 						{
+							"time" : "20170529T093326+02:00",
+							"text" : "Welcome to MaxChat! 💬 ",
 							"author" : "Chris"
 						}
 ,
-						"20170529T004151+02:00-MiraWeb-80e458" : 						{
-							"time" : "20170529T004151+02:00",
-							"text" : "hey!",
+						"20170529T093335+02:00-MiraWeb-a5d456" : 						{
+							"time" : "20170529T093335+02:00",
+							"text" : "Check out the README for explanations of how to use tunneling to chat with your friends. 🙌 ",
 							"author" : "Chris"
 						}
 ,
-						"20170529T005909+02:00-MiraWeb-190d98" : 						{
-							"time" : "20170529T005909+02:00",
-							"text" : "Hi!",
+						"20170529T093345+02:00-MiraWeb-a5d456" : 						{
+							"time" : "20170529T093345+02:00",
+							"text" : "You can set your screen name above ⬆️",
 							"author" : "Chris"
 						}
 ,
-						"20170529T005916+02:00-MiraWeb-190d98" : 						{
-							"time" : "20170529T005916+02:00",
-							"text" : "Hmm",
+						"20170529T093408+02:00-MiraWeb-a5d456" : 						{
+							"time" : "20170529T093408+02:00",
+							"text" : "And send messages below ⬇️",
 							"author" : "Chris"
-						}
-,
-						"20170529T014319+02:00-MiraWeb-863ed3" : 						{
-							"time" : "20170529T014319+02:00",
-							"text" : "Hi folks!",
-							"author" : "Max"
-						}
-,
-						"20170529T014402+02:00-MiraWeb-d2fa5f" : 						{
-							"time" : "20170529T014402+02:00",
-							"text" : "What’s up?!",
-							"author" : "Jade"
-						}
-,
-						"20170529T020321+02:00-MiraWeb-f573ce" : 						{
-							"time" : "20170529T020321+02:00",
-							"text" : "Doing goooood!",
-							"author" : "Quirksmode"
-						}
-,
-						"20170529T020402+02:00-MiraWeb-d3c92f" : 						{
-							"time" : "20170529T020402+02:00",
-							"text" : "👍",
-							"author" : "anon"
 						}
 
 					}
