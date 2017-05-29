@@ -62,7 +62,9 @@ To get that all working simultaneously here’s a quick one-liner:
 open max/07-tunneling.maxpat & lt -p 8086 -s miratunnel & http-server ./web & lt -p 8080 -s maxchat
 ```
 
-## ngrok
+## Other tunneling solutions
+
+### ngrok
 ngrok is another tunnel program. You can install it with with Homebrew by running
 ```bash
 $ brew cask install ngrok
@@ -73,7 +75,7 @@ $ ngrok http 8080
 ```
 and then ngrok returns a public url.
 
-## WIFI/LAN
+### WIFI/LAN
 If the device you are running Max and your xebra sketch is connected to WIFI/LAN, then any device also connected to the same WIFI/LAN network can access the xebra sketch as well. If you are on a Mac/Unix/Linux/etc., go to your terminal and run
 ```bash
 $ ifconfig
