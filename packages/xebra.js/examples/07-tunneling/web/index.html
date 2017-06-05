@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<title>Xebra Tutorial 07 - Tunneling</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+		<!-- Form allowing the user to change their screen name. -->
+		<form action="" id="namer">
+			<label for="nameInput">Your Name:</label>
+			<input id="nameInput" autocomplete="given-name" required /><button>Save</button>
+		</form>
+
+		<!-- Container for the chat messages once loaded. -->
+		<ul id="container">
+			<!-- This placeholder content will get replaced by chat messages: -->
+			<div class="spinner"></div>
+			<p style="text-align:center;">Connecting…</p>
+		</ul>
+
+		<!-- Form allowing the user to send chat messages. -->
+		<form action="" id="messenger">
+			<input id="message" placeholder="Type a message…" autocomplete="off" autofocus required /><button>Send</button>
+		</form>
+
+		<!-- Load xebra.js -->
+		<script type="text/javascript" src="https://cycling74.s3.amazonaws.com/download/xebra.js"></script>
+
+		<!-- Load moment.js for easier date formatting -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
+
+		<!-- Javascript to run the chat app. -->
+		<script type="text/javascript">
+			// Get elements from the HTML document to use in our Javascript.
+			var container = document.getElementById("container");
+			var namer = document.getElementById("namer");
+			var nameInput = document.getElementById("nameInput");
+			var messenger = document.getElementById("messenger");
+			var message = document.getElementById("message");
+			// Set a placeholder screen name.
+			var screenname = getScreenName();
+			nameInput.value = screenname;
+			nameInput.setAttribute("placeholder", screenname);
+
+			// Set up xebra.js
+			var xebraState = new Xebra.State({
+				hostname : "miratunnel.localtunnel.me",
+				port : 80
+			});
+
+			// Request the chat history once xebra has connected to Max.
+			xebraState.on("loaded", function() {
+				xebraState.sendMessageToChannel("requestChatHistory", xebraState.name)
+			});
+
+			// Handle incoming messages from mira.channel objects in Max.
+			xebraState.on("channel_message_received", function(name, data) {
+				if (name === "newMessageFromServer") {
+					addNewMessage(data);
+				} else if (name === "supplyChatHistory" && data.target === xebraState.name) {
+					loadChatHistory(data);
+				}
+			});
+
+			// Define how to handle a new screen name submitted via the top form.
+			namer.addEventListener("submit", function (event) {
+				event.preventDefault();
+				screenname = nameInput.value;
+				nameInput.setAttribute("placeholder", screenname);
+				setScreenName(screenname);
+			})
+
+			// Define how to handle a new chat message submitted via the bottom form.
+			messenger.addEventListener("submit", function (event) {
+				event.preventDefault();
+				var packet = {
+					time: moment().format("YYYYMMDDTHHmmssZ"),
+					text: message.value,
+					author: screenname
+				}
+				xebraState.sendMessageToChannel("newMessageFromClient", packet);
+				message.value = "";
+			});
+
+			// Retrieve a previously entered name from the browser’s local storage
+			function getScreenName() {
+				if(!localStorage.getItem("screenname")) {
+				  return "anon";
+				} else {
+				  return localStorage.getItem("screenname");
+				}
+			}
+			// Save an entered name to the browser’s local storage
+			function setScreenName(name) {
+				localStorage.setItem("screenname", name)
+			}
+
+			// Load history
+			function loadChatHistory(data) {
+				container.innerHTML = null;
+				for (var message in data.history) {
+					if (data.history.hasOwnProperty(message)) {
+						addNewMessage(data.history[message]);
+					}
+				}
+			}
+
+			// Add a chat message to the bottom of the chat window.
+			function addNewMessage(message) {
+				var date = document.createTextNode(moment(message.time).calendar());
+				var author = document.createTextNode(message.author);
+				var text = document.createTextNode(message.text);
+				var color = stringToColour(message.author);
+
+				var messageAuthor = document.createElement("span");
+				messageAuthor.classList.add("message__author");
+				messageAuthor.style.background = color;
+				messageAuthor.appendChild(author);
+
+				var messageDate = document.createElement("span");
+				messageDate.classList.add("message__date");
+				messageDate.appendChild(date);
+
+				var messageMeta = document.createElement("h5");
+				messageMeta.classList.add("message__meta");
+				messageMeta.appendChild(messageAuthor);
+				messageMeta.appendChild(messageDate);
+
+				var messageText = document.createElement("p");
+				messageText.classList.add("message__text");
+				messageText.appendChild(text);
+
+				var messageContainer = document.createElement("li");
+				messageContainer.classList.add("message");
+				if (message.author === screenname) {
+					messageContainer.classList.add("message--from-self");
+				}
+				messageContainer.appendChild(messageMeta);
+				messageContainer.appendChild(messageText);
+
+				container.appendChild(messageContainer);
+				window.scroll(0, container.scrollHeight);
+			}
+
+			function stringToColour(string) {
+				var hash = 0;
+				if (string.length > 0) {
+					for (var i = 0; i < string.length; i++) {
+							hash = string.charCodeAt(i) + ((hash << 5) - hash);
+							hash = hash & hash; // Convert to 32bit integer
+					}
+				}
+				var shortened = hash % 360;
+				return "hsl(" + shortened + ",80%,90%)";
+			}
+
+			xebraState.connect();
+
+		</script>
+</body>
+</html>
