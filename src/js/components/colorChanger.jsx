@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import ChromePicker from "react-color/lib/components/chrome/Chrome.js";
 import tinycolor from "tinycolor2";
 import classnames from "classnames";
@@ -92,8 +93,8 @@ export default class ColorChanger extends React.Component {
 }
 
 ColorChanger.propTypes = {
-	horPlacement : React.PropTypes.oneOf(["center", "leftalign", "rightalign"]),
-	vertPlacement : React.PropTypes.oneOf(["above", "below"])
+	horPlacement : PropTypes.oneOf(["center", "leftalign", "rightalign"]),
+	vertPlacement : PropTypes.oneOf(["above", "below"])
 };
 
 ColorChanger.defaultProps = {

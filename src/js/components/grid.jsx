@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import omit from "lodash/omit.js";
 
@@ -78,19 +79,19 @@ export default class Grid extends React.Component {
 }
 
 Grid.propTypes = {
-	distribution : React.PropTypes.oneOf(["between", "around", "center"]),
-	equalHeight : React.PropTypes.bool,
-	horizAlign : React.PropTypes.oneOf(["left", "center", "right"]),
-	noBottom : React.PropTypes.bool,
-	noGutter : React.PropTypes.bool,
-	reverse : React.PropTypes.bool,
-	size : React.PropTypes.oneOf(SIZES),
-	sizeXs : React.PropTypes.oneOf(SIZES),
-	sizeSm : React.PropTypes.oneOf(SIZES),
-	sizeMd : React.PropTypes.oneOf(SIZES),
-	sizeLg : React.PropTypes.oneOf(SIZES),
-	tagName : React.PropTypes.string,
-	vertAlign : React.PropTypes.oneOf(["top", "middle", "bottom"])
+	distribution : PropTypes.oneOf(["between", "around", "center"]),
+	equalHeight : PropTypes.bool,
+	horizAlign : PropTypes.oneOf(["left", "center", "right"]),
+	noBottom : PropTypes.bool,
+	noGutter : PropTypes.bool,
+	reverse : PropTypes.bool,
+	size : PropTypes.oneOf(SIZES),
+	sizeXs : PropTypes.oneOf(SIZES),
+	sizeSm : PropTypes.oneOf(SIZES),
+	sizeMd : PropTypes.oneOf(SIZES),
+	sizeLg : PropTypes.oneOf(SIZES),
+	tagName : PropTypes.string,
+	vertAlign : PropTypes.oneOf(["top", "middle", "bottom"])
 };
 
 Grid.defaultProps = {

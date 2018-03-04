@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 
 import { FULLSCREEN_STATES } from "../lib/constants.js";
@@ -33,6 +34,6 @@ export default class FullscreenToggleButton extends React.Component {
 }
 
 FullscreenToggleButton.propTypes = {
-	fullscreenState : React.PropTypes.number.isRequired,
-	onToggle : React.PropTypes.func.isRequired
+	fullscreenState : PropTypes.number.isRequired,
+	onToggle : PropTypes.func.isRequired
 };

@@ -1,5 +1,6 @@
 import classnames from "classnames";
 import React from "react";
+import PropTypes from "prop-types";
 
 const BASE_CLASS = "mw-form-field";
 const LABEL_CLASS = `${BASE_CLASS}--label`;
@@ -25,6 +26,6 @@ export default class FormField extends React.Component {
 }
 
 FormField.propTypes = {
-	htmlFor : React.PropTypes.string,
-	label : React.PropTypes.string
+	htmlFor : PropTypes.string,
+	label : PropTypes.string
 };
