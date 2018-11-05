@@ -414,7 +414,9 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"tricolor",
 		"triscale",
 		"numdecimalplaces",
-		"htricolor"
+		"htricolor",
+		"minimum",
+		"maximum"
 	]),
 	[OBJECTS.PANEL] : DEFAULT_PARAMS.concat([
 		"bgcolor",
