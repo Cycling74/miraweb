@@ -215,7 +215,7 @@ export default class LiveDial extends MiraUIObject {
 			}
 
 			mgraphics.fill();
-			mgraphics.set_source_rgba(tribordercolor);
+			mgraphics.set_source_rgba(tribordercolor || [0, 0, 0, 0]);
 			mgraphics.set_line_width(triangleLineWidth);
 			mgraphics.stroke();
 		}

@@ -501,5 +501,6 @@ export const OBJECT_PARAMETERS = Object.freeze({
 });
 
 export const OPTIONAL_OBJECT_PARAMETERS = Object.freeze({
-	[OBJECTS.LIVE_TAB] : ["pictures"]
+	[OBJECTS.LIVE_TAB] : ["pictures"],
+	[OBJECTS.LIVE_DIAL] : ["tribordercolor"]
 });
