@@ -99,8 +99,6 @@ export default class Umenu extends MiraUIObject {
 			bgfillcolor_pt1,
 			bgfillcolor_pt2,
 			bgfillcolor_color,
-			bgfillcolor_proportion,
-			bgfillcolor_angle,
 			fontname,
 			fontsize,
 			fontface,
@@ -110,6 +108,12 @@ export default class Umenu extends MiraUIObject {
 		} = params;
 		const items = this._getItems();
 		const padding = 4;
+		let {
+			bgfillcolor_proportion,
+			bgfillcolor_angle
+		} = params;
+		if (bgfillcolor_angle === null) bgfillcolor_angle = 270;
+		if (bgfillcolor_proportion === null) bgfillcolor_proportion = 0.5;
 		// draw background
 		if (bgfillcolor_type === "gradient") {
 			mgraphics.set_source_gradient(

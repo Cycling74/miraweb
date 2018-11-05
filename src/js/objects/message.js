@@ -18,8 +18,6 @@ export default class Message extends MiraUIObject {
 			bgfillcolor_pt2,
 			bgfillcolor_color1,
 			bgfillcolor_color2,
-			bgfillcolor_proportion,
-			bgfillcolor_angle,
 			textcolor,
 			value,
 			width,
@@ -27,6 +25,12 @@ export default class Message extends MiraUIObject {
 		} = params;
 		const padding = 4;
 		const borderRadius = 5;
+		let {
+			bgfillcolor_proportion,
+			bgfillcolor_angle
+		} = params;
+		if (bgfillcolor_angle === null) bgfillcolor_angle = 270;
+		if (bgfillcolor_proportion === null) bgfillcolor_proportion = 0.5;
 		// draw background
 		if (bgfillcolor_type === "gradient") {
 			mgraphics.set_source_gradient(
