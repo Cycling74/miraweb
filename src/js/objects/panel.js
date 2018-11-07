@@ -13,10 +13,14 @@ export default class Panel extends MiraUIObject {
 			bgfillcolor_pt1,
 			bgfillcolor_pt2,
 			bgfillcolor_color1,
-			bgfillcolor_color2,
+			bgfillcolor_color2
+		} = params;
+		let {
 			bgfillcolor_proportion,
 			bgfillcolor_angle
 		} = params;
+		if (bgfillcolor_angle === null) bgfillcolor_angle = 270;
+		if (bgfillcolor_proportion === null) bgfillcolor_proportion = 0.5;
 
 		if (bgfillcolor_type === "gradient") {
 			mgraphics.set_source_gradient(

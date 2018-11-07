@@ -1,6 +1,6 @@
 {
   "name": "xebra.js",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Xebra connects Max to the browser, and the browser to Max.",
   "author": {
     "name": "Cycling '74",
@@ -33,16 +33,16 @@
   },
   "dependencies": {
     "babel-runtime": "^6.18.0",
+    "browserify": "^13.1.0",
     "lodash.pick": "^4.4.0",
     "lodash.uniq": "^4.5.0",
     "sprintf-js": "^1.0.3",
-    "xebra-communicator": "^1.2.1"
+    "xebra-communicator": "^1.2.2"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-register": "^6.18.0",
     "babelify": "^7.3.0",
-    "browserify": "^13.1.0",
     "eslint": "^3.12.1",
     "gh-pages": "^0.12.0",
     "jaguarjs-jsdoc": "git://github.com/fde31/jaguarjs-jsdoc#xebra_docs",

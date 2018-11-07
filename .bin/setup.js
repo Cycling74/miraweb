@@ -8,7 +8,7 @@ helpers.logToConsole("");
 helpers
 	.execCommand("Installing NPM dependencies", "npm", ["install"])
 	.then(() => {
-		return helpers.execCommand("Install and setup included package dependencies", "lerna", ["bootstrap"]);
+		return helpers.execCommand("Install and setup included package dependencies", "npm", ["run", "setup:lerna"]);
 	})
 	.then(() => {
 		return helpers.execCommand("Link Xebra.js", "npm", ["link", path.join(__dirname, "..", "packages", "xebra.js")]);
@@ -23,5 +23,5 @@ helpers
 		helpers.exitProcess(0);
 	})
 	.catch((err) => {
-		helpers.exitProcess(1, err);
+		helpers.exitProcess(1, err.message);
 	});
