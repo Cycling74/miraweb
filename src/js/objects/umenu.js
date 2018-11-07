@@ -12,7 +12,7 @@ export default class Umenu extends MiraUIObject {
 
 	_getItems() {
 		let items = this._state.getParamValue("items");
-		if (!items || !items.length || items === "<empty>") return null;
+		if (!items || items === "<empty>") return null;
 		if (!Array.isArray(items)) items = [items];
 
 		const entries = [];
