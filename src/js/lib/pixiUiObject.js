@@ -66,7 +66,7 @@ function getPolygonBounds(poly) {
 
 class LinearGradient {
 
-	constructor(colorArray, colorPt1, colorPt2, proportion, angle) {
+	constructor(colorArray, colorPt1, colorPt2, proportion = 0, angle) {
 
 		this._canvas = document.createElement("canvas");
 		this._canvas.width = LinearGradient.WIDTH;

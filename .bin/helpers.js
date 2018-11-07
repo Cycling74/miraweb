@@ -101,7 +101,7 @@ const execCommand = (
 				logToConsole(`✓ ${message}`, true);
 			}
 			if (code === 0) return resolve({ code });
-			return reject({ code });
+			return reject({ code, message: `exited with code ${code}` });
 		});
 
 		cmd.on("error", (error) => {
