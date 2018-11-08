@@ -1,6 +1,7 @@
+import React from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import omit from "lodash/omit";
-import React from "react";
 
 const BASE_CLASS = "mw-button";
 
@@ -40,11 +41,11 @@ export default class Button extends React.Component {
 }
 
 Button.propTypes = {
-	expand : React.PropTypes.bool,
-	disabled : React.PropTypes.bool,
-	size : React.PropTypes.oneOf(["sm", "md", "lg"]),
-	buttonStyle : React.PropTypes.oneOf(["primary", "secondary", "success", "warn", "error"]),
-	type : React.PropTypes.oneOf(["button", "submit"])
+	expand : PropTypes.bool,
+	disabled : PropTypes.bool,
+	size : PropTypes.oneOf(["sm", "md", "lg"]),
+	buttonStyle : PropTypes.oneOf(["primary", "secondary", "success", "warn", "error"]),
+	type : PropTypes.oneOf(["button", "submit"])
 };
 
 Button.defaultProps = {

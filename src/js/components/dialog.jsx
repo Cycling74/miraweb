@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import omit from "lodash/omit.js";
 
@@ -42,10 +43,10 @@ export default class Dialog extends React.Component {
 }
 
 Dialog.propTypes = {
-	onClose : React.PropTypes.func,
-	closable : React.PropTypes.bool,
-	show : React.PropTypes.bool,
-	title : React.PropTypes.string.isRequired
+	onClose : PropTypes.func,
+	closable : PropTypes.bool,
+	show : PropTypes.bool,
+	title : PropTypes.string.isRequired
 };
 
 Dialog.defaultProps = {

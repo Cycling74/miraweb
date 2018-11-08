@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types"
 import classnames from "classnames";
 import omit from "lodash/omit";
 
@@ -48,13 +49,13 @@ export default class Column extends React.Component {
 }
 
 Column.propTypes = {
-	position : React.PropTypes.oneOf(["first", "last"]),
-	size : React.PropTypes.oneOf(SIZES),
-	sizeXs : React.PropTypes.oneOf(SIZES),
-	sizeSm : React.PropTypes.oneOf(SIZES),
-	sizeMd : React.PropTypes.oneOf(SIZES),
-	sizeLg : React.PropTypes.oneOf(SIZES),
-	tagName : React.PropTypes.string
+	position : PropTypes.oneOf(["first", "last"]),
+	size : PropTypes.oneOf(SIZES),
+	sizeXs : PropTypes.oneOf(SIZES),
+	sizeSm : PropTypes.oneOf(SIZES),
+	sizeMd : PropTypes.oneOf(SIZES),
+	sizeLg : PropTypes.oneOf(SIZES),
+	tagName : PropTypes.string
 };
 
 Column.defaultProps = {

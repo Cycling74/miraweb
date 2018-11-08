@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import map from "lodash/map.js";
 
@@ -43,12 +44,12 @@ class FrameTab extends React.Component {
 }
 
 FrameTab.propTypes = {
-	active : React.PropTypes.bool.isRequired,
-	bgColor : React.PropTypes.string.isRequired,
-	id : React.PropTypes.number.isRequired,
-	isDark : React.PropTypes.bool.isRequired,
-	name : React.PropTypes.string.isRequired,
-	onActivate : React.PropTypes.func.isRequired
+	active : PropTypes.bool.isRequired,
+	bgColor : PropTypes.string.isRequired,
+	id : PropTypes.number.isRequired,
+	isDark : PropTypes.bool.isRequired,
+	name : PropTypes.string.isRequired,
+	onActivate : PropTypes.func.isRequired
 };
 
 export default class FrameTabs extends React.Component {
