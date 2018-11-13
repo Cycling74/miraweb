@@ -72,7 +72,6 @@ class RotateGesture extends GestureEvent {
 
 		this._ongoing = options.isFinal ? 0 : 1;
 		this._rotation = options.rotation;
-		this._rotationRad = toRad(this._rotation);
 		this._velocity = options.velocity;
 	}
 
@@ -82,10 +81,6 @@ class RotateGesture extends GestureEvent {
 
 	get rotation() {
 		return this._rotation;
-	}
-
-	get rotationRad() {
-		return this._rotationRad;
 	}
 
 	get velocity() {
