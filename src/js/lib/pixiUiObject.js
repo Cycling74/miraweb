@@ -635,7 +635,7 @@ class PixiDraw extends EventEmitter {
 			"offsetDirection",
 
 			"scale",
-			"rotate",
+			"rotation",
 
 			"isFirst",
 			"isFinal"

@@ -1,3 +1,5 @@
+import { toRad } from "./utils";
+
 class GestureEvent {
 
 	constructor(options) {
@@ -69,7 +71,8 @@ class RotateGesture extends GestureEvent {
 		super(options);
 
 		this._ongoing = options.isFinal ? 0 : 1;
-		this._rotate = options.rotate;
+		this._rotation = options.rotation;
+		this._rotationRad = toRad(this._rotation);
 		this._velocity = options.velocity;
 	}
 
@@ -77,8 +80,12 @@ class RotateGesture extends GestureEvent {
 		return this._ongoing;
 	}
 
-	get rotate() {
-		return this._rotate;
+	get rotation() {
+		return this._rotation;
+	}
+
+	get rotationRad() {
+		return this._rotationRad;
 	}
 
 	get velocity() {
