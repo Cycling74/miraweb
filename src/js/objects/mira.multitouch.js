@@ -379,7 +379,7 @@ export default class MiraMultitouch extends MiraUIObject {
 			0, // Sequence number, always 0
 			XebraStateStore.getXebraUuid(),
 			XebraStateStore.getXebraUuid(),
-			event.rotate,
+			event.rotationRad,
 			event.velocity,
 			event.ongoing
 		]);
