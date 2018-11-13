@@ -1,10 +1,14 @@
-import { toRad } from "./utils";
-
 class GestureEvent {
 
 	constructor(options) {
+
+		this._id = options.id || null;
 		this._pointers = options.pointers;
 		this._center = options.center;
+	}
+
+	get id() {
+		return this._id;
 	}
 
 	get type() {
