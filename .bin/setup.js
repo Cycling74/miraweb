@@ -14,12 +14,6 @@ helpers
 		return helpers.execCommand("Link Xebra.js", "npm", ["link", path.join(__dirname, "..", "packages", "xebra.js")]);
 	})
 	.then(() => {
-		return pixiBuildSteps.installDependencies();
-	})
-	.then(() => {
-		return pixiBuildSteps.buildLib();
-	})
-	.then(() => {
 		helpers.exitProcess(0);
 	})
 	.catch((err) => {

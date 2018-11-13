@@ -24,7 +24,6 @@
   "scripts": {
     "setup": "node ./.bin/setup.js",
     "setup:lerna": "lerna bootstrap",
-    "setup:pixi": "node ./.bin/buildPixi.js",
     "clean": "node ./.bin/clean.js",
     "build": "rimraf ./dev_build && cross-env MW_DEV_SERVER=false webpack --config webpack/dev.config.js",
     "build-release": "rimraf ./build && webpack --config webpack/release.config.js",
@@ -65,7 +64,7 @@
     "mkdirp": "^0.5.1",
     "node-sass": "^3.10.0",
     "normalize.css": "^4.2.0",
-    "pixi.js": "https://github.com/starakaj/pixi.js/archive/dev.tar.gz",
+    "pixi.js": "^4.8.2",
     "postcss-loader": "^1.1.0",
     "react": "^15.3.2",
     "react-color": "^2.11.1",

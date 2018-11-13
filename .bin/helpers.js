@@ -62,7 +62,7 @@ const closeLogs = () => {
 };
 
 const exitProcess = (status = 1, error) => {
-	if (error) errorLog.write(error);
+	if (error) errorLog.write(typeof error === "string" ? error : error.message);
 	closeLogs();
 	logToConsole("");
 	if (status === 0) {
