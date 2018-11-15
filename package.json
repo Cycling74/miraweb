@@ -1,6 +1,7 @@
 {
   "name": "miraweb-repo",
   "description": "",
+  "version": "1.2.3",
   "author": {
     "name": "Cycling '74",
     "url": "http://cycling74.com"
