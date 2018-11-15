@@ -1,0 +1,24 @@
+{
+  "name": "miraweb",
+  "version": "1.2.3",
+  "description": "",
+  "author": {
+    "name": "Cycling '74",
+    "url": "http://cycling74.com"
+  },
+  "contributors": [
+    "Florian Demmer <florian@cycling74.com>",
+    "Sam Tarakajian <sam@cycling74.com>",
+    "Cassie Tarakajian <cassie@cycling74.com>",
+    "Ben Bracken <ben@cycling74.com>",
+    "Rohail Atlaf <rohail@cycling74.com>",
+    "Emmanuel Jourdan <ej@cycling74.com>"
+  ],
+  "homepage": "http://cycling74.com",
+  "bugs": "https://github.com/Cycling74/miraweb/issues",
+  "license": "MIT",
+  "repository": {},
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}
