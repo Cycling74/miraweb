@@ -32,7 +32,7 @@
     "lint-fix": "eslint src -c ./.eslintrc.json --fix",
     "test": "npm run lint && lerna run test",
     "publish": "lerna run test; lerna publish --ignore miraweb",
-    "version": "lerna version"
+    "setversion": "lerna version"
   },
   "dependencies": {},
   "devDependencies": {
