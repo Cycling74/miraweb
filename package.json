@@ -27,14 +27,16 @@
     "build": "lerna run build --ignore xebra*",
     "build-release": "lerna run build-release --ignore xebra*",
     "serve": "lerna run serve --ignore xebra* --stream",
-    "lint": "eslint src -c ./.eslintrc.json",
+    "lint": "eslint src/js -c ./.eslintrc.json",
     "lint-fix": "eslint src -c ./.eslintrc.json --fix",
-    "test": "npm run lint",
-    "testall": "npm run test && lerna run test",
     "publish": "node ./.bin/bumpMWVersion.js; lerna run test; lerna publish"
+    "test": "npm run lint && lerna run test",
   },
   "dependencies": {},
   "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-recommended": "^1.5.0",
+    "eslint-plugin-react": "^6.10.0",
     "lerna": "^3.4.3",
     "rimraf": "^2.6.2"
   }
