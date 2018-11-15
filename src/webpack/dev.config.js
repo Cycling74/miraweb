@@ -6,7 +6,7 @@ const commonConfig = require("./common.config.js");
 
 // Output
 commonConfig.output = {
-	path : path.join(__dirname, "..", "dev_build"),
+	path : path.join(__dirname, "..", "..", "dev_build"),
 	filename : "app.js"
 };
 commonConfig.devtool = "source-map";
@@ -17,7 +17,7 @@ commonConfig.plugins.push(new HtmlWebpackPlugin({
 	hash : true,
 	inject : "body",
 	minify : false,
-	template : path.join(__dirname, "..", "src", "index_tmpl.html"),
+	template : path.join(__dirname, "..", "index_tmpl.html"),
 	title : "Dev Build: Mira Web"
 }));
 
