@@ -6,7 +6,7 @@ const commonConfig = require("./common.config.js");
 
 // Output
 commonConfig.output = {
-	path : path.join(__dirname, "..", "build"),
+	path : path.join(__dirname, "..", "..", "build"),
 	filename : "app.js"
 };
 
@@ -19,7 +19,7 @@ commonConfig.plugins.push(new HtmlWebpackPlugin({
 	hash : true,
 	inject : "body",
 	minify : {},
-	template : path.join(__dirname, "..", "src", "index_tmpl.html"),
+	template : path.join(__dirname, "..", "index_tmpl.html"),
 	title : "Mira Web"
 }));
 

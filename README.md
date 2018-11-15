@@ -89,14 +89,6 @@ $> npm run testall
 $> npm run test
 ```
 
-### Rebuild PIXI.js
-
-We use a custom fork of PIXI.js. Use this script in order to rebuild PIXI.
-
-```
-$> npm run setup:pixi
-```
-
 ## License
 
 [MIT](LICENSE)
