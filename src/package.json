@@ -1,6 +1,6 @@
 {
   "name": "miraweb",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "description": "",
   "author": {
     "name": "Cycling '74",
@@ -23,7 +23,6 @@
     "build-release": "rimraf ../build && webpack --config ./webpack/release.config.js",
     "serve": "cross-env MW_DEV_SERVER=true webpack-dev-server --config webpack/dev.config.js --open --inline --progress"
   },
-  "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^6.5.1",
     "babel-core": "^6.9.1",
@@ -64,6 +63,6 @@
     "url-loader": "^0.5.7",
     "webpack": "2.3.2",
     "webpack-dev-server": "^2.4.2",
-    "xebra.js": "1.2.3"
+    "xebra.js": "^1.2.5"
   }
 }
