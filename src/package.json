@@ -20,5 +20,7 @@
   "repository": {},
   "scripts": {},
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "xebra.js": "1.2.3"
+  }
 }
