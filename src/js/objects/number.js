@@ -165,7 +165,7 @@ export default class Number extends MiraUIObject {
 		let newVal = toFixedTruncate(value, -Math.log10(this.multiplier));
 		newVal = newVal - event.screenDeltaY * this.multiplier;
 		console.log(minimum);
-		this.setParamValue("value",  Math.min(maximum,Math.max(minimum,newVal)));
+		this.setParamValue("value", Math.min(maximum, Math.max(minimum, newVal)));
 	}
 
 	pointerUp(event, params) {

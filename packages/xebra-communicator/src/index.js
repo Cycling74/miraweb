@@ -16,6 +16,27 @@ const MIRA_FCT_LOOKUP = {
 	[XEBRA_MESSAGES.STATEDUMP] : "_statedump"
 };
 
+function convertArrayToMaxList(array, mustBeFlat = false) {
+	if (mustBeFlat) {
+		if (array.find( (elt) => (typeof(elt)) === "object") !== undefined) {
+			throw new Error("Xebra can only send a flat array of numbers, strings and booleans to a Max list");
+		}
+	}
+	// eslint-disable-next-line no-use-before-define
+	return array.map( (elt) => maxEquivalentForJS(elt) );
+}
+
+function convertObjectToMaxDict(obj) {
+	const retObj = {};
+	for (let k in obj) {
+		if (obj.hasOwnProperty(k)) {
+			// eslint-disable-next-line no-use-before-define
+			retObj[k] = maxEquivalentForJS(obj[k]);
+		}
+	}
+	return retObj;
+}
+
 function maxEquivalentForJS(anything, mustBeFlatArray = false) {
 	let equivalent;
 	switch (typeof anything) {
@@ -53,27 +74,6 @@ function maxEquivalentForJS(anything, mustBeFlatArray = false) {
 	}
 
 	return equivalent;
-}
-
-function convertArrayToMaxList(array, mustBeFlat = false) {
-	if (mustBeFlat) {
-		if (array.find( (elt) => (typeof(elt)) === "object") !== undefined) {
-			throw new Error("Xebra can only send a flat array of numbers, strings and booleans to a Max list");
-		}
-	}
-
-	return array.map( (elt) => maxEquivalentForJS(elt) );
-}
-
-function convertObjectToMaxDict(obj) {
-	const retObj = {};
-	for (let k in obj) {
-		if (obj.hasOwnProperty(k)) {
-			retObj[k] = maxEquivalentForJS(obj[k]);
-		}
-	}
-
-	return retObj;
 }
 
 function generateUuid() {

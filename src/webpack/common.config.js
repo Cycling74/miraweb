@@ -3,21 +3,21 @@ const pck = require("../package.json");
 const webpack = require("webpack");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
-const ASSET_DIR = path.resolve(__dirname, path.join("..", "src", "assets"));
+const ASSET_DIR = path.resolve(__dirname, path.join("..", "assets"));
 
 const fs = require("fs");
-let license = fs.readFileSync(path.resolve(__dirname, "../LICENSE"), "utf8");
+let license = fs.readFileSync(path.resolve(__dirname, "..", "..", "LICENSE"), "utf8");
 license = license.replace(/\n\n/g, "<br/><br/>");
 
 const config = {
-	entry : "./src/js/index.js",
+	entry : path.join(__dirname, "..", "js", "index.js"),
 	target : "web",
 	module : {
 		rules : [
 			{
 				loader : "babel-loader",
 				include : [
-					path.resolve(__dirname, "../src/js"),
+					path.resolve(__dirname, "../js"),
 					path.resolve(__dirname, "../node_modules/hammerjs")
 				],
 				test : /\.jsx?$/
@@ -53,9 +53,9 @@ const config = {
 			}
 		]
 	},
-	resolve: {
-		alias: {
-			gyronorm: 'gyronorm/dist/gyronorm.complete.js'
+	resolve : {
+		alias : {
+			gyronorm : "gyronorm/dist/gyronorm.complete.js"
 		}
 	},
 	plugins : [
@@ -65,7 +65,7 @@ const config = {
 			__ASSETDIR__ : JSON.stringify(ASSET_DIR)
 		}),
 		new FaviconsWebpackPlugin({
-			logo : path.resolve(__dirname, path.join("..", "src", "assets", "miraweb_logo.png")),
+			logo : path.resolve(__dirname, path.join(__dirname, "..", "assets", "miraweb_logo.png")),
 			prefix : "./static/",
 			// emitStats : false,
 			statsFilename : "../[hash].json",
@@ -85,7 +85,8 @@ const config = {
 				yandex : false,
 				windows : false
 			}
-		})
+		}),
+		new webpack.IgnorePlugin(/vertx/)
 	],
 	watch : process.env.WATCH ? true : false
 };

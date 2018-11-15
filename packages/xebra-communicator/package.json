@@ -1,6 +1,6 @@
 {
   "name": "xebra-communicator",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Communication helper for Xebra.js",
   "author": {
     "name": "Cycling '74",
@@ -24,8 +24,6 @@
   "scripts": {
     "prebuild": "rimraf ./lib",
     "build": "babel ./src -d ./lib",
-    "lint": "eslint src -c ./.eslintrc.json",
-    "test": "npm run lint",
     "prepublish": "npm run build"
   },
   "dependencies": {
@@ -33,7 +31,9 @@
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
-    "eslint": "^3.9.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-class-properties": "^6.18.0",
+    "babel-preset-es2015": "^6.5.0",
     "rimraf": "2.5.4"
   }
 }
