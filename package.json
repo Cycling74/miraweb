@@ -27,7 +27,7 @@
     "build": "lerna run build --ignore xebra*",
     "build-release": "lerna run build-release --ignore xebra*",
     "serve": "lerna run serve --ignore xebra* --stream",
-    "lint": "eslint src/js -c ./.eslintrc.json",
+    "lint": "eslint src/js packages/xebra.js/src packages/xebra-communicator/src -c ./.eslintrc.json",
     "lint-fix": "eslint src -c ./.eslintrc.json --fix",
     "publish": "node ./.bin/bumpMWVersion.js; lerna run test; lerna publish"
     "test": "npm run lint && lerna run test",
