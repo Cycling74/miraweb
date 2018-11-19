@@ -118,7 +118,9 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"tricolor",
 		"triscale",
 		"numdecimalplaces",
-		"htricolor"
+		"htricolor",
+		"minimum",
+		"maximum"
 	]),
 	[OBJECTS.FPIC] : DEFAULT_PARAMS.concat([
 		"alpha",
