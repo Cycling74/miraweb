@@ -161,7 +161,11 @@ export default class LiveTab extends MiraUIObject {
 			fontname,
 			fontsize,
 			fontface,
+			inactivetextoffcolor,
+			inactivetextoncolor,
 			_parameter_range,
+			textcolor,
+			textoncolor,
 			value,
 			usepicture
 		} = params;
@@ -190,6 +194,11 @@ export default class LiveTab extends MiraUIObject {
 
 			// display the text
 			if (!usepicture) {
+				mgraphics.set_source_rgba(
+					(active === 1) ?
+						((value === i) ? textoncolor : textcolor) :
+						((value === i) ? inactivetextoncolor : inactivetextoffcolor)
+				);
 				mgraphics.set_font_name(fontname);
 				mgraphics.set_font_weight(fontface);
 				mgraphics.set_font_size(fontsize);

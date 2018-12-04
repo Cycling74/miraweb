@@ -264,6 +264,8 @@ export const OBJECT_PARAMETERS = Object.freeze({
 			"bordercolor",
 			"button",
 			"focusbordercolor",
+			"inactivetextoffcolor",
+			"inactivetextoncolor",
 			"mode",
 			"multiline",
 			"num_lines_patching",
