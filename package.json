@@ -31,7 +31,7 @@
     "lint": "eslint src/js packages/xebra.js/src packages/xebra-communicator/src -c ./.eslintrc.json",
     "lint-fix": "eslint src -c ./.eslintrc.json --fix",
     "test": "npm run lint && lerna run test",
-    "publish": "lerna run test; lerna publish --ignore miraweb",
+    "publish": "lerna run test; lerna publish from-git --ignore miraweb",
     "setversion": "lerna version"
   },
   "dependencies": {},
@@ -39,7 +39,7 @@
     "eslint": "^3.17.1",
     "eslint-config-recommended": "^1.5.0",
     "eslint-plugin-react": "^6.10.0",
-    "lerna": "^3.4.3",
+    "lerna": "^3.6.0",
     "rimraf": "^2.6.2"
   }
 }

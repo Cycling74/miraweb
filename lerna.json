@@ -1,8 +1,5 @@
 {
 	"command": {
-		"publish": {
-			"allowBranch": "master"
-		},
 		"version": {
 			"message": "Version bump to %s"
 		}
