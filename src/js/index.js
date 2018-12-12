@@ -1,5 +1,6 @@
 // load global styling
 require("../theme/index.scss");
+require("normalize.css/normalize.css");
 
 import Mira from "./mira.jsx";
 
