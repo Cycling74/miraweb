@@ -23,6 +23,7 @@ Desktop.ini
 npm-debug.log
 lerna-debug.log
 node_modules
+yarn-error.log
 
 # MiraWeb Project Files
 build

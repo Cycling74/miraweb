@@ -25,6 +25,13 @@ const config = {
 			{
 				use : [
 					"style-loader",
+					"css-loader"
+				],
+				test : /\.css$/
+			},
+			{
+				use : [
+					"style-loader",
 					"css-loader",
 					{
 						loader : "postcss-loader",

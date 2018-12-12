@@ -84,7 +84,7 @@ Make sure you have followed the global [repository setup instructions](../../REA
 Xebra is written in ES6. Based on that the build process covers generating the ES5 versions to the `lib` folder or generating the bundled files in the `dist` folder via
 
 ```
-$> npm run build
+$> yarn run build
 ```
 
 ## Generate the Documentation
@@ -94,7 +94,7 @@ The documentation for this module is written and build using JSDoc style syntax 
 If you would like to rebuild the documentation please run
 
 ```
-$> npm run docs
+$> yarn run docs
 ```
 
 For convenience we also host the latest version of the [documentation online][documentation].

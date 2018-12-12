@@ -21,7 +21,9 @@
   "scripts": {
     "build": "rimraf ../dev_build && cross-env MW_DEV_SERVER=false webpack --config ./webpack/dev.config.js",
     "build-release": "rimraf ../build && webpack --config ./webpack/release.config.js",
-    "serve": "cross-env MW_DEV_SERVER=true webpack-dev-server --config webpack/dev.config.js --open --inline --progress"
+    "clean": "rimraf ./node_modules",
+    "serve": "cross-env MW_DEV_SERVER=true webpack-dev-server --config webpack/dev.config.js --open --inline --progress",
+    "test": "echo 'No MiraWeb' tests"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.1",
@@ -35,7 +37,6 @@
     "babel-preset-react": "^6.5.0",
     "bowser": "^1.6.0",
     "classnames": "^2.2.5",
-    "cross-env": "^3.2.4",
     "css-loader": "0.25.0",
     "favicons-webpack-plugin": "^0.0.7",
     "file-loader": "^0.9.0",
@@ -43,8 +44,6 @@
     "gyronorm": "^2.0.6",
     "hammerjs": "^2.0.8",
     "html-webpack-plugin": "^2.22.0",
-    "inquirer": "^3.0.6",
-    "lerna": "^3.4.3",
     "lodash": "^4.16.1",
     "mkdirp": "^0.5.1",
     "node-sass": "^4.10.0",
@@ -54,7 +53,6 @@
     "react": "^15.3.2",
     "react-color": "^2.11.1",
     "react-dom": "^15.3.2",
-    "rimraf": "^2.6.1",
     "sass-loader": "4.0.2",
     "semver": "^5.3.0",
     "source-map-loader": "0.1.5",
@@ -63,6 +61,7 @@
     "url-loader": "^0.5.7",
     "webpack": "2.3.2",
     "webpack-dev-server": "^2.4.2",
-    "xebra.js": "^1.2.5"
-  }
+    "xebra.js": "1.2.5"
+  },
+  "dependencies": {}
 }

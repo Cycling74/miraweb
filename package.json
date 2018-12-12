@@ -22,24 +22,29 @@
     "url": "https://github.com/Cycling74/miraweb.git"
   },
   "scripts": {
-    "setup": "npm install",
-    "postsetup": "lerna bootstrap",
-    "clean": "lerna clean && rimraf ./node_modules",
-    "build": "lerna run build --ignore xebra*",
-    "build-release": "lerna run build-release --ignore xebra*",
-    "serve": "lerna run serve --ignore xebra* --stream",
+    "build": "cross-env MW_RELEASE=false node ./scripts/build.js",
+    "build-release": "cross-env MW_RELEASE=true node ./scripts/build.js",
+    "clean": "node ./scripts/clean.js",
     "lint": "eslint src/js packages/xebra.js/src packages/xebra-communicator/src -c ./.eslintrc.json",
     "lint-fix": "eslint src -c ./.eslintrc.json --fix",
-    "test": "npm run lint && lerna run test",
-    "publish": "lerna run test; lerna publish --ignore miraweb",
-    "setversion": "lerna version"
+    "postinstall": "node ./scripts/postinstall.js",
+    "prepublish": "yarn run test",
+    "publish": "node ./scripts/publish.js",
+    "serve": "node ./scripts/serve.js",
+    "setversion": "node ./scripts/setversion.js",
+    "test": "node ./scripts/test.js"
   },
   "dependencies": {},
   "devDependencies": {
+    "cross-env": "^3.2.4",
     "eslint": "^3.17.1",
     "eslint-config-recommended": "^1.5.0",
     "eslint-plugin-react": "^6.10.0",
-    "lerna": "^3.4.3",
     "rimraf": "^2.6.2"
-  }
+  },
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "src"
+  ]
 }
