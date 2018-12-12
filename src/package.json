@@ -21,7 +21,9 @@
   "scripts": {
     "build": "rimraf ../dev_build && cross-env MW_DEV_SERVER=false webpack --config ./webpack/dev.config.js",
     "build-release": "rimraf ../build && webpack --config ./webpack/release.config.js",
-    "serve": "cross-env MW_DEV_SERVER=true webpack-dev-server --config webpack/dev.config.js --open --inline --progress"
+    "clean": "rimraf ./node_modules",
+    "serve": "cross-env MW_DEV_SERVER=true webpack-dev-server --config webpack/dev.config.js --open --inline --progress",
+    "test": "echo 'No MiraWeb' tests"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.1",
