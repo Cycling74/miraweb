@@ -61,6 +61,7 @@
     "url-loader": "^0.5.7",
     "webpack": "2.3.2",
     "webpack-dev-server": "^2.4.2",
-    "xebra.js": "^1.2.5"
-  }
+    "xebra.js": "1.2.5"
+  },
+  "dependencies": {}
 }

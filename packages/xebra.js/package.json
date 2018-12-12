@@ -37,7 +37,7 @@
     "lodash.pick": "^4.4.0",
     "lodash.uniq": "^4.5.0",
     "sprintf-js": "^1.0.3",
-    "xebra-communicator": "^1.2.5"
+    "xebra-communicator": "1.2.5"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
