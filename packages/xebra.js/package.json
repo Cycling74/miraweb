@@ -22,12 +22,14 @@
     "url": "https://github.com/Cycling74/miraweb.git"
   },
   "scripts": {
+    "clean": "rimraf ./node_modules",
     "predocs": "rimraf ./docs",
-    "docs": "sh ./.bin/docs",
+    "docs": "sh ./scripts/docs",
     "prebuild": "rimraf ./lib; rimraf ./dist",
-    "build": "babel ./src -d ./lib; node ./.bin/build.js",
-    "prepublish": "npm run build",
-    "postpublish": "npm run docs && node ./.bin/publish_docs.js"
+    "build": "babel ./src -d ./lib; node ./scripts/build.js",
+    "prepublish": "yarn run build",
+    "postpublish": "yarn run docs && node ./scripts/publish_docs.js",
+    "test": "echo 'No Xebra.js' tests"
   },
   "dependencies": {
     "babel-runtime": "^6.18.0",
@@ -49,7 +51,6 @@
     "jaguarjs-jsdoc": "git://github.com/fde31/jaguarjs-jsdoc#xebra_docs",
     "jsdoc": "^3.4.2",
     "jsdoc-babel": "^0.2.1",
-    "rimraf": "2.5.4",
     "uglify-js": "^2.7.3"
   },
   "browserify": {

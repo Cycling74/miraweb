@@ -22,9 +22,11 @@
     "url": "https://github.com/Cycling74/miraweb.git"
   },
   "scripts": {
+    "clean": "rimraf ./node_modules",
     "prebuild": "rimraf ./lib",
     "build": "babel ./src -d ./lib",
-    "prepublish": "npm run build"
+    "prepublish": "yarn run build",
+    "test": "echo 'No xebra-comm' tests"
   },
   "dependencies": {
     "lodash.defaults": "^4.2.0"
@@ -33,7 +35,6 @@
     "babel-cli": "^6.18.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.18.0",
-    "babel-preset-es2015": "^6.5.0",
-    "rimraf": "2.5.4"
+    "babel-preset-es2015": "^6.5.0"
   }
 }
