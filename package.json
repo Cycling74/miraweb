@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build": "cross-env MW_RELEASE=false node ./scripts/build.js",
-    "build-release": "crossenv MW_RELEASE=true node ./scripts/build.js",
+    "build-release": "cross-env MW_RELEASE=true node ./scripts/build.js",
     "clean": "node ./scripts/clean.js",
     "lint": "eslint src/js packages/xebra.js/src packages/xebra-communicator/src -c ./.eslintrc.json",
     "lint-fix": "eslint src -c ./.eslintrc.json --fix",
