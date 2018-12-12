@@ -27,22 +27,24 @@ You like the MiraWeb and its related projects and would like to contribute? Perf
 
 Note that most users won't need to do this and should rather use MiraWeb package in Max' Package Manager. However if you are developing MiraWeb or one of its packages you might need to have to setup properly. Please be aware that you still need to have the MiraWeb Max package installed in order to have Max support the Web enabling communication.
 
-Make sure you have Node.js (version 6.4.0 or later) and NPM installed and then in the cloned repository folder do the following to install all necessary dependencies and set up the monorepo (incl. the proper npm links and additional configuration):
+Make sure you have Node.js (version 10.13.0 or later) and Yarn (version 1.12.3 or later) installed and then in the cloned repository folder do the following to install all necessary dependencies and set up the monorepo (incl. the proper package links and additional configuration):
 
 ```
-$> npm run setup
+$> yarn install
 ```
 
-All the packages can be found in the `/packages` folder. So after setting up the repository please feel free to switch to the package folder you'd like to work on and follow any further, package instructions there.
+All the packages can be found in the `/packages` while the MiraWeb source can be found in the `/src` folder. So after setting up the repository please feel free to switch to the package folder you'd like to work on and follow any further, package instructions there.
 
 ## Scripts
+    "serve": "node ./scripts/serve.js",
+
+    "test": "node ./scripts/test.js"
 
 ### Repo Setup
 
-Use this to setup the repository
-
+Use this to install all dependencies and setup the repository
 ```
-$> npm run setup
+$> yarn install
 ```
 
 ### Repo Cleanup
@@ -50,7 +52,7 @@ $> npm run setup
 Use this to clean up the monorepo and remove all interdependencies.
 
 ```
-$> npm run clean
+$> yarn run clean
 ```
 
 ### Build
@@ -61,19 +63,18 @@ You can build the MiraWeb client using one of the following three scripts/config
 // start dev-server on http://localhost:8080
 // watches for changes and does live reloading
 // initial bundle build can take a few sec -> console shows progress
-$> npm run serve
+$> yarn run serve
 ```
 
 ```
 // development build -> dev_build folder
-$> npm run build
+$> yarn run build
 ```
 
 ```
 // release build -> build folder
-$> npm run build-release
+$> yarn run build-release
 ```
-
 
 ### Tests
 
@@ -81,12 +82,27 @@ Use one of the following to run tests and linting
 
 ```
 // Run MiraWeb and included packages tests
-$> npm run testall
+$> yarn run test
 ```
 
+If you'd only like to run the linter please run
+
 ```
-// MiraWeb tests only
-$> npm run test
+$> yarn run lint
+```
+
+or to apply auto-fixing of linting errors
+
+```
+$> yarn run lint-fix
+```
+
+### Versioning
+
+MiraWeb and the contained packages include a unified version number. To adjust this across this the repository please run
+
+```
+$> yarn run setversion
 ```
 
 ## License
