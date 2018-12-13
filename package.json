@@ -25,8 +25,8 @@
     "build": "cross-env MW_RELEASE=false node ./scripts/build.js",
     "build-release": "cross-env MW_RELEASE=true node ./scripts/build.js",
     "clean": "node ./scripts/clean.js",
-    "lint": "eslint src/js packages/xebra.js/src packages/xebra-communicator/src -c ./.eslintrc.json",
-    "lint-fix": "eslint src -c ./.eslintrc.json --fix",
+    "lint": "eslint ./ -c ./.eslintrc.js",
+    "lint-fix": "eslint ./ -c ./.eslintrc.js --fix",
     "postinstall": "node ./scripts/postinstall.js",
     "prepublish": "yarn run test",
     "publish": "node ./scripts/publish.js",
@@ -34,12 +34,13 @@
     "setversion": "node ./scripts/setversion.js",
     "test": "node ./scripts/test.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "babel-eslint": "^10.0.1"
+  },
   "devDependencies": {
     "cross-env": "^3.2.4",
-    "eslint": "^3.17.1",
-    "eslint-config-recommended": "^1.5.0",
-    "eslint-plugin-react": "^6.10.0",
+    "eslint": "^5.10.0",
+    "eslint-config-c74": "^1.0.0",
     "rimraf": "^2.6.2"
   },
   "private": true,

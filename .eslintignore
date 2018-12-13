@@ -1,0 +1,8 @@
+**/node_modules
+
+packages/xebra-communicator/lib/**
+
+packages/xebra.js/dist/**
+packages/xebra.js/lib/**
+packages/xebra.js/docs/**
+packages/xebra.js/examples/**
