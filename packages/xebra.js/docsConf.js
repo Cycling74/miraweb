@@ -21,8 +21,8 @@ module.exports = {
 		require.resolve("jsdoc-babel")
 	],
 	"babel": {
-	    "presets": [],
-	    "sourceMap": true,
+		"presets": [],
+		"sourceMap": true,
 		"plugins": [
 			"babel-plugin-transform-class-properties"
 		]
@@ -48,18 +48,18 @@ module.exports = {
 		"linenums": true
 	},
 	"markdown": {
-	   "parser": "gfm",
-	   "hardwrap": false
+		"parser": "gfm",
+		"hardwrap": false
 	},
 	"opts": {
-	  "encoding": "utf8",
-	  "recurse": true,
-	  "private": false,
-	  "lenient": true,
-	  "destination": "./docs",
+		"encoding": "utf8",
+		"recurse": true,
+		"private": false,
+		"lenient": true,
+		"destination": "./docs",
 		"package": "./package.json",
-	  "readme": "./README.md",
-	  "template": dirname(require.resolve("jaguarjs-jsdoc")),
-	  "tutorials": "./tutorials"
+		"readme": "./README.md",
+		"template": dirname(require.resolve("jaguarjs-jsdoc")),
+		"tutorials": "./tutorials"
 	}
 };
