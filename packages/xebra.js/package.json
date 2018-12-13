@@ -28,7 +28,7 @@
     "prebuild": "rimraf ./lib; rimraf ./dist",
     "build": "babel ./src -d ./lib; node ./scripts/build.js",
     "prepublish": "yarn run build",
-    "postpublish": "yarn run docs && node ./scripts/publish_docs.js",
+    "postpublish": "sh ./scripts/docs.sh && node ./scripts/publish_docs.js",
     "test": "echo 'No Xebra.js' tests"
   },
   "dependencies": {
