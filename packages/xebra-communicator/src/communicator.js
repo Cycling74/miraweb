@@ -8,11 +8,11 @@ class Communication extends EventEmitter {
 	constructor(options) {
 		super();
 		this._options = defaults(options, {
-			secure : false,
-			reconnect : true,
-			reconnect_attempts : 5,
-			reconnect_timeout : 1000,
-			auto_connect : true
+			secure: false,
+			reconnect: true,
+			reconnect_attempts: 5,
+			reconnect_timeout: 1000,
+			auto_connect: true
 		});
 
 		this._ws = null;
@@ -51,10 +51,10 @@ class Communication extends EventEmitter {
 	 */
 	get url() {
 		return formatUrl({
-			hostname : this._options.hostname,
-			port : this._options.port,
-			protocol : this._options.secure ? "wss" : "ws",
-			slashes : true
+			hostname: this._options.hostname,
+			port: this._options.port,
+			protocol: this._options.secure ? "wss" : "ws",
+			slashes: true
 		});
 	}
 

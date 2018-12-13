@@ -97,13 +97,34 @@ or to apply auto-fixing of linting errors
 $> yarn run lint-fix
 ```
 
-### Versioning
+### Versioning & Publishing
 
-MiraWeb and the contained packages include a unified version number. To adjust this across this the repository please run
+This Repo contains multiple packages that need to be updated on NPM whenever we do a release. Additionally the Max Package needs to be updated by a Cycling '74 member via the Max Package Manager including the externally maintained externals. The following describes a guide on how to maintain versions, build a release and publish to npm. If you'd like to build pre-release version for testing as a Max Package etc, please branch beforehand and use this without publishing to npm. The latter version can be achieved using
 
 ```
 $> yarn run setversion
 ```
+
+If we are looking at an actual release: we use a single script to perform all publishing related tasks:
+
+```
+$> yarn publish
+```
+
+What it does is the following:
+
+* *prepublish*
+	* run and ensure all tests succeed.
+	* adjust version (asking you for the correct new version) and perfom git related tasks (commit package.json files, git-tag correctly)
+* *publish*
+	* build and publish xebra-communicator to npm
+	* build and publish xebra.js to npm
+* *postpublish*
+	* build xebra.js docs and publish them using GitHub Pages
+	* TODO: create a GitHub Release draft (currently done manually)
+	* TODO: update S3 hosted pre-built Xebra.js versions (currently done manually)
+
+After this please make sure to check the GitHub Release draft, fill in any additional info and make it public.
 
 ## License
 

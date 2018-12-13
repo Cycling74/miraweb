@@ -49,7 +49,7 @@ class FrameStore extends Store {
 
 			// we got more frames?
 			if (frames.length > 1) {
-				const activeIndex = findIndex(frames, function(f) {
+				const activeIndex = findIndex(frames, function (f) {
 					return f.id === frame.id;
 				});
 
@@ -65,7 +65,7 @@ class FrameStore extends Store {
 
 	_onReset() {
 		const frames = this.getFrames();
-		frames.forEach(function(frame) {
+		frames.forEach(function (frame) {
 			delete this._frames[frame.id];
 		}.bind(this));
 
@@ -74,7 +74,7 @@ class FrameStore extends Store {
 
 	_onSetGlobalViewMode(setting, mode) {
 		if (setting === "viewMode") {
-			this.getFrames().forEach(function(frame) {
+			this.getFrames().forEach(function (frame) {
 				frame.viewMode = mode;
 			});
 		}
@@ -91,7 +91,7 @@ class FrameStore extends Store {
 	getFrames() {
 		const frames = toArray(this._frames);
 
-		frames.sort(function(a, b) {
+		frames.sort(function (a, b) {
 
 			// check if we've got tabindex values
 			const indexA = a.getParamValue("taborder");

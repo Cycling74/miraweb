@@ -13,9 +13,9 @@ import { ensureWithin } from "./utils.js";
 
 const MOUSE_POINTER_ID = 0;
 const COLOR_TYPES = {
-	COLOR : 1,
-	GRADIENT : 2,
-	PATTERN : 4
+	COLOR: 1,
+	GRADIENT: 2,
+	PATTERN: 4
 };
 const MAX_TEXT_LINE_SPACING = 1.25;
 
@@ -234,9 +234,9 @@ class GestureRecognition extends EventEmitter {
 
 		// This will call addEventListener and removeEventListener, so we define our own implementation
 		this._gm = new Hammer.Manager(this, {
-			inputClass : PixiEventInput
+			inputClass: PixiEventInput
 		});
-		this._gm.isTouchLocked = function(touch) {
+		this._gm.isTouchLocked = function (touch) {
 			return this._currentPointers.indexOf(getPointerId(touch)) > -1;
 		}.bind(this);
 
@@ -337,14 +337,14 @@ class PixiDraw extends EventEmitter {
 		super();
 
 		options = assign({
-			mask : true,
-			interactive : true,
-			gestures : false
+			mask: true,
+			interactive: true,
+			gestures: false
 		}, options);
 
 		this._color = {
-			type : COLOR_TYPES.COLOR,
-			color : 0xFFFFFF
+			type: COLOR_TYPES.COLOR,
+			color: 0xFFFFFF
 		};
 
 		this._alpha = 0;
@@ -463,9 +463,9 @@ class PixiDraw extends EventEmitter {
 		const data = this._dataShapes[this._currentShape.id];
 		if (!data) {
 			this._dataShapes[this.currentShape.id] = {
-				shape : this.currentShape,
-				attributes : {
-					[name] : value
+				shape: this.currentShape,
+				attributes: {
+					[name]: value
 				}
 			};
 		} else {
@@ -511,16 +511,16 @@ class PixiDraw extends EventEmitter {
 		// of transforms to get the most accurate answer. Since we've already calculated the hit area, it's
 		// much faster simply to use the width and height of that in place of _display.width and _display.height
 		const eventAttrs = {
-			objectId : this._id,
-			screenFrameX : e.data.global.x,
-			screenFrameY : e.data.global.y,
-			targetX : inObjPoint.x,
-			targetY : inObjPoint.y,
-			normTargetX : inObjPoint.x / this._display.hitArea.width,
-			normTargetY : inObjPoint.y / this._display.hitArea.height,
-			type : type,
-			id : pointerId,
-			attributes : this._getAttributesForPoint(inObjPoint)
+			objectId: this._id,
+			screenFrameX: e.data.global.x,
+			screenFrameY: e.data.global.y,
+			targetX: inObjPoint.x,
+			targetY: inObjPoint.y,
+			normTargetX: inObjPoint.x / this._display.hitArea.width,
+			normTargetY: inObjPoint.y / this._display.hitArea.height,
+			type: type,
+			id: pointerId,
+			attributes: this._getAttributesForPoint(inObjPoint)
 		};
 
 		if (includeDeltas) {
@@ -606,10 +606,10 @@ class PixiDraw extends EventEmitter {
 
 	_hammerDirectionToMiraDirection(direction) {
 		const directionMap = {
-			[Hammer.DIRECTION_RIGHT] : GestureEvent.DIRECTIONS.RIGHT,
-			[Hammer.DIRECTION_LEFT] : GestureEvent.DIRECTIONS.LEFT,
-			[Hammer.DIRECTION_UP] : GestureEvent.DIRECTIONS.UP,
-			[Hammer.DIRECTION_DOWN] : GestureEvent.DIRECTIONS.DOWN
+			[Hammer.DIRECTION_RIGHT]: GestureEvent.DIRECTIONS.RIGHT,
+			[Hammer.DIRECTION_LEFT]: GestureEvent.DIRECTIONS.LEFT,
+			[Hammer.DIRECTION_UP]: GestureEvent.DIRECTIONS.UP,
+			[Hammer.DIRECTION_DOWN]: GestureEvent.DIRECTIONS.DOWN
 		};
 
 		if (directionMap.hasOwnProperty(direction)) return directionMap[direction];
@@ -642,15 +642,15 @@ class PixiDraw extends EventEmitter {
 		]);
 
 		const center = this._display.worldTransform.applyInverse(ActiveFrameStore.mapPositionToPoint(event.center.x, event.center.y));
-		eventAttr.center = { x : center.x, y : center.y };
+		eventAttr.center = { x: center.x, y: center.y };
 
 		eventAttr.pointers = [];
 		event.pointers.forEach((pointer) => {
 			const localPoint = this._display.worldTransform.applyInverse(ActiveFrameStore.mapPositionToPoint(pointer.pageX, pointer.pageY));
 			eventAttr.pointers.push({
-				id : getPointerId(pointer),
-				x : localPoint.x,
-				y : localPoint.y
+				id: getPointerId(pointer),
+				x: localPoint.x,
+				y: localPoint.y
 			});
 		});
 
@@ -887,10 +887,10 @@ class PixiDraw extends EventEmitter {
 				bounds = getPolygonBounds(this.currentShape);
 			} else {
 				bounds = {
-					x : this.currentShape.x,
-					y : this.currentShape.y,
-					height : this.currentShape.height,
-					width : this.currentShape.width
+					x: this.currentShape.x,
+					y: this.currentShape.y,
+					height: this.currentShape.height,
+					width: this.currentShape.width
 				};
 			}
 
@@ -940,24 +940,24 @@ class PixiDraw extends EventEmitter {
 
 	set_source_rgba(color) {
 		this._color = {
-			type : COLOR_TYPES.COLOR,
-			color : createHexColors(color)
+			type: COLOR_TYPES.COLOR,
+			color: createHexColors(color)
 		};
 		this._alpha = color[3];
 	}
 
 	set_source_gradient(colorArray, colorPt1, colorPt2, proportion, angle) {
 		this._color = {
-			type : COLOR_TYPES.GRADIENT,
-			color : new LinearGradient(colorArray, colorPt1, colorPt2, proportion, angle)
+			type: COLOR_TYPES.GRADIENT,
+			color: new LinearGradient(colorArray, colorPt1, colorPt2, proportion, angle)
 		};
 	}
 
 	set_pattern(texture, tint = null) {
 		this._color = {
-			type : COLOR_TYPES.PATTERN,
-			color : texture,
-			tint : tint ? createHexColors(tint) : null
+			type: COLOR_TYPES.PATTERN,
+			color: texture,
+			tint: tint ? createHexColors(tint) : null
 		};
 	}
 
@@ -1002,14 +1002,14 @@ class PixiDraw extends EventEmitter {
 	// ////////
 	textDimensions(txt) {
 		const text = new PIXI.Text(txt, {
-			fontWeight : this._fontWeight,
-			fontStyle : this._fontStyle,
-			fontSize : this._fontSize + "px",
-			fontFamily : this._fontName,
-			fill : "black",
-			align : this._fontJustification,
-			lineHeight : this._fontSize,
-			padding : 1
+			fontWeight: this._fontWeight,
+			fontStyle: this._fontStyle,
+			fontSize: this._fontSize + "px",
+			fontFamily: this._fontName,
+			fill: "black",
+			align: this._fontJustification,
+			lineHeight: this._fontSize,
+			padding: 1
 		});
 		const fontSize = Math.floor(this._fontSize / ActiveFrameStore.getScale());
 		text.context.font = `${this._fontWeight} ${this._fontStyle} ${fontSize}px ${this._fontName}`;
@@ -1034,14 +1034,14 @@ class PixiDraw extends EventEmitter {
 		height *= scale;
 		const textColor = (this._color.type === COLOR_TYPES.COLOR) ? "#" + this._color.color.substr(2) : "black";
 		const text = new PIXI.Text(val, {
-			fontWeight : this._fontWeight,
-			fontStyle : this._fontStyle,
-			fontSize : this._fontSize + "px",
-			fontFamily : this._fontName,
-			fill : textColor,
-			align : this._fontJustification,
-			lineHeight : 2 * this._fontSize,
-			padding : 1
+			fontWeight: this._fontWeight,
+			fontStyle: this._fontStyle,
+			fontSize: this._fontSize + "px",
+			fontFamily: this._fontName,
+			fill: textColor,
+			align: this._fontJustification,
+			lineHeight: 2 * this._fontSize,
+			padding: 1
 		});
 
 		text.x = x;
@@ -1091,16 +1091,16 @@ class PixiDraw extends EventEmitter {
 		height *= scale;
 		const textColor = (this._color.type === COLOR_TYPES.COLOR) ? "#" + this._color.color.substr(2) : "black";
 		const text = new PIXI.Text(val, {
-			fontFamily : this._fontName,
-			fontSize : this._fontSize,
-			fontWeight : this._fontWeight,
-			fontStyle : this._fontStyle,
-			fill : textColor,
-			align : this._fontJustification,
-			wordWrap : true,
-			wordWrapWidth : width,
-			lineHeight : this._fontSize + (MAX_TEXT_LINE_SPACING * scale),
-			padding : 2 * scale
+			fontFamily: this._fontName,
+			fontSize: this._fontSize,
+			fontWeight: this._fontWeight,
+			fontStyle: this._fontStyle,
+			fill: textColor,
+			align: this._fontJustification,
+			wordWrap: true,
+			wordWrapWidth: width,
+			lineHeight: this._fontSize + (MAX_TEXT_LINE_SPACING * scale),
+			padding: 2 * scale
 		});
 
 		text.x = x;

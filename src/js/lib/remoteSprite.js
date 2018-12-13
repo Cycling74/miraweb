@@ -44,6 +44,7 @@ export default class RemoteSprite extends EventEmitter {
 
 		this._destroySprite();
 
+		// eslint-disable-next-line new-cap
 		let newSprite = new PIXI.Sprite.fromImage(data_uri_string);
 		this._display.addChild(newSprite);
 

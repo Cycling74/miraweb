@@ -23,12 +23,12 @@ export default class Fpic extends MiraUIObject {
 
 		if (autofit) {
 			const rect = this.getScreenRect();
-			this._pic.dimensions = { width : rect[2], height : rect[3] };
+			this._pic.dimensions = { width: rect[2], height: rect[3] };
 			this._pic.display.x = xoffset * scale;
 			this._pic.display.y = yoffset * scale;
 
 		} else {
-			this._pic.dimensions = { width : (scale * destrect[2]), height : (scale * destrect[3]) };
+			this._pic.dimensions = { width: (scale * destrect[2]), height: (scale * destrect[3]) };
 			this._pic.display.x = scale * (xoffset + destrect[0]);
 			this._pic.display.y = scale * (yoffset + destrect[1]);
 		}

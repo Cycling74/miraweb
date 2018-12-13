@@ -46,7 +46,7 @@ class UIObjectStore extends Store {
 
 	_onFrameResize() {
 		const frameRect = ActiveFrameStore.getDimensions();
-		this.getObjects().forEach(function(obj) {
+		this.getObjects().forEach(function (obj) {
 			obj.reposition(frameRect);
 		});
 	}
@@ -64,7 +64,7 @@ class UIObjectStore extends Store {
 
 	_onSetObjects(stateObjs) {
 
-		stateObjs.forEach(function(obj) {
+		stateObjs.forEach(function (obj) {
 
 			const uiObject = getUIObjectInstance(obj);
 			this._objects[obj.id] = uiObject;
@@ -78,7 +78,7 @@ class UIObjectStore extends Store {
 	}
 
 	_onViewModeChange() {
-		this.getObjects().forEach(function(obj) {
+		this.getObjects().forEach(function (obj) {
 			obj.reposition();
 			obj.render();
 		});

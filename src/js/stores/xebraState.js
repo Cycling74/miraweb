@@ -32,8 +32,8 @@ class XebraStateStore extends Store {
 		if (this._state) this._onDisconnect();
 
 		this._state = new State(assign({
-			auto_connect : false,
-			supported_objects : this._supportedObjects
+			auto_connect: false,
+			supported_objects: this._supportedObjects
 		}, options));
 
 		this._state.on("frame_added", FrameActions.addFrame);
@@ -146,11 +146,11 @@ class XebraStateStore extends Store {
 }
 
 XebraStateStore.motionTypeForKey = Object.freeze({
-	accel : MOTION_TYPES.ACCEL,
-	gravity : MOTION_TYPES.GRAVITY,
-	orientation : MOTION_TYPES.ORIENTATION,
-	rawaccel : MOTION_TYPES.RAWACCEL,
-	rotationrate : MOTION_TYPES.ROTATIONRATE
+	accel: MOTION_TYPES.ACCEL,
+	gravity: MOTION_TYPES.GRAVITY,
+	orientation: MOTION_TYPES.ORIENTATION,
+	rawaccel: MOTION_TYPES.RAWACCEL,
+	rotationrate: MOTION_TYPES.ROTATIONRATE
 });
 
 export default new XebraStateStore();

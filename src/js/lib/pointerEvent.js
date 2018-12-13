@@ -20,7 +20,7 @@ export default class PointerEvent {
 }
 
 PointerEvent.TYPES = Object.freeze({
-	POINTER_DOWN : "pointerDown",
-	POINTER_MOVE : "pointerMove",
-	POINTER_UP : "pointerUp"
+	POINTER_DOWN: "pointerDown",
+	POINTER_MOVE: "pointerMove",
+	POINTER_UP: "pointerUp"
 });

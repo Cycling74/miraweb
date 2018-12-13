@@ -7,6 +7,7 @@ const TRIANGLE_HEIGHT = 6;
 const LEFT_TEXT_OFFSET = TRIANGLE_HEIGHT;
 
 function toFixedTruncate(num, fixed) {
+	// eslint-disable-next-line no-useless-escape
 	let re = new RegExp("^-?\\d+(?:\.\\d{0," + (fixed || -1) + "})?");
 	return parseFloat(num.toString().match(re)[0]);
 }

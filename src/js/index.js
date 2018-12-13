@@ -4,7 +4,7 @@ require("normalize.css/normalize.css");
 
 import Mira from "./mira.jsx";
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
 	let HOST_NAME = window.location.search.match(/hostname=([^&]*)/);
 	HOST_NAME = HOST_NAME && HOST_NAME.length === 2 ? HOST_NAME[1] : window.location.hostname || "localhost";
@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	PORT = !PORT || isNaN(PORT) ? 8086 : PORT;
 
 	Mira.init({
-		port : PORT,
-		hostname : HOST_NAME,
-		element : document.getElementById("app-container")
+		port: PORT,
+		hostname: HOST_NAME,
+		element: document.getElementById("app-container")
 	});
 });

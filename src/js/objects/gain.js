@@ -6,8 +6,8 @@ const KNOBHEIGHT = 6;
 const PADDING = 2;
 const KNOBPADDING = 2;
 const ORIENTATION = Object.freeze({
-	HORIZONTAL : 1,
-	VERTICAL : 2
+	HORIZONTAL: 1,
+	VERTICAL: 2
 });
 
 export default class Gain extends MiraUIObject {

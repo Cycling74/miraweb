@@ -5,9 +5,9 @@ import MenuList from "../lib/menuList.js";
 import ValueLabel from "../lib/valueLabel.js";
 
 export const POPOVER_TYPES = Object.freeze({
-	VALUE_LABEL : "VALUE_LABEL",
-	MENU_LIST : "MENU_LIST",
-	COLOR_LABEL : "COLOR_LABEL"
+	VALUE_LABEL: "VALUE_LABEL",
+	MENU_LIST: "MENU_LIST",
+	COLOR_LABEL: "COLOR_LABEL"
 });
 
 class PopoverStore extends Store {

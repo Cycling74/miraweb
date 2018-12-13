@@ -66,10 +66,10 @@ export default class Umenu extends MiraUIObject {
 		} = params;
 		let description = {
 			fontface, fontname, fontsize, textjustification,
-			onCancel : this._onPopoverCancel.bind(this),
-			onSelect : this._onPopoverSelect.bind(this),
-			items : this._getItems(),
-			scrollOffset : this._previousPopoverScrollOffset
+			onCancel: this._onPopoverCancel.bind(this),
+			onSelect: this._onPopoverSelect.bind(this),
+			items: this._getItems(),
+			scrollOffset: this._previousPopoverScrollOffset
 		};
 		return description;
 	}

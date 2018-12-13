@@ -17,11 +17,11 @@ class Motion extends EventEmitter {
 	_makeMotionData(data) {
 		let timestamp = (Date.now() / 1000.0 - this._epoch); // Mostly to remove some bits for double/float conversion
 		let modata = {
-			rotationrate : [data.dm.alpha, data.dm.beta, data.dm.gamma, timestamp],
-			gravity : [data.dm.gx - data.dm.x, data.dm.gy - data.dm.y, data.dm.gz - data.dm.z, timestamp],
-			accel : [data.dm.x, data.dm.y, data.dm.z, timestamp],
-			orientation : [data.do.alpha, data.do.beta, data.do.gamma, timestamp],
-			rawaccel : [data.dm.gx, data.dm.gy, data.dm.gz, timestamp]
+			rotationrate: [data.dm.alpha, data.dm.beta, data.dm.gamma, timestamp],
+			gravity: [data.dm.gx - data.dm.x, data.dm.gy - data.dm.y, data.dm.gz - data.dm.z, timestamp],
+			accel: [data.dm.x, data.dm.y, data.dm.z, timestamp],
+			orientation: [data.do.alpha, data.do.beta, data.do.gamma, timestamp],
+			rawaccel: [data.dm.gx, data.dm.gy, data.dm.gz, timestamp]
 		};
 		this.emit("motion", modata);
 	}

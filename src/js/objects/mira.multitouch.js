@@ -91,11 +91,11 @@ export default class MiraMultitouch extends MiraUIObject {
 		const rect = this.getScreenRect();
 
 		const touch = new Touch({
-			sequence : this._touchSequence,
-			x : (event.normTargetX * rect[2]),
-			y : (event.normTargetY * rect[3]),
-			touchId : parseInt(id, 10),
-			eventId : event.id
+			sequence: this._touchSequence,
+			x: (event.normTargetX * rect[2]),
+			y: (event.normTargetY * rect[3]),
+			touchId: parseInt(id, 10),
+			eventId: event.id
 		});
 
 		this._displayNode.addDisplayChild(touch.sprite);
@@ -183,22 +183,22 @@ export default class MiraMultitouch extends MiraUIObject {
 
 		if (paramType === "pinch_enabled") {
 			this._displayNode.setGestureOptions("pinch", {
-				enable : stateObj.getParamValue("pinch_enabled")
+				enable: stateObj.getParamValue("pinch_enabled")
 			});
 		} else if (paramType === "rotate_enabled") {
 			this._displayNode.setGestureOptions("rotate", {
-				enable : stateObj.getParamValue("rotate_enabled")
+				enable: stateObj.getParamValue("rotate_enabled")
 			});
 		} else if (["swipe_enabled", "swipe_touch_count"].indexOf(paramType) > -1) {
 			this._displayNode.setGestureOptions("swipe", {
-				enable : stateObj.getParamValue("swipe_enabled"),
-				pointers : stateObj.getParamValue("swipe_touch_count")
+				enable: stateObj.getParamValue("swipe_enabled"),
+				pointers: stateObj.getParamValue("swipe_touch_count")
 			});
 		} else if (["tap_enabled", "tap_tap_count", "tap_touch_count"].indexOf(paramType) > -1) {
 			this._displayNode.setGestureOptions("tap", {
-				enable : stateObj.getParamValue("tap_enabled"),
-				pointers : stateObj.getParamValue("tap_touch_count"),
-				taps : stateObj.getParamValue("tap_tap_count")
+				enable: stateObj.getParamValue("tap_enabled"),
+				pointers: stateObj.getParamValue("tap_touch_count"),
+				taps: stateObj.getParamValue("tap_tap_count")
 			});
 		}
 	}
@@ -425,12 +425,12 @@ export default class MiraMultitouch extends MiraUIObject {
 		sprite.height = 111;
 		this._displayNode.addDisplayChild(sprite);
 		const animation = new Animation({
-			duration : 500,
-			onAnimate : (progress) => {
+			duration: 500,
+			onAnimate: (progress) => {
 				sprite.width = sprite.height = 90 * progress;
 				sprite.alpha = 1.0 - progress;
 			},
-			onEnd : () => {
+			onEnd: () => {
 				if (sprite.parent) sprite.parent.removeChild(sprite);
 				sprite.destroy();
 			}
@@ -452,49 +452,49 @@ export default class MiraMultitouch extends MiraUIObject {
 		if (direction === GestureEvent.DIRECTIONS.UP) {
 			sprite.rotation = 3 * Math.PI / 2;
 			startPosition = {
-				x : width / 2,
-				y : height
+				x: width / 2,
+				y: height
 			};
 			endPosition = {
-				x : width / 2,
-				y : 0
+				x: width / 2,
+				y: 0
 			};
 		} else if (direction === GestureEvent.DIRECTIONS.LEFT) {
 			sprite.rotation = Math.PI;
 			startPosition = {
-				x : width,
-				y : height / 2
+				x: width,
+				y: height / 2
 			};
 			endPosition = {
-				x : 0,
-				y : height / 2
+				x: 0,
+				y: height / 2
 			};
 		} else if (direction === GestureEvent.DIRECTIONS.DOWN) {
 			sprite.rotation = Math.PI / 2;
 			startPosition = {
-				x : width / 2,
-				y : 0
+				x: width / 2,
+				y: 0
 			};
 			endPosition = {
-				x : width / 2,
-				y : height
+				x: width / 2,
+				y: height
 			};
 		} else if (direction === GestureEvent.DIRECTIONS.RIGHT) {
 			startPosition = {
-				x : 0,
-				y : height / 2
+				x: 0,
+				y: height / 2
 			};
 			endPosition = {
-				x : width,
-				y : height / 2
+				x: width,
+				y: height / 2
 			};
 		}
 		sprite.x = startPosition.x;
 		sprite.y = startPosition.y;
 		this._displayNode.addDisplayChild(sprite);
 		const animation = new Animation({
-			duration : 200,
-			onAnimate : (progress) => {
+			duration: 200,
+			onAnimate: (progress) => {
 				sprite.x = startPosition.x + (endPosition.x - startPosition.x) * progress;
 				sprite.y = startPosition.y + (endPosition.y - startPosition.y) * progress;
 				if (progress < 0.5) {
@@ -503,7 +503,7 @@ export default class MiraMultitouch extends MiraUIObject {
 					sprite.alpha = 1.0 - 2 * (progress - 0.5);
 				}
 			},
-			onEnd : () => {
+			onEnd: () => {
 				sprite.parent.removeChild(sprite);
 				sprite.destroy();
 			}
@@ -540,20 +540,20 @@ export default class MiraMultitouch extends MiraUIObject {
 
 			const points = [
 				{
-					x : event._center.x,
-					y : event._center.y - vectorDistance / 2
+					x: event._center.x,
+					y: event._center.y - vectorDistance / 2
 				},
 				{
-					x : event._center.x + vectorDistance / 2,
-					y : event._center.y
+					x: event._center.x + vectorDistance / 2,
+					y: event._center.y
 				},
 				{
-					x : event._center.x,
-					y : event._center.y + vectorDistance / 2
+					x: event._center.x,
+					y: event._center.y + vectorDistance / 2
 				},
 				{
-					x : event._center.x - vectorDistance / 2,
-					y : event._center.y
+					x: event._center.x - vectorDistance / 2,
+					y: event._center.y
 				}
 			];
 			this._pinchSprites.forEach((sprite, spriteIndex) => {
@@ -586,8 +586,8 @@ export default class MiraMultitouch extends MiraUIObject {
 		const rotationTexture = Assets.getResourceTexture("multitouch-rotation");
 		if (event._ongoing === 1 && !this._rotateSprites && event._pointers.length === 2) {
 			this._rotateSprites = {
-				stationary : new PIXI.Sprite(rotationTexture),
-				rotating : new PIXI.Sprite(rotationTexture)
+				stationary: new PIXI.Sprite(rotationTexture),
+				rotating: new PIXI.Sprite(rotationTexture)
 			};
 
 			this._rotateSprites.stationary.x = this._rotateSprites.rotating.x = event._center.x;

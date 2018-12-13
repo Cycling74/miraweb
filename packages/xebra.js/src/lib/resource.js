@@ -109,8 +109,8 @@ class Resource extends EventEmitter {
 	 */
 	get dimensions() {
 		return {
-			width : this._width,
-			height : this._height
+			width: this._width,
+			height: this._height
 		};
 	}
 
@@ -122,7 +122,7 @@ class Resource extends EventEmitter {
 		}
 	}
 
-  /**
+	/**
    * @private
    */
 	on(event, fn) {

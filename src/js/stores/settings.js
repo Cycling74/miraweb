@@ -33,11 +33,11 @@ class SettingsStore extends Store {
 		let storedSettings = Storage.read(SETTINGS_STORAGE_KEY);
 		if (storedSettings instanceof Error || !storedSettings ) storedSettings = {};
 		this._settings = assign({
-			name : "",
-			fullscreen : FULLSCREEN_STATES.OFF,
-			tabColorMode : TAB_COLOR_MODES.DARKEN,
-			tabColor : DEFAULT_BG,
-			viewMode : VIEW_MODES.LINKED
+			name: "",
+			fullscreen: FULLSCREEN_STATES.OFF,
+			tabColorMode: TAB_COLOR_MODES.DARKEN,
+			tabColor: DEFAULT_BG,
+			viewMode: VIEW_MODES.LINKED
 		}, storedSettings);
 
 		// Attach Action Listeners

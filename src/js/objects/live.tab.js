@@ -78,14 +78,14 @@ export default class LiveTab extends MiraUIObject {
 			numLines = numLines < 1 ? 1 : numLines;
 			numTabsPerLine = Math.ceil( numTabs / numLines );
 
-				// if there's not enough height, increase the number of tabs per row
+			// if there's not enough height, increase the number of tabs per row
 			while (numLines * numTabsPerLine < numTabs) {
 				numTabsPerLine++;
 				if (numLines > 1)
-						{numLines--;}
+				{numLines--;}
 			}
 
-				// if there's extra height, reduce the number of rows
+			// if there's extra height, reduce the number of rows
 			while (numLines * numTabsPerLine > numTabs && (numLines - 1) * numTabsPerLine >= numTabs) {
 				numLines--;
 			}
@@ -212,7 +212,7 @@ export default class LiveTab extends MiraUIObject {
 				if (sidx < _parameter_range.length) {
 					let scaledRect = tabRects[sidx].map(c => scale * c);
 					scaledRect = this._insetRect(scaledRect, scale * this.constructor.PIC_MARGIN);
-					sprite.dimensions = { width : scaledRect[2], height : scaledRect[3] };
+					sprite.dimensions = { width: scaledRect[2], height: scaledRect[3] };
 					sprite.display.x = scaledRect[0];
 					sprite.display.y = scaledRect[1];
 					sprite.display.visible = true;
@@ -247,8 +247,8 @@ export default class LiveTab extends MiraUIObject {
 LiveTab.NAME = "live.tab";
 
 LiveTab.spacing = {
-	LIVETAB_EQUAL_SPACING : "Equal Spaced",
-	LIVETAB_PROP_SPACING : "Proportional"
+	LIVETAB_EQUAL_SPACING: "Equal Spaced",
+	LIVETAB_PROP_SPACING: "Proportional"
 };
 
 LiveTab.MARGIN = 4.0;

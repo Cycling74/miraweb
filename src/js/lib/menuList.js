@@ -170,7 +170,7 @@ export default class MenuList extends PixiDraw {
 
 	_triggerEvent( event ) {
 		if (this[ event.type ])
-			{this[ event.type ]( event );}
+		{this[ event.type ]( event );}
 	}
 
 	_updateScrollPhysics() {

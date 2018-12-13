@@ -30,9 +30,9 @@ fs.mkdirSync(OUT_DIR);
 
 // Bundle
 var bundler = browserify(MAIN_FILE, {
-	bundleExternal : true,
-	standalone : "Xebra",
-	transform : [
+	bundleExternal: true,
+	standalone: "Xebra",
+	transform: [
 		"babelify"
 	]
 });
@@ -44,10 +44,10 @@ bundler
 	.bundle()
 	.pipe(writeStream);
 
-writeStream.on("finish", function() {
+writeStream.on("finish", function () {
 	console.log("Generating optimized version xebra.min.js...");
 	var minVersion = uglifyJS.minify(OUT_FILE, {
-		compress : true
+		compress: true
 	});
 	fs.writeFileSync(OUT_MIN_FILE, license + minVersion.code);
 	console.log("DONE!\n");

@@ -24,11 +24,10 @@
   "scripts": {
     "clean": "rimraf ./node_modules",
     "predocs": "rimraf ./docs",
-    "docs": "sh ./scripts/docs",
+    "docs": "sh ./scripts/docs.sh",
     "prebuild": "rimraf ./lib; rimraf ./dist",
     "build": "babel ./src -d ./lib; node ./scripts/build.js",
     "prepublish": "yarn run build",
-    "postpublish": "yarn run docs && node ./scripts/publish_docs.js",
     "test": "echo 'No Xebra.js' tests"
   },
   "dependencies": {
@@ -47,7 +46,6 @@
     "babel-preset-es2015": "^6.5.0",
     "babel-register": "^6.18.0",
     "babelify": "^7.3.0",
-    "gh-pages": "^0.12.0",
     "jaguarjs-jsdoc": "git://github.com/fde31/jaguarjs-jsdoc#xebra_docs",
     "jsdoc": "^3.4.2",
     "jsdoc-babel": "^0.2.1",

@@ -44,8 +44,8 @@ export default class LiveText extends MiraUIObject {
 		const rect = this.getScreenRect();
 
 		// configure on/off image visibility
-		this._offImage.dimensions = { width : rect[2], height : rect[3] };
-		this._onImage.dimensions = { width : rect[2], height : rect[3] };
+		this._offImage.dimensions = { width: rect[2], height: rect[3] };
+		this._onImage.dimensions = { width: rect[2], height: rect[3] };
 		this._offImage.display.visible = (usepicture && !value);
 		this._onImage.display.visible = (usepicture && value);
 

@@ -56,12 +56,12 @@ export default class ColorLabel extends PixiDraw {
 
 		this.clear();
 		this.rectangle(
-      0,
-      0,
-      rectWidth,
-      this.constructor.HEIGHT / scale,
-      this.constructor.BORDER_RADIUS / scale
-    );
+			0,
+			0,
+			rectWidth,
+			this.constructor.HEIGHT / scale,
+			this.constructor.BORDER_RADIUS / scale
+		);
 		this.set_source_rgba(this._labelColor);
 		this.fill();
 	}

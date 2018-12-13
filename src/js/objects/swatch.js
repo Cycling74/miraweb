@@ -148,7 +148,7 @@ export default class Swatch extends MiraUIObject {
 			pickerPositionY = height * (1.0 - value[6]);
 		}
 
-    // Draw Circle picker
+		// Draw Circle picker
 		mgraphics.set_source_rgba([0, 0, 0, 1.0]);
 		mgraphics.set_line_width(2);
 		mgraphics.circle(pickerPositionX, pickerPositionY, this._innerCircleRadius);
@@ -182,8 +182,8 @@ export default class Swatch extends MiraUIObject {
 			if (!this.isPopoverVisible()) {
 				this.showPopover(this._popoverType(), this._popoverDescription(params));
 				const growCircleAnimation = new Animation({
-					duration : 100,
-					onAnimate : (progress) => {
+					duration: 100,
+					onAnimate: (progress) => {
 						this._innerCircleRadius = (this.constructor.INNER_CIRCLE_MAX
               - this.constructor.INNER_CIRCLE_MIN) * progress + this.constructor.INNER_CIRCLE_MIN;
 						this._outerCircleRadius = (this.constructor.OUTER_CIRCLE_MAX
@@ -206,8 +206,8 @@ export default class Swatch extends MiraUIObject {
 		if (this.isPopoverVisible()) {
 			this.hidePopover();
 			const shrinkCircleAnimation = new Animation({
-				duration : 100,
-				onAnimate : (progress) => {
+				duration: 100,
+				onAnimate: (progress) => {
 					this._innerCircleRadius = (this.constructor.INNER_CIRCLE_MAX
             - this.constructor.INNER_CIRCLE_MIN) * (1.0 - progress) + this.constructor.INNER_CIRCLE_MIN;
 					this._outerCircleRadius = (this.constructor.OUTER_CIRCLE_MAX

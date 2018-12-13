@@ -68,18 +68,18 @@ export default class Panel extends MiraUIObject {
 			mgraphics.set_line_width(border);
 			if (horizontal_direction === "Left to Right") {
 				if (vertical_direction === "Top to Bottom")
-					{mgraphics.polygon(0.0, 0.0, [[border * 0.5, border * 0.5], [width - border * 0.5, height - border * 0.5], [border * 0.5, height - border * 0.5]]);}
+				{mgraphics.polygon(0.0, 0.0, [[border * 0.5, border * 0.5], [width - border * 0.5, height - border * 0.5], [border * 0.5, height - border * 0.5]]);}
 				else if (vertical_direction === "Center")
-					{mgraphics.polygon(0.0, 0.0, [[border * 0.5, border * 0.5], [width - border * 0.5, height * 0.5], [border * 0.5, height - border * 0.5]]);}
+				{mgraphics.polygon(0.0, 0.0, [[border * 0.5, border * 0.5], [width - border * 0.5, height * 0.5], [border * 0.5, height - border * 0.5]]);}
 				else
-					{mgraphics.polygon(0.0, 0.0, [[border * 0.5, border * 0.5], [width - border * 0.5, border * 0.5], [border * 0.5, height - border * 0.5]]);}
+				{mgraphics.polygon(0.0, 0.0, [[border * 0.5, border * 0.5], [width - border * 0.5, border * 0.5], [border * 0.5, height - border * 0.5]]);}
 			} else {
 				if (vertical_direction === "Top to Bottom")
-					{mgraphics.polygon(0.0, 0.0, [[border * 0.5, height - border * 0.5], [width - border * 0.5, border * 0.5], [width - border * 0.5, height - border * 0.5]]);}
+				{mgraphics.polygon(0.0, 0.0, [[border * 0.5, height - border * 0.5], [width - border * 0.5, border * 0.5], [width - border * 0.5, height - border * 0.5]]);}
 				else if (vertical_direction === "Center")
-					{mgraphics.polygon(0.0, 0.0, [[border * 0.5, height * 0.5], [width - border * 0.5, border * 0.5], [width - border * 0.5, height - border * 0.5]]);}
+				{mgraphics.polygon(0.0, 0.0, [[border * 0.5, height * 0.5], [width - border * 0.5, border * 0.5], [width - border * 0.5, height - border * 0.5]]);}
 				else
-					{mgraphics.polygon(0.0, 0.0, [[border * 0.5, border * 0.5], [width - border * 0.5, border * 0.5], [width - border * 0.5, height - border * 0.5]]);}
+				{mgraphics.polygon(0.0, 0.0, [[border * 0.5, border * 0.5], [width - border * 0.5, border * 0.5], [width - border * 0.5, height - border * 0.5]]);}
 			}
 
 			this._setBackgroundColor(mgraphics, params);

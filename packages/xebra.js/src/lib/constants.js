@@ -20,11 +20,11 @@ const EMPTY_RESOURCE = "<none>";
  * @property {string} ROTATIONRATE - Raw gyroscope readings: x, y and z rotation rates
  */
 const MOTION_TYPES = Object.freeze({
-	ROTATIONRATE : "rotationrate",
-	GRAVITY : "gravity",
-	ACCEL : "accel",
-	ORIENTATION : "orientation",
-	RAWACCEL : "rawaccel"
+	ROTATIONRATE: "rotationrate",
+	GRAVITY: "gravity",
+	ACCEL: "accel",
+	ORIENTATION: "orientation",
+	RAWACCEL: "rawaccel"
 });
 
 /**
@@ -46,17 +46,17 @@ const MOTION_TYPES = Object.freeze({
  * @property {string} LIVE_UNIT_NATIVE - Native Unit Style
  */
 const LIVE_UNIT_STYLES = Object.freeze({
-	LIVE_UNIT_INT : "Int",
-	LIVE_UNIT_FLOAT : "Float",
-	LIVE_UNIT_TIME : "Time",
-	LIVE_UNIT_HZ : "Hertz",
-	LIVE_UNIT_DB : "deciBel",
-	LIVE_UNIT_PERCENT : "%",
-	LIVE_UNIT_PAN : "Pan",
-	LIVE_UNIT_SEMITONES : "Semitones",
-	LIVE_UNIT_MIDI : "MIDI",
-	LIVE_UNIT_CUSTOM : "Custom",
-	LIVE_UNIT_NATIVE : "Native"
+	LIVE_UNIT_INT: "Int",
+	LIVE_UNIT_FLOAT: "Float",
+	LIVE_UNIT_TIME: "Time",
+	LIVE_UNIT_HZ: "Hertz",
+	LIVE_UNIT_DB: "deciBel",
+	LIVE_UNIT_PERCENT: "%",
+	LIVE_UNIT_PAN: "Pan",
+	LIVE_UNIT_SEMITONES: "Semitones",
+	LIVE_UNIT_MIDI: "MIDI",
+	LIVE_UNIT_CUSTOM: "Custom",
+	LIVE_UNIT_NATIVE: "Native"
 });
 
 
@@ -69,9 +69,9 @@ const LIVE_UNIT_STYLES = Object.freeze({
  * @property {string} LIVE_UNIT_INT - Integer Unit Style
  */
 const LIVE_VALUE_TYPES = Object.freeze({
-	FLOAT : "Float",
-	ENUM : "Enum",
-	INT : "Int (0-255)"
+	FLOAT: "Float",
+	ENUM: "Enum",
+	INT: "Int (0-255)"
 });
 
 /**
@@ -85,9 +85,9 @@ const LIVE_VALUE_TYPES = Object.freeze({
  * @property {number} PATCHING - Calculate visibility and position always using Patching Mode
  */
 const VIEW_MODES = Object.freeze({
-	LINKED : 1,
-	PRESENTATION : 2,
-	PATCHING : 4
+	LINKED: 1,
+	PRESENTATION: 2,
+	PATCHING: 4
 });
 
 export {
