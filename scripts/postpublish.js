@@ -26,7 +26,6 @@ const publishGitHubPages = () => {
 
 
 executeMain(async () => {
-	return;
 
 	console.log("Building Xebra.js Docs");
 	await runAsync("yarn", ["workspace", "xebra.js", "run", "docs"]);

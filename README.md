@@ -121,8 +121,8 @@ What it does is the following:
 	* build and publish xebra.js to npm
 * *postpublish*
 	* build xebra.js docs and publish them using GitHub Pages
-	* create a GitHub Release draft
-	* update S3 hosted pre-built Xebra.js versions
+	* TODO: create a GitHub Release draft (currently done manually)
+	* TODO: update S3 hosted pre-built Xebra.js versions (currently done manually)
 
 After this please make sure to check the GitHub Release draft, fill in any additional info and make it public.
 
