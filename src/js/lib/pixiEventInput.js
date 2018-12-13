@@ -174,7 +174,7 @@ export default class PixiEventInput extends Hammer.Input {
 			}
 		}
 
-		if (!changedTargetTouches.length) return undefined;
+		if (!changedTargetTouches.length) return null;
 
 		// merge targetTouches with changedTargetTouches so it contains ALL touches, including "end" and "cancel"
 		for (let i = 0; i < allTouches.length; i++) {
