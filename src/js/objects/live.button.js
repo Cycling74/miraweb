@@ -39,7 +39,7 @@ export default class LiveButton extends MiraUIObject {
 		if (value === 1) {
 
 			if (!this._inTouch) {
-				setTimeout(function() {
+				setTimeout(function () {
 					this.setParamValue("value", 0);
 				}.bind(this), 100);
 			}

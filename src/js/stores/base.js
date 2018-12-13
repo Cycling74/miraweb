@@ -21,7 +21,7 @@ export default class Store {
 	on(event, cb) {
 		this._emitter.on(event, cb);
 
-		return function() {
+		return function () {
 			this._emitter.removeListener(event, cb);
 		}.bind(this);
 	}

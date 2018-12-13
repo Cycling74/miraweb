@@ -6,16 +6,16 @@ import ActiveFrameStore from "../stores/activeFrame.js";
 const DIRECTION_MARGIN = 6;
 
 const CellStyle = Object.freeze({
-	CELL : Object.freeze({
-		INACTIVE : "INACTIVE",
-		ACTIVE : "ACTIVE",
-		MARKED : "MARKED",
-		DEFAULT : "DEFAULT"
+	CELL: Object.freeze({
+		INACTIVE: "INACTIVE",
+		ACTIVE: "ACTIVE",
+		MARKED: "MARKED",
+		DEFAULT: "DEFAULT"
 	}),
-	DIRECTION : Object.freeze({
-		LEFT : "LEFT",
-		RIGHT : "RIGHT",
-		CROSS : "CROSS"
+	DIRECTION: Object.freeze({
+		LEFT: "LEFT",
+		RIGHT: "RIGHT",
+		CROSS: "CROSS"
 	})
 });
 
@@ -59,7 +59,7 @@ class Cell {
 		const buttonHeight = (direction === 1) ? ((height - direction_height - directionMargin ) / rows) : (height / rows);
 		rounded = Math.min(rounded, buttonHeight / 2 - 0.5);
 
-		const directionBounds = { width : buttonWidth - 2 * spacing, height : direction_height - 1};
+		const directionBounds = { width: buttonWidth - 2 * spacing, height: direction_height - 1};
 
 		const i = row;
 		const j = column;
@@ -370,12 +370,12 @@ export default class LiveGrid extends MiraUIObject {
 			this._markAllButtonsDirty();
 		} else if (param.type === "distance") {
 			const params = {
-				marker_horizontal : this._state.getParamValue("marker_horizontal"),
-				marker_vertical : this._state.getParamValue("marker_vertical"),
-				mode : this._state.getParamValue("mode"),
-				columns : this._state.getParamValue("columns"),
-				rows : this._state.getParamValue("rows"),
-				distance : param.value
+				marker_horizontal: this._state.getParamValue("marker_horizontal"),
+				marker_vertical: this._state.getParamValue("marker_vertical"),
+				mode: this._state.getParamValue("mode"),
+				columns: this._state.getParamValue("columns"),
+				rows: this._state.getParamValue("rows"),
+				distance: param.value
 			};
 			this._updateCellStyles(params);
 		}

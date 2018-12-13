@@ -15,9 +15,9 @@ export default class MiraUIObject extends EventEmitter {
 		const doGestures = this.constructor.GESTURES === undefined ? false : this.constructor.GESTURES;
 
 		this._displayNode = new PixiUIObject(this._state.id, this._state.getParamValue("zorder"), {
-			gestures : doGestures,
-			interactive : !stateObj.getParamValue("ignoreclick"),
-			mask : this.constructor.MASK === undefined ? true : this.constructor.MASK
+			gestures: doGestures,
+			interactive: !stateObj.getParamValue("ignoreclick"),
+			mask: this.constructor.MASK === undefined ? true : this.constructor.MASK
 		});
 
 		// if hidden attr of object is set to '1', initialize as such

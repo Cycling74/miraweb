@@ -7,18 +7,18 @@ export default class Rslider extends MiraUIObject {
 
 	paint(mgraphics, params) {
 		const {
-            width,
-            height,
-            distance,
-            orientation,
-            drawline,
-            bgcolor,
-            bordercolor,
-            fgcolor
-        } = params;
+			width,
+			height,
+			distance,
+			orientation,
+			drawline,
+			bgcolor,
+			bordercolor,
+			fgcolor
+		} = params;
 		let { size } = params;
 
-        // draw background
+		// draw background
 		mgraphics.set_source_rgba(bgcolor);
 		mgraphics.rectangle(0, 0, width, height);
 		mgraphics.fill();
@@ -110,7 +110,7 @@ export default class Rslider extends MiraUIObject {
 			newVal = (newVal > size) ? size : newVal;
 			newVal = (newVal < 0) ? 0 : newVal;
 			newVal = [Math.round(this.currValue[0]), Math.round(newVal)];
-			newVal.sort(function(a, b) { return a - b; });
+			newVal.sort(function (a, b) { return a - b; });
 			this.setParamValue("distance", newVal);
 		}
 	}

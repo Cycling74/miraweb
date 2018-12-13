@@ -23,18 +23,18 @@ class GestureEvent {
 }
 
 GestureEvent.TYPES = Object.freeze({
-	PINCH : "pinch",
-	ROTATE : "rotate",
-	SWIPE : "swipe",
-	TAP : "tap"
+	PINCH: "pinch",
+	ROTATE: "rotate",
+	SWIPE: "swipe",
+	TAP: "tap"
 });
 
 GestureEvent.DIRECTIONS = Object.freeze({
-	NONE : 0,
-	RIGHT : 1,
-	LEFT : 2,
-	UP : 4,
-	DOWN : 8
+	NONE: 0,
+	RIGHT: 1,
+	LEFT: 2,
+	UP: 4,
+	DOWN: 8
 });
 
 
@@ -108,7 +108,7 @@ class TapGesture extends GestureEvent { }
 TapGesture.TYPE = GestureEvent.TYPES.TAP;
 
 // factory function
-GestureEvent.createInstance = function(type, options) {
+GestureEvent.createInstance = function (type, options) {
 	if (type === GestureEvent.TYPES.PINCH) return new PinchGesture(options);
 	if (type === GestureEvent.TYPES.ROTATE) return new RotateGesture(options);
 	if (type === GestureEvent.TYPES.SWIPE) return new SwipeGesture(options);

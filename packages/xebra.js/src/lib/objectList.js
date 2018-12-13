@@ -1,63 +1,63 @@
 export const PARAMETER_ATTR = Object.freeze({
-	CUSTOM_UNITS : "_parameter_units",
-	EXPONENT : "_parameter_exponent",
-	LONGNAME : "_parameter_longname",
-	RANGE : "_parameter_range",
-	SHORTNAME : "_parameter_shortname",
-	STEPS : "_parameter_steps",
-	TYPE : "_parameter_type",
-	UNIT_STYLE : "_parameter_unitstyle"
+	CUSTOM_UNITS: "_parameter_units",
+	EXPONENT: "_parameter_exponent",
+	LONGNAME: "_parameter_longname",
+	RANGE: "_parameter_range",
+	SHORTNAME: "_parameter_shortname",
+	STEPS: "_parameter_steps",
+	TYPE: "_parameter_type",
+	UNIT_STYLE: "_parameter_unitstyle"
 });
 
 export const OBJECTS = Object.freeze({
-	BUTTON : "button",
-	COMMENT : "comment",
-	DIAL : "dial",
-	FLONUM : "flonum",
-	FPIC : "fpic",
-	GAIN : "gain~",
-	KSLIDER : "kslider",
-	LIVE_BUTTON : "live.button",
-	LIVE_DIAL : "live.dial",
-	LIVE_GRID : "live.grid",
-	LIVE_NUMBOX : "live.numbox",
-	LIVE_SLIDER : "live.slider",
-	LIVE_TAB : "live.tab",
-	LIVE_TEXT : "live.text",
-	LIVE_TOGGLE : "live.toggle",
-	MESSAGE : "message",
-	METER : "meter~",
-	MIRA_CHANNEL : "mira.channel",
-	MIRA_FRAME : "mira.frame",
-	MIRA_MOTION : "mira.motion",
-	MIRA_MULTITOUCH : "mira.multitouch",
-	MULTISLIDER : "multislider",
-	NUMBER : "number",
-	PATCHER : "jpatcher",
-	PATCHERVIEW : "patcherview",
-	PANEL : "panel",
-	RSLIDER : "rslider",
-	SLIDER : "slider",
-	SWATCH : "swatch",
-	TOGGLE : "toggle",
-	UMENU : "umenu"
+	BUTTON: "button",
+	COMMENT: "comment",
+	DIAL: "dial",
+	FLONUM: "flonum",
+	FPIC: "fpic",
+	GAIN: "gain~",
+	KSLIDER: "kslider",
+	LIVE_BUTTON: "live.button",
+	LIVE_DIAL: "live.dial",
+	LIVE_GRID: "live.grid",
+	LIVE_NUMBOX: "live.numbox",
+	LIVE_SLIDER: "live.slider",
+	LIVE_TAB: "live.tab",
+	LIVE_TEXT: "live.text",
+	LIVE_TOGGLE: "live.toggle",
+	MESSAGE: "message",
+	METER: "meter~",
+	MIRA_CHANNEL: "mira.channel",
+	MIRA_FRAME: "mira.frame",
+	MIRA_MOTION: "mira.motion",
+	MIRA_MULTITOUCH: "mira.multitouch",
+	MULTISLIDER: "multislider",
+	NUMBER: "number",
+	PATCHER: "jpatcher",
+	PATCHERVIEW: "patcherview",
+	PANEL: "panel",
+	RSLIDER: "rslider",
+	SLIDER: "slider",
+	SWATCH: "swatch",
+	TOGGLE: "toggle",
+	UMENU: "umenu"
 });
 
 export const MANDATORY_OBJECTS = Object.freeze({
-	[OBJECTS.PATCHER] : [
+	[OBJECTS.PATCHER]: [
 		"editing_bgcolor",
 		"locked_bgcolor",
 		"openinpresentation"
 	],
-	[OBJECTS.PATCHERVIEW] : [
+	[OBJECTS.PATCHERVIEW]: [
 		"name",
 		"presentation",
 		"locked"
 	],
-	[OBJECTS.MIRA_CHANNEL] : [
+	[OBJECTS.MIRA_CHANNEL]: [
 		"name"
 	],
-	[OBJECTS.MIRA_FRAME] : [
+	[OBJECTS.MIRA_FRAME]: [
 		"color",
 		"mira_focus",
 		"patching_rect",
@@ -66,7 +66,7 @@ export const MANDATORY_OBJECTS = Object.freeze({
 		"tabname",
 		"taborder"
 	],
-	[OBJECTS.MIRA_MOTION] : []
+	[OBJECTS.MIRA_MOTION]: []
 });
 
 export const DEFAULT_PARAMS = ["patching_rect", "presentation_rect", "zorder", "presentation", "hidden", "ignoreclick", "varname"];
@@ -74,13 +74,13 @@ export const DEFAULT_PARAMS = ["patching_rect", "presentation_rect", "zorder", "
 export const OBJECT_PARAMETERS = Object.freeze({
 
 	// Standard Objects
-	[OBJECTS.BUTTON] : DEFAULT_PARAMS.concat([
+	[OBJECTS.BUTTON]: DEFAULT_PARAMS.concat([
 		"bgcolor",
 		"blinkcolor",
 		"outlinecolor",
 		"value"
 	]),
-	[OBJECTS.COMMENT] : DEFAULT_PARAMS.concat([
+	[OBJECTS.COMMENT]: DEFAULT_PARAMS.concat([
 		"textfield",
 		"fontsize",
 		"textjustification",
@@ -93,7 +93,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"bubbleside",
 		"bubbletextmargin"
 	]),
-	[OBJECTS.DIAL] : DEFAULT_PARAMS.concat([
+	[OBJECTS.DIAL]: DEFAULT_PARAMS.concat([
 		"distance",
 		"floatoutput",
 		"mode",
@@ -107,7 +107,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"outlinecolor",
 		"vtracking"
 	]),
-	[OBJECTS.FLONUM] : DEFAULT_PARAMS.concat([
+	[OBJECTS.FLONUM]: DEFAULT_PARAMS.concat([
 		"value",
 		"fontsize",
 		"fontname",
@@ -122,7 +122,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"minimum",
 		"maximum"
 	]),
-	[OBJECTS.FPIC] : DEFAULT_PARAMS.concat([
+	[OBJECTS.FPIC]: DEFAULT_PARAMS.concat([
 		"alpha",
 		"destrect",
 		"autofit",
@@ -130,7 +130,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"yoffset",
 		"pic"
 	]),
-	[OBJECTS.GAIN] : DEFAULT_PARAMS.concat([
+	[OBJECTS.GAIN]: DEFAULT_PARAMS.concat([
 		"value",
 		"size",
 		"orientation",
@@ -139,7 +139,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"knobcolor",
 		"distance"
 	]),
-	[OBJECTS.KSLIDER] : DEFAULT_PARAMS.concat([
+	[OBJECTS.KSLIDER]: DEFAULT_PARAMS.concat([
 		"value",
 		"blackkeycolor",
 		"hkeycolor",
@@ -150,7 +150,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"whitekeycolor",
 		"rawsend"
 	]),
-	[OBJECTS.LIVE_BUTTON] : DEFAULT_PARAMS.concat([
+	[OBJECTS.LIVE_BUTTON]: DEFAULT_PARAMS.concat([
 		PARAMETER_ATTR.LONGNAME,
 		PARAMETER_ATTR.SHORTNAME,
 		PARAMETER_ATTR.RANGE
@@ -164,7 +164,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"focusbordercolor",
 		"value"
 	]),
-	[OBJECTS.LIVE_DIAL] : DEFAULT_PARAMS.concat(Object.values(PARAMETER_ATTR), [
+	[OBJECTS.LIVE_DIAL]: DEFAULT_PARAMS.concat(Object.values(PARAMETER_ATTR), [
 		"fontname",
 		"fontsize",
 		"fontface",
@@ -186,7 +186,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"distance",
 		"value"
 	]),
-	[OBJECTS.LIVE_GRID] : DEFAULT_PARAMS.concat([
+	[OBJECTS.LIVE_GRID]: DEFAULT_PARAMS.concat([
 		"amountcolor",
 		"bgstepcolor",
 		"bgstepcolor2",
@@ -215,7 +215,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"currentstep",
 		"constraint"
 	]),
-	[OBJECTS.LIVE_NUMBOX] : DEFAULT_PARAMS.concat(Object.values(PARAMETER_ATTR), [
+	[OBJECTS.LIVE_NUMBOX]: DEFAULT_PARAMS.concat(Object.values(PARAMETER_ATTR), [
 		"activebgcolor",
 		"active",
 		"activeslidercolor",
@@ -232,7 +232,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"fontface",
 		"fontsize"
 	]),
-	[OBJECTS.LIVE_SLIDER] : DEFAULT_PARAMS.concat(Object.values(PARAMETER_ATTR), [
+	[OBJECTS.LIVE_SLIDER]: DEFAULT_PARAMS.concat(Object.values(PARAMETER_ATTR), [
 		"fontname",
 		"fontsize",
 		"fontface",
@@ -248,7 +248,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"value",
 		"distance"
 	]),
-	[OBJECTS.LIVE_TAB] : DEFAULT_PARAMS.concat(
+	[OBJECTS.LIVE_TAB]: DEFAULT_PARAMS.concat(
 		[
 			PARAMETER_ATTR.LONGNAME,
 			PARAMETER_ATTR.SHORTNAME,
@@ -283,7 +283,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 			"usepicture"
 		]
 	),
-	[OBJECTS.LIVE_TEXT] : DEFAULT_PARAMS.concat(
+	[OBJECTS.LIVE_TEXT]: DEFAULT_PARAMS.concat(
 		[
 			PARAMETER_ATTR.LONGNAME,
 			PARAMETER_ATTR.SHORTNAME,
@@ -310,7 +310,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 			"mode"
 		]
 	),
-	[OBJECTS.LIVE_TOGGLE] : DEFAULT_PARAMS.concat(
+	[OBJECTS.LIVE_TOGGLE]: DEFAULT_PARAMS.concat(
 		[
 			PARAMETER_ATTR.LONGNAME,
 			PARAMETER_ATTR.SHORTNAME,
@@ -328,7 +328,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 			"active"
 		]
 	),
-	[OBJECTS.MESSAGE] : DEFAULT_PARAMS.concat([
+	[OBJECTS.MESSAGE]: DEFAULT_PARAMS.concat([
 		"textfield",
 		"fontsize",
 		"textjustification",
@@ -347,7 +347,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"textcolor",
 		"value"
 	]),
-	[OBJECTS.METER] : DEFAULT_PARAMS.concat([
+	[OBJECTS.METER]: DEFAULT_PARAMS.concat([
 		"bgcolor",
 		"offcolor",
 		"ntepidleds",
@@ -362,7 +362,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"overloadcolor",
 		"level"
 	]),
-	[OBJECTS.MIRA_MULTITOUCH] : DEFAULT_PARAMS.concat([
+	[OBJECTS.MIRA_MULTITOUCH]: DEFAULT_PARAMS.concat([
 		"color",
 		"hsegments",
 		"vsegments",
@@ -383,7 +383,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"moved_touch",
 		"up_down_cancelled_touch"
 	]),
-	[OBJECTS.MULTISLIDER] : DEFAULT_PARAMS.concat([
+	[OBJECTS.MULTISLIDER]: DEFAULT_PARAMS.concat([
 		"distance",
 		"ghostbar",
 		"setstyle",
@@ -407,7 +407,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"spacing",
 		"settype"
 	]),
-	[OBJECTS.NUMBER] : DEFAULT_PARAMS.concat([
+	[OBJECTS.NUMBER]: DEFAULT_PARAMS.concat([
 		"value",
 		"fontsize",
 		"fontname",
@@ -422,7 +422,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"minimum",
 		"maximum"
 	]),
-	[OBJECTS.PANEL] : DEFAULT_PARAMS.concat([
+	[OBJECTS.PANEL]: DEFAULT_PARAMS.concat([
 		"bgcolor",
 		"bgfillcolor_color",
 		"bgfillcolor_type",
@@ -441,7 +441,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"vertical_direction",
 		"arrow_orientation"
 	]),
-	[OBJECTS.RSLIDER] : DEFAULT_PARAMS.concat([
+	[OBJECTS.RSLIDER]: DEFAULT_PARAMS.concat([
 		"distance",
 		"size",
 		"min",
@@ -452,7 +452,7 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"bordercolor",
 		"fgcolor"
 	]),
-	[OBJECTS.SLIDER] : DEFAULT_PARAMS.concat([
+	[OBJECTS.SLIDER]: DEFAULT_PARAMS.concat([
 		"bgcolor",
 		"distance",
 		"elementcolor",
@@ -466,20 +466,20 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"size",
 		"thickness"
 	]),
-	[OBJECTS.SWATCH] : DEFAULT_PARAMS.concat([
+	[OBJECTS.SWATCH]: DEFAULT_PARAMS.concat([
 		"distance",
 		"value",
 		"compatibility",
 		"saturation"
 	]),
-	[OBJECTS.TOGGLE] : DEFAULT_PARAMS.concat([
+	[OBJECTS.TOGGLE]: DEFAULT_PARAMS.concat([
 		"bgcolor",
 		"checkedcolor",
 		"uncheckedcolor",
 		"thickness",
 		"value"
 	]),
-	[OBJECTS.UMENU] : DEFAULT_PARAMS.concat([
+	[OBJECTS.UMENU]: DEFAULT_PARAMS.concat([
 		"arrow",
 		"applycolors",
 		"bgcolor",
@@ -507,9 +507,9 @@ export const OBJECT_PARAMETERS = Object.freeze({
 });
 
 export const OPTIONAL_OBJECT_PARAMETERS = Object.freeze({
-	[OBJECTS.LIVE_TAB] : ["pictures"],
-	[OBJECTS.LIVE_DIAL] : ["tribordercolor"],
-	[OBJECTS.MESSAGE] : ["bgfillcolor_angle", "bgfillcolor_proportion"],
-	[OBJECTS.PANEL] : ["bgfillcolor_angle", "bgfillcolor_proportion"],
-	[OBJECTS.UMENU] : ["bgfillcolor_angle", "bgfillcolor_proportion"]
+	[OBJECTS.LIVE_TAB]: ["pictures"],
+	[OBJECTS.LIVE_DIAL]: ["tribordercolor"],
+	[OBJECTS.MESSAGE]: ["bgfillcolor_angle", "bgfillcolor_proportion"],
+	[OBJECTS.PANEL]: ["bgfillcolor_angle", "bgfillcolor_proportion"],
+	[OBJECTS.UMENU]: ["bgfillcolor_angle", "bgfillcolor_proportion"]
 });

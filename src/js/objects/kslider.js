@@ -189,7 +189,7 @@ export default class Kslider extends MiraUIObject {
 						// If the note is already in the array of on notes, then you need to remove it
 						if (!shouldAdd) {
 							const value = this._state.getParamValue("value");
-							const noteIdx = value.findIndex(function(element, index) {
+							const noteIdx = value.findIndex(function (element, index) {
 								return (element === key) && (index % 2 === 0);
 							});
 							if (noteIdx > -1) {
@@ -209,7 +209,7 @@ export default class Kslider extends MiraUIObject {
 
 							// All subsequent touches should add notes only
 							if (touchPhase === this.constructor.KsliderTouchPhases.KSTouchDown)
-								{this._dragsDoAdd = true;}
+							{this._dragsDoAdd = true;}
 						}
 					}
 				}
@@ -235,13 +235,13 @@ export default class Kslider extends MiraUIObject {
 Kslider.NAME = "kslider";
 
 Kslider.KsliderModes = Object.freeze({
-	KSMonophonic : "Monophonic",
-	KSPolyphonic : "Polyphonic",
-	KSTouchscreen : "Touchscreen"
+	KSMonophonic: "Monophonic",
+	KSPolyphonic: "Polyphonic",
+	KSTouchscreen: "Touchscreen"
 });
 
 Kslider.KsliderTouchPhases = Object.freeze({
-	KSTouchDown : "KSTouchDown",
-	KSTouchMoved : "KSTouchMoved",
-	KSTouchEnded : "KSTouchEnded"
+	KSTouchDown: "KSTouchDown",
+	KSTouchMoved: "KSTouchMoved",
+	KSTouchEnded: "KSTouchEnded"
 });

@@ -3,17 +3,17 @@ import { EventEmitter } from "events";
 import { CONNECTION_STATES, XEBRA_VERSION, XEBRA_MESSAGES } from "./constants.js";
 
 const MIRA_FCT_LOOKUP = {
-	[XEBRA_MESSAGES.ADD_NODE] : "_addNode",
-	[XEBRA_MESSAGES.ADD_PARAM] : "_addParam",
-	[XEBRA_MESSAGES.CHANNEL_MESSAGE] : "_channelMessage",
-	[XEBRA_MESSAGES.DELETE_NODE] : "_deleteNode",
-	[XEBRA_MESSAGES.HANDLE_RESOURCE_DATA] : "_handleResourceData",
-	[XEBRA_MESSAGES.HANDLE_RESOURCE_INFO] : "_handleResourceInfo",
-	[XEBRA_MESSAGES.INIT_NODE] : "_initNode",
-	[XEBRA_MESSAGES.MODIFY_NODE] : "_modifyNode",
-	[XEBRA_MESSAGES.RESYNC] : "_resync",
-	[XEBRA_MESSAGES.SET_UUID] : "_setXebraUuid",
-	[XEBRA_MESSAGES.STATEDUMP] : "_statedump"
+	[XEBRA_MESSAGES.ADD_NODE]: "_addNode",
+	[XEBRA_MESSAGES.ADD_PARAM]: "_addParam",
+	[XEBRA_MESSAGES.CHANNEL_MESSAGE]: "_channelMessage",
+	[XEBRA_MESSAGES.DELETE_NODE]: "_deleteNode",
+	[XEBRA_MESSAGES.HANDLE_RESOURCE_DATA]: "_handleResourceData",
+	[XEBRA_MESSAGES.HANDLE_RESOURCE_INFO]: "_handleResourceInfo",
+	[XEBRA_MESSAGES.INIT_NODE]: "_initNode",
+	[XEBRA_MESSAGES.MODIFY_NODE]: "_modifyNode",
+	[XEBRA_MESSAGES.RESYNC]: "_resync",
+	[XEBRA_MESSAGES.SET_UUID]: "_setXebraUuid",
+	[XEBRA_MESSAGES.STATEDUMP]: "_statedump"
 };
 
 function convertArrayToMaxList(array, mustBeFlat = false) {
@@ -77,7 +77,7 @@ function maxEquivalentForJS(anything, mustBeFlatArray = false) {
 }
 
 function generateUuid() {
-	let id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+	let id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
 		let r = Math.random() * 16 | 0;
 		let v = c === "x" ? r : (r & 0x3 | 0x8);
 		return v.toString(16);
@@ -131,9 +131,9 @@ class XebraCommunicator extends EventEmitter {
 		// sjt --- See #87, we shouldn't be setting client params if we haven't received a server-assigned id
 		if (this._xebraUuid !== null) {
 			this._sendMessage("set_client_params", {
-				xebraUuid : this._xebraUuid,
-				name : this._name,
-				uid : this._uuid
+				xebraUuid: this._xebraUuid,
+				name: this._name,
+				uid: this._uuid
 			});
 		}
 		this.emit(XEBRA_MESSAGES.CLIENT_PARAM_CHANGE, "name", this._name);
@@ -188,8 +188,8 @@ class XebraCommunicator extends EventEmitter {
 			case CONNECTION_STATES.CONNECTED:
 				if (!this._xebraUuid) {
 					this._sendMessage("register", {
-						version : XEBRA_VERSION,
-						supported_objects : this._supportedObjects
+						version: XEBRA_VERSION,
+						supported_objects: this._supportedObjects
 					});
 				} else {
 					// resync somehow doesn't work.. For now forcing it
@@ -236,8 +236,8 @@ class XebraCommunicator extends EventEmitter {
 	 */
 	_sendMessage(msg, payload = {} ) {
 		this._communicator.send({
-			message : msg,
-			payload : payload
+			message: msg,
+			payload: payload
 		});
 	}
 
@@ -249,7 +249,7 @@ class XebraCommunicator extends EventEmitter {
 	 */
 	_dispatchMessage(data) {
 		if (Array.isArray(data)) {
-			data.forEach(function(msg) {
+			data.forEach(function (msg) {
 				this._handleMessage(msg);
 			}.bind(this));
 		} else {
@@ -416,9 +416,9 @@ class XebraCommunicator extends EventEmitter {
 		this.emit(XEBRA_MESSAGES.CLIENT_PARAM_CHANGE, "uuid", this._xebraUuid);
 		this._requestStateDump();
 		this._sendMessage("set_client_params", {
-			xebraUuid : this._xebraUuid,
-			name : this._name,
-			uid : this._uuid
+			xebraUuid: this._xebraUuid,
+			name: this._name,
+			uid: this._uuid
 		});
 	}
 
@@ -478,7 +478,7 @@ class XebraCommunicator extends EventEmitter {
 		if (payload !== undefined) {
 			const data = {
 				channel,
-				name : this._name,
+				name: this._name,
 				payload
 			};
 			this._sendMessage("channel_message", data);

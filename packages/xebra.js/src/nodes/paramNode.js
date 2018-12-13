@@ -9,8 +9,8 @@ import XebraNode from "./base.js";
  */
 
 const PARAM_DEFAULT_VALUES = {
-	bgfillcolor_pt1 : [0.5, 0.05],
-	bgfillcolor_pt2 : [0.5, 0.95]
+	bgfillcolor_pt1: [0.5, 0.05],
+	bgfillcolor_pt2: [0.5, 0.95]
 };
 
 /**
@@ -35,23 +35,23 @@ function _getDefaultParamValue(type, value) {
  * beforehand and are hardcoded.
  */
 const HARDCODED_TYPES = {
-	moved_touch : ["h", "h", "h", "h", "h", "h", "d", "d"],
-	up_down_cancelled_touch : ["h", "h", "h", "h", "h", "h", "d", "d"],
-	pinch : ["h", "h", "h", "d", "d", "h"],
-	region : ["h", "h", "h", "h", "h", "h"],
-	rotate : ["h", "h", "h", "d", "d", "h"],
-	swipe : ["h", "h", "h", "h", "h"],
-	tap : ["h", "h", "h", "d", "d", "h"],
-	rawsend : ["h", "h"],
-	rotationrate : ["h", "h", "d", "d", "d", "d"],
-	gravity : ["h", "h", "d", "d", "d", "d"],
-	accel : ["h", "h", "d", "d", "d", "d"],
-	orientation : ["h", "h", "d", "d", "d", "d"],
-	rawaccel : ["h", "h", "d", "d", "d", "d"],
-	touchy : ["s", "s", "h", "h"],
-	setcell : ["h", "h", "h"],
-	directions : "h*",
-	constraint : "h*"
+	moved_touch: ["h", "h", "h", "h", "h", "h", "d", "d"],
+	up_down_cancelled_touch: ["h", "h", "h", "h", "h", "h", "d", "d"],
+	pinch: ["h", "h", "h", "d", "d", "h"],
+	region: ["h", "h", "h", "h", "h", "h"],
+	rotate: ["h", "h", "h", "d", "d", "h"],
+	swipe: ["h", "h", "h", "h", "h"],
+	tap: ["h", "h", "h", "d", "d", "h"],
+	rawsend: ["h", "h"],
+	rotationrate: ["h", "h", "d", "d", "d", "d"],
+	gravity: ["h", "h", "d", "d", "d", "d"],
+	accel: ["h", "h", "d", "d", "d", "d"],
+	orientation: ["h", "h", "d", "d", "d", "d"],
+	rawaccel: ["h", "h", "d", "d", "d", "d"],
+	touchy: ["s", "s", "h", "h"],
+	setcell: ["h", "h", "h"],
+	directions: "h*",
+	constraint: "h*"
 };
 
 function _getHardcodedOSCTypes(type) {

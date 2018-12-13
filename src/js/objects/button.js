@@ -29,7 +29,7 @@ export default class Button extends MiraUIObject {
 			mgraphics.fill();
 
 			if (!this._inTouch) {
-				setTimeout(function() {
+				setTimeout(function () {
 					this.setParamValue("value", 0);
 				}.bind(this), 100);
 			}

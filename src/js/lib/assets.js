@@ -6,34 +6,34 @@ let assets = [
 
 	// gain textures
 	{
-		name : "hatching-horizontal",
-		data : require(`!url-loader!${__ASSETDIR__}/hatching-horizontal.svg`)
+		name: "hatching-horizontal",
+		data: require(`!url-loader!${__ASSETDIR__}/hatching-horizontal.svg`)
 	},
 	{
-		name : "hatching-vertical",
-		data : require(`!url-loader!${__ASSETDIR__}/hatching-vertical.svg`)
+		name: "hatching-vertical",
+		data: require(`!url-loader!${__ASSETDIR__}/hatching-vertical.svg`)
 	},
 
 	// mira.multitouch gestures
 	{
-		name : "multitouch-pinch",
-		data : require(`!url-loader!${__ASSETDIR__}/multitouch-pinch.png`)
+		name: "multitouch-pinch",
+		data: require(`!url-loader!${__ASSETDIR__}/multitouch-pinch.png`)
 	},
 	{
-		name : "multitouch-rotation",
-		data : require(`!url-loader!${__ASSETDIR__}/multitouch-rotation.png`)
+		name: "multitouch-rotation",
+		data: require(`!url-loader!${__ASSETDIR__}/multitouch-rotation.png`)
 	},
 	{
-		name : "multitouch-swipe",
-		data : require(`!url-loader!${__ASSETDIR__}/multitouch-swipe.png`)
+		name: "multitouch-swipe",
+		data: require(`!url-loader!${__ASSETDIR__}/multitouch-swipe.png`)
 	},
 	{
-		name : "multitouch-tap",
-		data : require(`!url-loader!${__ASSETDIR__}/multitouch-tap.png`)
+		name: "multitouch-tap",
+		data: require(`!url-loader!${__ASSETDIR__}/multitouch-tap.png`)
 	},
 	{
-		name : "multitouch-touch",
-		data : require(`!url-loader!${__ASSETDIR__}/multitouch-touch.png`)
+		name: "multitouch-touch",
+		data: require(`!url-loader!${__ASSETDIR__}/multitouch-touch.png`)
 	}
 ];
 

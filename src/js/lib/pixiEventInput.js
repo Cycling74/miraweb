@@ -4,35 +4,35 @@ import toArray from "lodash/toArray.js";
 import size from "lodash/size.js";
 
 const PIXI_INPUT_MAP = Object.freeze({
-	touchstart : Hammer.INPUT_START,
-	touchmove : Hammer.INPUT_MOVE,
-	touchend : Hammer.INPUT_END,
-	touchcancel : Hammer.INPUT_CANCEL,
-	mousemove : Hammer.INPUT_MOVE,
-	mouseup : Hammer.INPUT_END,
-	mousedown : Hammer.INPUT_START
+	touchstart: Hammer.INPUT_START,
+	touchmove: Hammer.INPUT_MOVE,
+	touchend: Hammer.INPUT_END,
+	touchcancel: Hammer.INPUT_CANCEL,
+	mousemove: Hammer.INPUT_MOVE,
+	mouseup: Hammer.INPUT_END,
+	mousedown: Hammer.INPUT_START
 });
 
 const POINTER_INPUT_MAP = Object.freeze({
-	pointerdown : Hammer.INPUT_START,
-	pointermove : Hammer.INPUT_MOVE,
-	pointerup : Hammer.INPUT_END,
-	pointerupoutside : Hammer.INPUT_END,
-	pointercancel : Hammer.INPUT_CANCEL,
-	pointerout : Hammer.INPUT_CANCEL
+	pointerdown: Hammer.INPUT_START,
+	pointermove: Hammer.INPUT_MOVE,
+	pointerup: Hammer.INPUT_END,
+	pointerupoutside: Hammer.INPUT_END,
+	pointercancel: Hammer.INPUT_CANCEL,
+	pointerout: Hammer.INPUT_CANCEL
 });
 
 const INPUT_TYPE = Object.freeze({
-	TOUCH : "touch",
-	PEN : "pen",
-	MOUSE : "mouse"
+	TOUCH: "touch",
+	PEN: "pen",
+	MOUSE: "mouse"
 });
 
 // in IE10 the pointer types is defined as an enum
 const IE10_POINTER_TYPE_ENUM = Object.freeze({
-	2 : INPUT_TYPE.TOUCH,
-	3 : INPUT_TYPE.PEN,
-	4 : INPUT_TYPE.MOUSE
+	2: INPUT_TYPE.TOUCH,
+	3: INPUT_TYPE.PEN,
+	4: INPUT_TYPE.MOUSE
 });
 
 const MOUSE_EVENTS = ["mousemove", "mousedown", "mouseup"];
@@ -104,10 +104,10 @@ export default class PixiEventInput extends Hammer.Input {
 		store[storeIndex] = ev;
 
 		this.callback(this.manager, eventType, {
-			pointers : store,
-			changedPointers : [ev],
+			pointers: store,
+			changedPointers: [ev],
 			pointerType,
-			srcEvent : ev
+			srcEvent: ev
 		});
 
 		if (removePointer) {
@@ -140,10 +140,10 @@ export default class PixiEventInput extends Hammer.Input {
 		}
 
 		this.callback(this.manager, type, {
-			pointers : pointers,
-			changedPointers : changedPointers,
-			pointerType : pointerType,
-			srcEvent : ev.data.originalEvent
+			pointers: pointers,
+			changedPointers: changedPointers,
+			pointerType: pointerType,
+			srcEvent: ev.data.originalEvent
 		});
 	}
 
@@ -181,7 +181,7 @@ export default class PixiEventInput extends Hammer.Input {
 			const touch = allTouches[i];
 			if (this.manager.isTouchLocked(touch)) {
 				if (findIndex(changedTargetTouches, ["identifier", touch.identifier]) === -1)
-					{targetTouches.push(touch);}
+				{targetTouches.push(touch);}
 			}
 		}
 

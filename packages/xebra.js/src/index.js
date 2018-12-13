@@ -12,8 +12,8 @@ function isString(v) {
 }
 
 const RESOURCE_REQUEST_DOMAIN = Object.freeze({
-	INFO : "info",
-	DATA : "data"
+	INFO: "info",
+	DATA: "data"
 });
 
 /**
@@ -131,15 +131,15 @@ class State extends EventEmitter {
 		this._communicator.on(XebraCommunicator.XEBRA_MESSAGES.CLIENT_param_changed, this._clientParamChange);
 
 		this._resourceRequests = {
-			info : {
-				sequence : 0,
-				resourceToSequence : {},
-				sequenceToResource : {}
+			info: {
+				sequence: 0,
+				resourceToSequence: {},
+				sequenceToResource: {}
 			},
-			data : {
-				sequence : 0,
-				resourceToSequence : {},
-				sequenceToResource : {}
+			data: {
+				sequence: 0,
+				resourceToSequence: {},
+				sequenceToResource: {}
 			}
 		};
 
@@ -260,12 +260,12 @@ class State extends EventEmitter {
 		this._resourceRequests[domain].resourceToSequence[resource.id] = sequence;
 		this._resourceRequests[domain].sequenceToResource[sequence] = resource;
 		const payload = {
-			context : context,
-			name : resource.filename,
-			width : resource.dimensions.width,
-			height : resource.dimensions.height,
-			sequence : sequence,
-			as_png : 1 // This asks Max to render SVG surfaces to PNG instead of raw bytes
+			context: context,
+			name: resource.filename,
+			width: resource.dimensions.width,
+			height: resource.dimensions.height,
+			sequence: sequence,
+			as_png: 1 // This asks Max to render SVG surfaces to PNG instead of raw bytes
 		};
 
 		if (domain === RESOURCE_REQUEST_DOMAIN.INFO) {
@@ -361,11 +361,11 @@ class State extends EventEmitter {
 		if (!Array.isArray(val)) val = [val];
 
 		this._communicator.sendModifyMessage({
-			id : param.id,
-			sequence : param.sequence,
-			creation_sequence : param.creationSequence,
-			values : val,
-			types : param.types
+			id: param.id,
+			sequence: param.sequence,
+			creation_sequence: param.creationSequence,
+			values: val,
+			types: param.types
 		});
 	}
 
@@ -790,7 +790,7 @@ class State extends EventEmitter {
 		});
 		return retVal;
 	}
-		/**
+	/**
 		 * Returns the object speficied by the given id.
 		 * @param {Xebra.NodeId} id - The id of the object
 		 * @return {ObjectNode|null} the object or null if not known
