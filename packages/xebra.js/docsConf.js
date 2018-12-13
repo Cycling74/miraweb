@@ -1,4 +1,6 @@
-{
+const { dirname } = require("path");
+
+module.exports = {
     "tags": {
         "allowUnknownTags": true,
         "dictionaries": [
@@ -16,7 +18,7 @@
     },
 	"plugins": [
 		"plugins/markdown",
-		"node_modules/jsdoc-babel"
+		require.resolve("jsdoc-babel")
 	],
 	"babel" : {
 	    "presets" : [],
@@ -57,7 +59,7 @@
 	  "destination" : "./docs",
       "package" : "./package.json",
 	  "readme" : "./README.md",
-	  "template" : "./node_modules/jaguarjs-jsdoc",
+	  "template": dirname(require.resolve("jaguarjs-jsdoc")),
 	  "tutorials" : "./tutorials"
 	}
 }
