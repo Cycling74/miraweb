@@ -24,7 +24,7 @@
   "scripts": {
     "clean": "rimraf ./node_modules",
     "predocs": "rimraf ./docs",
-    "docs": "sh ./scripts/docs",
+    "docs": "sh ./scripts/docs.sh",
     "prebuild": "rimraf ./lib; rimraf ./dist",
     "build": "babel ./src -d ./lib; node ./scripts/build.js",
     "prepublish": "yarn run build",
