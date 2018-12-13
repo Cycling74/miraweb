@@ -4,3 +4,4 @@ docs
 dist
 lib
 !src/lib
+tutorials/00-objectlist.md
