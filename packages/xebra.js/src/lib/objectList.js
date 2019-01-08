@@ -360,7 +360,8 @@ export const OBJECT_PARAMETERS = Object.freeze({
 		"warmcolor",
 		"hotcolor",
 		"overloadcolor",
-		"level"
+		"level",
+		"mc.level"
 	]),
 	[OBJECTS.MIRA_MULTITOUCH]: DEFAULT_PARAMS.concat([
 		"color",
@@ -510,6 +511,7 @@ export const OPTIONAL_OBJECT_PARAMETERS = Object.freeze({
 	[OBJECTS.LIVE_TAB]: ["pictures"],
 	[OBJECTS.LIVE_DIAL]: ["tribordercolor"],
 	[OBJECTS.MESSAGE]: ["bgfillcolor_angle", "bgfillcolor_proportion"],
+	[OBJECTS.METER]: ["mc.level"],
 	[OBJECTS.PANEL]: ["bgfillcolor_angle", "bgfillcolor_proportion"],
 	[OBJECTS.UMENU]: ["bgfillcolor_angle", "bgfillcolor_proportion"]
 });
