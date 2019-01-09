@@ -25,8 +25,8 @@ export default class Meter extends MiraUIObject {
 			height
 		} = params;
 		const mc_level = params["mc.level"];
-		const channelCount = mc_level ? mc_level.length : 1;
-		const levelSrc = channelCount > 1 ? mc_level : level;
+		const channelCount = Array.isArray(mc_level) ? mc_level.length : 1;
+		const levelSrc = channelCount > 1 ? mc_level : [level];
 
 		const ledMargin = 6;
 		const isVertical = (height > width) ? 1 : 0;
