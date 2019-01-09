@@ -94,11 +94,11 @@ export default class Meter extends MiraUIObject {
 				}
 				if (this.overloaded[c] && levelSrc[c] < 1.0) {
 					if (!this.timers[c]) {
-						this.timers[c] = setTimeout((() => {
+						this.timers[c] = setTimeout(() => {
 							this.overloaded[c] = false;
 							this.timers[c] = null;
-							this.render()
-						}).bind(this), 500);
+							this.render();
+						}, 500);
 					}
 				}
 			}
@@ -135,11 +135,11 @@ export default class Meter extends MiraUIObject {
 				}
 				if (this.overloaded[c] && levelSrc[c] < 1.0) {
 					if (!this.timers[c]) {
-						this.timers[c] = setTimeout((() => {
+						this.timers[c] = setTimeout(() => {
 							this.overloaded[c] = false;
 							this.timers[c] = null;
-							this.render()
-						}).bind(this), 500);
+							this.render();
+						}, 500);
 					}
 				}
 			}
