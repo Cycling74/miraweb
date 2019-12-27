@@ -7,6 +7,7 @@ import XebraStateStore from "../stores/xebraState.js";
 import { Animation } from "../lib/animation.js";
 import Assets from "../lib/assets.js";
 import GestureEvent from "../lib/gestureEvent.js";
+import { toRad } from "../lib/utils";
 
 
 class Touch {
@@ -60,6 +61,7 @@ export default class MiraMultitouch extends MiraUIObject {
 
 		this._rotateSprites = null;
 		this._pinchSprites = null;
+		this._rotateOffset = null;
 
 		this._usedDeviceTouchIds = {};
 		for (let i = 1; i <= this.constructor.MAX_NUM_TOUCHES; i++) {
@@ -375,11 +377,18 @@ export default class MiraMultitouch extends MiraUIObject {
 	}
 
 	rotate(event, params) {
+		if (!this._rotateOffset || this._rotateOffset.id !== event.id) {
+			this._rotateOffset = {
+				id : event.id,
+				initVal : event.rotation
+			};
+		}
+
 		this.setParamValue("rotate", [
 			0, // Sequence number, always 0
 			XebraStateStore.getXebraUuid(),
 			XebraStateStore.getXebraUuid(),
-			event.rotate,
+			toRad(event.rotation - this._rotateOffset.initVal),
 			event.velocity,
 			event.ongoing
 		]);
@@ -650,6 +659,7 @@ export default class MiraMultitouch extends MiraUIObject {
 			this._rotateSprites.stationary.parent.removeChild(this._rotateSprites.stationary);
 			this._rotateSprites.stationary.destroy();
 			this._rotateSprites = null;
+			this._rotateOffset = null;
 		}
 	}
 }

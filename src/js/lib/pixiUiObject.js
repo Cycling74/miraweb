@@ -635,7 +635,7 @@ class PixiDraw extends EventEmitter {
 			"offsetDirection",
 
 			"scale",
-			"rotate",
+			"rotation",
 
 			"isFirst",
 			"isFinal"
@@ -643,15 +643,18 @@ class PixiDraw extends EventEmitter {
 
 		const center = this._display.worldTransform.applyInverse(ActiveFrameStore.mapPositionToPoint(event.center.x, event.center.y));
 		eventAttr.center = { x : center.x, y : center.y };
+		eventAttr.id = "";
 
 		eventAttr.pointers = [];
 		event.pointers.forEach((pointer) => {
 			const localPoint = this._display.worldTransform.applyInverse(ActiveFrameStore.mapPositionToPoint(pointer.pageX, pointer.pageY));
+			const id = getPointerId(pointer);
 			eventAttr.pointers.push({
-				id : getPointerId(pointer),
+				id : id,
 				x : localPoint.x,
 				y : localPoint.y
 			});
+			eventAttr.id += eventAttr.id.length ? "_" + id : id;
 		});
 
 		eventAttr.direction = this._hammerDirectionToMiraDirection(event.direction);

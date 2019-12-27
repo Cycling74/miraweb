@@ -1,8 +1,14 @@
 class GestureEvent {
 
 	constructor(options) {
+
+		this._id = options.id || null;
 		this._pointers = options.pointers;
 		this._center = options.center;
+	}
+
+	get id() {
+		return this._id;
 	}
 
 	get type() {
@@ -69,7 +75,7 @@ class RotateGesture extends GestureEvent {
 		super(options);
 
 		this._ongoing = options.isFinal ? 0 : 1;
-		this._rotate = options.rotate;
+		this._rotation = options.rotation;
 		this._velocity = options.velocity;
 	}
 
@@ -77,8 +83,8 @@ class RotateGesture extends GestureEvent {
 		return this._ongoing;
 	}
 
-	get rotate() {
-		return this._rotate;
+	get rotation() {
+		return this._rotation;
 	}
 
 	get velocity() {
