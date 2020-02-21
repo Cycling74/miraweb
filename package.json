@@ -48,5 +48,8 @@
   "workspaces": [
     "packages/*",
     "src"
-  ]
+  ],
+  "engines": {
+    "node": "10.13.x"
+  }
 }
