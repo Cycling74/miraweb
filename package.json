@@ -1,7 +1,7 @@
 {
   "name": "miraweb-repo",
   "description": "",
-  "version": "1.2.5",
+  "version": "1.2.7",
   "author": {
     "name": "Cycling '74",
     "url": "http://cycling74.com"
@@ -50,6 +50,6 @@
     "src"
   ],
   "engines": {
-    "node": "10.13.x"
+    "node": "14.14.x"
   }
 }
