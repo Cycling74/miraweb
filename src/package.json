@@ -1,6 +1,6 @@
 {
   "name": "miraweb",
-  "version": "1.2.5",
+  "version": "1.2.7",
   "description": "",
   "author": {
     "name": "Cycling '74",
@@ -61,7 +61,7 @@
     "url-loader": "^0.5.7",
     "webpack": "2.3.2",
     "webpack-dev-server": "^2.4.2",
-    "xebra.js": "1.2.5"
+    "xebra.js": "1.2.7"
   },
   "dependencies": {}
 }
