@@ -28,7 +28,8 @@
     "prebuild": "rimraf ./lib; rimraf ./dist",
     "build": "babel ./src -d ./lib; node ./scripts/build.js",
     "prepublish": "yarn run build",
-    "test": "echo 'No Xebra.js' tests"
+    "test": "echo 'No Xebra.js' tests",
+    "rimraf": "./node_modules/rimraf/bin.js"
   },
   "dependencies": {
     "babel-runtime": "^6.18.0",
