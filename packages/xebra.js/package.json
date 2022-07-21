@@ -49,6 +49,7 @@
     "jaguarjs-jsdoc": "git://github.com/fde31/jaguarjs-jsdoc#xebra_docs",
     "jsdoc": "^3.4.2",
     "jsdoc-babel": "^0.2.1",
+    "rimraf": "^3.0.2",
     "uglify-js": "^2.7.3"
   },
   "browserify": {
