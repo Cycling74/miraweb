@@ -36,6 +36,7 @@
     "browserify": "^13.1.0",
     "lodash.pick": "^4.4.0",
     "lodash.uniq": "^4.5.0",
+    "rimraf": "^3.0.2",
     "sprintf-js": "^1.0.3",
     "xebra-communicator": "1.2.5"
   },
@@ -50,7 +51,6 @@
     "jaguarjs-jsdoc": "git://github.com/fde31/jaguarjs-jsdoc#xebra_docs",
     "jsdoc": "^3.4.2",
     "jsdoc-babel": "^0.2.1",
-    "rimraf": "^3.0.2",
     "uglify-js": "^2.7.3"
   },
   "browserify": {
