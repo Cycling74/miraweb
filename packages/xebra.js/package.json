@@ -46,7 +46,7 @@
     "babel-preset-es2015": "^6.5.0",
     "babel-register": "^6.18.0",
     "babelify": "^7.3.0",
-    "jaguarjs-jsdoc": "git://github.com/Cycling74/jaguarjs-jsdoc#xebra_docs",
+    "jaguarjs-jsdoc": "https://github.com/Cycling74/jaguarjs-jsdoc#xebra_docs",
     "jsdoc": "^3.4.2",
     "jsdoc-babel": "^0.2.1",
     "uglify-js": "^2.7.3"
