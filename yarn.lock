@@ -4233,9 +4233,10 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
-"jaguarjs-jsdoc@git://github.com/fde31/jaguarjs-jsdoc#xebra_docs":
+"jaguarjs-jsdoc@https://github.com/Cycling74/jaguarjs-jsdoc#xebra_docs":
   version "0.0.1"
-  resolved "git://github.com/fde31/jaguarjs-jsdoc#840fc9eeecfe797ac3673a476738700c5609708d"
+  uid "840fc9eeecfe797ac3673a476738700c5609708d"
+  resolved "https://github.com/Cycling74/jaguarjs-jsdoc#840fc9eeecfe797ac3673a476738700c5609708d"
   dependencies:
     taffydb "^2.7.2"
     underscore "^1.7.0"
@@ -7659,9 +7660,9 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
 ua-parser-js@^0.7.18:
-  version "0.7.19"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.19.tgz#94151be4c0a7fb1d001af7022fdaca4642659e4b"
-  integrity sha512-T3PVJ6uz8i0HzPxOF9SWzWAlfN/DavlpQqepn22xgve/5QecC+XMCAtmUNnY7C9StehaV6exjUCI801lOI7QlQ==
+  version "0.7.33"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.33.tgz#1d04acb4ccef9293df6f70f2c3d22f3030d8b532"
+  integrity sha512-s8ax/CeZdK9R/56Sui0WM6y9OFREJarMRHqLB2EwkovemBxNQ+Bqu8GAsUnVcXKgphb++ghr/B2BZx4mahujPw==
 
 uglify-js@3.4.x:
   version "3.4.9"
