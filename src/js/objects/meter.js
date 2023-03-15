@@ -3,13 +3,8 @@ import MiraUIObject from "./base.js";
 export default class Meter extends MiraUIObject {
 	constructor(stateObj) {
 		super(stateObj);
-		this.overloaded = false;
-		this.resetOverloaded = this.resetOverloaded.bind(this);
-	}
-
-	resetOverloaded() {
-		this.overloaded = false;
-		this.render();
+		this.overloaded = [];
+		this.timers = [];
 	}
 
 	paint(mgraphics, params) {
@@ -29,6 +24,9 @@ export default class Meter extends MiraUIObject {
 			width,
 			height
 		} = params;
+		const mc_level = params["mc.level"];
+		const channelCount = Array.isArray(mc_level) ? mc_level.length : 1;
+		const levelSrc = channelCount > 1 ? mc_level : [level];
 
 		const ledMargin = 6;
 		const isVertical = (height > width) ? 1 : 0;
@@ -40,7 +38,6 @@ export default class Meter extends MiraUIObject {
 		// there is always an overload led
 		numleds += 1;
 
-		const max = (20.0 * Math.log10(Math.max(0.000001, level))) / dbperled + (numleds - 0.5);
 		const ledcolorarray = [overloadcolor];
 
 		for (let i = 0; i < nhotleds; i++) {
@@ -66,59 +63,84 @@ export default class Meter extends MiraUIObject {
 		let ledcolor = offcolor;
 
 		if (isVertical === 1) {
-			const ledrect = ((height - ledMargin) - (numleds - 1)) / numleds;
-			for (let i = 0; i < numleds; i++) {
-				if (i < (numleds - max)) {
-					ledcolor = offcolor;
-				}
-				else {
-					ledcolor = ledcolorarray[i];
-				}
+			const ledheight = ((height - ledMargin) - (numleds - 1)) / numleds;
+			const ledwidth = ((width - ledMargin) - (channelCount - 1)) / channelCount;
+			for (let c = 0; c < channelCount; c++) {
+				const max = (20.0 * Math.log10(Math.max(0.000001, levelSrc[c]))) / dbperled + (numleds - 0.5);
+				for (let i = 0; i < numleds; i++) {
+					if (i < (numleds - max)) {
+						ledcolor = offcolor;
+					} else {
+						ledcolor = ledcolorarray[i];
+					}
 
-				if (level >= 1.0 && i === 0) {
-					this.overloaded = true;
-					ledcolor = overloadcolor;
+					if (levelSrc[c] >= 1.0 && i === 0) {
+						this.overloaded[c] = true;
+						ledcolor = overloadcolor;
+					}
+
+					if (levelSrc[c] < 1.0 && i === 0 && this.overloaded[c]) {
+						ledcolor = overloadcolor;
+					}
+
+					mgraphics.set_source_rgba(ledcolor);
+					mgraphics.rectangle(
+						((ledwidth * c) + c) + (ledMargin / 2),
+						((ledheight * i) + i) + (ledMargin / 2),
+						ledwidth,
+						ledheight
+					);
+					mgraphics.fill();
 				}
-
-				if (level < 1.0 && i === 0 && this.overloaded) {
-					ledcolor = overloadcolor;
-				}
-
-				mgraphics.set_source_rgba(ledcolor);
-				mgraphics.rectangle((ledMargin / 2), ((ledrect * i) + i) + (ledMargin / 2), width - ledMargin, ledrect);
-				mgraphics.fill();
-
-				if (this.overloaded && level < 1.0) {
-					clearTimeout(this.timer);
-					this.timer = setTimeout(this.resetOverloaded, 500);
+				if (this.overloaded[c] && levelSrc[c] < 1.0) {
+					if (!this.timers[c]) {
+						this.timers[c] = setTimeout(() => {
+							this.overloaded[c] = false;
+							this.timers[c] = null;
+							this.render();
+						}, 500);
+					}
 				}
 			}
 		}
 
 		if (isVertical === 0) {
-			let ledrect = ((width - ledMargin) - (numleds - 1)) / numleds;
+			const ledwidth = ((width - ledMargin) - (numleds - 1)) / numleds;
+			const ledheight = ((height - ledMargin) - (channelCount - 1)) / channelCount;
 			ledcolorarray.reverse();
-			for (let i = 0; i < numleds; i++) {
-				if (i < (max - 1)) {
-					ledcolor = ledcolorarray[i];
-				}
-				else {
-					ledcolor = offcolor;
-				}
-				if (level >= 1.0 && i === (numleds - 1)) {
-					this.overloaded = true;
-					ledcolor = overloadcolor;
-				}
-				if (level < 1.0 && i === (numleds - 1) && this.overloaded) {
-					ledcolor = overloadcolor;
-				}
+			for (let c = 0; c < channelCount; c++) {
+				const max = (20.0 * Math.log10(Math.max(0.000001, levelSrc[c]))) / dbperled + (numleds - 0.5);
+				for (let i = 0; i < numleds; i++) {
+					if (i < (max - 1)) {
+						ledcolor = ledcolorarray[i];
+					} else {
+						ledcolor = offcolor;
+					}
+					if (levelSrc[c] >= 1.0 && i === (numleds - 1)) {
+						this.overloaded[c] = true;
+						ledcolor = overloadcolor;
+					}
+					if (levelSrc[c] < 1.0 && i === (numleds - 1) && this.overloaded[c]) {
+						ledcolor = overloadcolor;
+					}
 
-				mgraphics.set_source_rgba(ledcolor);
-				mgraphics.rectangle(((ledrect * i) + i) + (ledMargin / 2), ledMargin / 2, ledrect, height - ledMargin);
-				mgraphics.fill();
-				if (this.overloaded && level < 1.0) {
-					clearTimeout(this.timer);
-					this.timer = setTimeout(this.resetOverloaded, 500);
+					mgraphics.set_source_rgba(ledcolor);
+					mgraphics.rectangle(
+						((ledwidth * i) + i) + (ledMargin / 2),
+						((ledheight * c) + c) + (ledMargin / 2),
+						ledwidth,
+						ledheight
+					);
+					mgraphics.fill();
+				}
+				if (this.overloaded[c] && levelSrc[c] < 1.0) {
+					if (!this.timers[c]) {
+						this.timers[c] = setTimeout(() => {
+							this.overloaded[c] = false;
+							this.timers[c] = null;
+							this.render();
+						}, 500);
+					}
 				}
 			}
 		}
